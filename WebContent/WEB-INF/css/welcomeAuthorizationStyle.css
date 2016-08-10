@@ -1,0 +1,103 @@
+@import url(reset.css);
+
+body {
+	font:25px "Arial Black", Gadget, sans-serif;
+	color:  #1B1D23;
+	background: url(../images/1_1180_624.jpg) 0px 0px no-repeat;
+	background-size: cover;	
+}
+
+.wrapper {
+	width: 1200px;
+	margin: 0 auto;
+}
+
+.header {
+	border: solid #443F31 4px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	background: #E4E0BE;
+	
+	margin-top: 50px;
+	text-align: center;
+	height: 140px;
+	color:  #000000;
+	font-weight: 900;
+	opacity: 0.8;
+}
+
+.headerNameCompany {
+	text-align: center;
+	height: 60px;
+	font-size: 40px;
+}
+
+.headerLoggedAs, .headerChooseLanguage  {
+	text-align: center;
+	height: 30px;
+	font-size: 20px;
+}
+
+select {
+	font:18px "Arial Black", Gadget, sans-serif;
+	opacity: 0.8;
+}
+
+.mainContent {
+	border: solid #443F31 4px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	
+	margin-top: 50px;
+	text-align: center;
+	height: 250px;
+	opacity: 0.8;	
+	background: #E4E0BE;
+}
+
+#authorizationForm, #registerForm {
+	text-align: left;
+	padding-left: 330px;;
+	margin-top: 15px;
+}
+
+#login, #password {
+	font-size: 20px;
+}
+
+#login {
+	margin-left: 70px;
+}
+
+#password {
+	margin-left: 11px;
+}
+
+#signIn {
+
+	margin-left: 200px;	
+	margin-top: 15px;
+	font:18px "Arial Black", Gadget, sans-serif;
+	opacity: 0.8;
+}
+
+#register {
+	margin-left: 200px;	
+	font:18px "Arial Black", Gadget, sans-serif;
+	opacity: 0.8;
+}
+
+.footer {
+	border: solid #443F31 4px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	background: #E4E0BE;
+	
+	margin-top: 140px;
+	font:14px "Arial Black", Gadget, sans-serif;
+	text-align: center;
+	opacity: 0.8;
+}

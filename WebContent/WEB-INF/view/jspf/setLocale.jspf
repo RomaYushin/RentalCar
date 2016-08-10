@@ -1,0 +1,7 @@
+
+<%@ include file="/WEB-INF/view/jspf/taglibDirective.jspf"%>
+
+<c:set var="setLanguage" scope="session"
+	value="${not empty language ? language : pageContext.request.locale.language}" />
+
+<fmt:setLocale value="${setLanguage}" />

@@ -1,0 +1,115 @@
+@import url(reset.css);
+
+body {
+	font:25px "Arial Black", Gadget, sans-serif;
+	color:  #1B1D23;
+	background: url(../images/8_1593_1186.jpg) 0px 0px no-repeat;
+	background-size: cover;
+	opacity: 0.8;	
+}
+
+.wrapper {
+	width: 1200px;
+	margin: 0 auto;
+}
+
+.header {
+	border: solid #443F31 4px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	background: #A4C0C6;
+	
+	
+	margin-top: 30px;
+	text-align: center;
+	height: 140px;
+	color:  #000000;
+	font-weight: 900;
+}
+
+.headerNameCompany {
+	text-align: center;
+	height: 60px;
+	font-size: 40px;
+}
+
+.headerLoggedAs, .headerChooseLanguage  {
+	text-align: center;
+	height: 30px;
+	font-size: 20px;
+}
+
+select{
+	font:18px "Arial Black", Gadget, sans-serif;
+	opacity: 0.8;
+}
+
+.mainContent {
+	border: solid #443F31 4px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	
+	margin-top: 50px;
+	text-align: center;
+	height: 350px;	
+	background: #A4C0C6;
+}
+
+#registrationForm {
+	height: 300px;
+	font:20px "Arial Black", Gadget, sans-serif;
+}
+
+.registrationForm_left {	
+	float: left;
+	width: 500px;	
+	margin-left: 150px;
+}
+
+.registrationForm_right {
+	width: 500px;	
+	margin-left: 650px;
+}
+
+.field {
+	margin-top: 10px;
+	text-align:right;
+	margin-right: 130px;
+	
+}
+
+label {
+	float: left;	
+}
+
+input {
+	font:12px "Arial Black", Gadget, sans-serif;
+}
+
+#signUp {
+	margin: 40px 300px 10px 300px;
+	font:20px "Arial Black", Gadget, sans-serif;
+	opacity: 0.8;
+}
+
+#exit {
+	margin: 10px 300px 10px 300px;
+	font:20px "Arial Black", Gadget, sans-serif;
+	opacity: 0.8;
+}
+
+.footer {
+	border: solid #443F31 4px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	background: #A4C0C6;
+	
+	margin-top: 30px;
+	font:14px "Arial Black", Gadget, sans-serif;
+	color: black;
+	text-align: center;
+	opacity:0.8;
+}

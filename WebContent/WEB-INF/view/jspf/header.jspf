@@ -1,0 +1,29 @@
+
+<%@ include file="/WEB-INF/view/jspf/pageDirective.jspf"%>
+<%@ include file="/WEB-INF/view/jspf/taglibDirective.jspf"%>
+
+
+
+<div class="header">
+	<div class="headerNameCompany">
+		<p>
+			<fmt:message key="header.jspf.companyName" />
+		</p>
+	</div>
+	<div class="headerLoggedAs">
+		<!-- <p>You are logged as Yushin Roman</p> -->
+	</div>
+	<div class="headerChooseLanguage">
+		<form action="controller" method="POST">
+			<input type = "hidden" name = "command" value = "editLanguage">
+		
+			<fmt:message key="header.jspf.chooseLanguge" />
+			<select name = "selectLanguage">
+				<option value = "en"><fmt:message key="header.jspf.en_language" /></option>
+				<option value = "ru"><fmt:message key="header.jspf.ru_language" /></option>
+			</select>
+			<input type = "submit" value = "Lang" >
+		</form> 
+		
+	</div>
+</div>
