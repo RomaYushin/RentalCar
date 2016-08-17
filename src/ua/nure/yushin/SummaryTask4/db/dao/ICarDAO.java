@@ -1,6 +1,6 @@
 package ua.nure.yushin.SummaryTask4.db.dao;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import ua.nure.yushin.SummaryTask4.entity.Car;

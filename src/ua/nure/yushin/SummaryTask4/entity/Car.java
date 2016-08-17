@@ -1,7 +1,7 @@
 package ua.nure.yushin.SummaryTask4.entity;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 public class Car extends AbstractEntity {

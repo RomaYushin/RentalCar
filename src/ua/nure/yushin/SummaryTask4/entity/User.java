@@ -1,7 +1,7 @@
 package ua.nure.yushin.SummaryTask4.entity;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.sql.Date;
 
 public class User implements Serializable {
 
@@ -17,15 +17,18 @@ public class User implements Serializable {
 	private String userPassPatronomic;
 	private Date userPassDateOfBirth;
 	private Sex userSex;
-	private boolean userBlocking;
-	private String userPassword;
 	private String userEmail;
+	private String userPassword;
+	private boolean userBlocking;
 	private UserRole userRole;
 	private String userLanguage;
 
+	public User () {
+	}
+	
 	public User(String userPassSeries, int userPassNumber, String userPassSurname, String userPassName,
-			String userPassPatronomic, Date userPassDateOfBirth, Sex userSex, boolean userBlocking, 
-			String userPassword, String userEmail, UserRole userRole, String userLanguage) {
+			String userPassPatronomic, Date userPassDateOfBirth, Sex userSex, String userEmail, String userPassword,
+			boolean userBlocking, UserRole userRole, String userLanguage) {
 		super();
 		this.userPassSeries = userPassSeries;
 		this.userPassNumber = userPassNumber;
@@ -34,9 +37,9 @@ public class User implements Serializable {
 		this.userPassPatronomic = userPassPatronomic;
 		this.userPassDateOfBirth = userPassDateOfBirth;
 		this.userSex = userSex;
-		this.userBlocking = userBlocking;
-		this.userPassword = userPassword;
 		this.userEmail = userEmail;
+		this.userPassword = userPassword;
+		this.userBlocking = userBlocking;
 		this.userRole = userRole;
 		this.userLanguage = userLanguage;
 	}
@@ -97,12 +100,12 @@ public class User implements Serializable {
 		this.userSex = userSex;
 	}
 
-	public boolean isUserBlocking() {
-		return userBlocking;
+	public String getUserEmail() {
+		return userEmail;
 	}
 
-	public void setUserBlocking(boolean userBlocking) {
-		this.userBlocking = userBlocking;
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
 	}
 
 	public String getUserPassword() {
@@ -113,12 +116,12 @@ public class User implements Serializable {
 		this.userPassword = userPassword;
 	}
 
-	public String getUserEmail() {
-		return userEmail;
+	public boolean isUserBlocking() {
+		return userBlocking;
 	}
 
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
+	public void setUserBlocking(boolean userBlocking) {
+		this.userBlocking = userBlocking;
 	}
 
 	public UserRole getUserRole() {
@@ -137,15 +140,8 @@ public class User implements Serializable {
 		this.userLanguage = userLanguage;
 	}
 
-	@Override
-	public String toString() {
-		return "User [userPassSeries=" + userPassSeries + ", userPassNumber=" + userPassNumber + ", userPassSurname="
-				+ userPassSurname + ", userPassName=" + userPassName + ", userPassPatronomic=" + userPassPatronomic
-				+ ", userPassDateOfBirth=" + userPassDateOfBirth + ", userSex=" + userSex + ", userBlocking="
-				+ userBlocking + ", userPassword=" + userPassword + ", userEmail=" + userEmail + ", userRole="
-				+ userRole + ", userLanguage=" + userLanguage + "]";
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
-	
-	
 }

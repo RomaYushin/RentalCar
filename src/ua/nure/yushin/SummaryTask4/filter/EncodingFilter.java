@@ -10,7 +10,12 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-public class EncodingFilter implements Filter{
+import org.apache.log4j.Logger;
+
+
+public class EncodingFilter implements Filter {
+	
+	private static final Logger LOG = Logger.getLogger(EncodingFilter.class);
 
 	private static final String ENCODING_INIT_PARAM_NAME = "encoding";
 	
@@ -20,15 +25,20 @@ public class EncodingFilter implements Filter{
 	
 	@Override
 	public void destroy() {
-		// Log		
+		LOG.info("destroy");	
 	}
 
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
 			throws IOException, ServletException {
+		LOG.info("doFilter starts");
 		
-		//HttpServletRequest httpRequest = (HttpServletRequest)request;
+		HttpServletRequest httpRequest = (HttpServletRequest)request;
+		LOG.info("Requested URI: " + httpRequest.getRequestURI());
+		
 		String requestEncoding = request.getCharacterEncoding();
+		LOG.info("requestEncoding: " + requestEncoding);
+		
 		if (requestEncoding == null) {
 			request.setCharacterEncoding(encoding);
 		}
@@ -38,7 +48,10 @@ public class EncodingFilter implements Filter{
 
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
+		
 		encoding = filterConfig.getInitParameter(ENCODING_INIT_PARAM_NAME);
+		
+		LOG.info("encoding in init: " + encoding);
 		if (encoding == null) {
 			encoding = ENCODING_DEFAULT;
 		}

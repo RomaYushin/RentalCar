@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <Context>
-	<Resource name="jdbc/SummaryTask4" auth="Container"
-	type="javax.sql.DataSource" maxActive="100" 
-	maxIdle="30" maxWait="10000"
-	username="root" 
-	password="1111"
-	driverClassName="com.mysql.jdbc.Driver"	
-	url="jdbc:mysql://localhost/summary_task4_car_rantal?useSSL=false"/>
+
+	<Resource name="jdbc/SummaryTask4" auth="Container" type="javax.sql.DataSource"
+		maxActive="100" maxIdle="30" maxWait="10000" username="root" password="1111"
+		driverClassName="com.mysql.jdbc.Driver"
+		url="jdbc:mysql://localhost/summary_task4_car_rental?useSSL=false" />
+
+
+	<Resource name="mail/Session" auth="Container" type="javax.mail.Session"
+		mail.transport.protocol="smtp" mail.smtp.host="smtp.gmail.com"
+		mail.smtp.starttls.enable="true" mail.smtp.port="587"
+		mail.smtp.user="exampleAdress@gmail.com" mail.smtp.auth="true"
+		password="example" mail.smtp.ssl.trust="smtp.gmail.com" />
 </Context>
 
-<!--  
-
-jdbc:mysql://localhost/summary_task4_car_rantal?useSSL=false&useUnicode=true&characterEncoding=utf8
-
--->

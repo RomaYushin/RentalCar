@@ -44,6 +44,7 @@ select {
 	opacity: 0.8;
 }
 
+
 .mainContent {
 	border: solid #443F31 4px;
 	-webkit-border-radius: 8px;
@@ -67,24 +68,16 @@ select {
 	font-size: 20px;
 }
 
-#login {
-	margin-left: 70px;
-}
-
-#password {
-	margin-left: 11px;
-}
-
 #signIn {
-
-	margin-left: 200px;	
+	
+	margin-left: 230px;
 	margin-top: 15px;
 	font:18px "Arial Black", Gadget, sans-serif;
 	opacity: 0.8;
 }
 
 #register {
-	margin-left: 200px;	
+	margin-top: 15px;
 	font:18px "Arial Black", Gadget, sans-serif;
 	opacity: 0.8;
 }

@@ -8,13 +8,28 @@ import javax.naming.InitialContext;
 import javax.naming.NamingException;
 import javax.sql.DataSource;
 
+import ua.nure.yushin.SummaryTask4.db.dao.mysql.MySQLDAOFactory;
+
 public abstract class DAOFactory {
 
 	private static DataSource dataSource = getDataSource();
 
 	private static Connection connection;
+	
+	public static DAOFactory getFactoryByType (DatabaseTypes databaseType) {
+		switch (databaseType) {
+			case MYSQL:
+				return MySQLDAOFactory.getMySQLDAOFactoryInstance();
+			/*
+			case APACHE_DERBY:
+				return ApacheDerbyDAOFactory.getFactoryByType(DatabaseTypes.ApacheDerby); 
+			 */
+			default:
+				return MySQLDAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
+		}
+	}
 
-	public static DataSource getDataSource() {
+	private static DataSource getDataSource() {
 
 		try {
 
@@ -46,4 +61,6 @@ public abstract class DAOFactory {
 	public abstract IOrderDAO getOrderDAO ();
 	
 	public abstract IAccountDAO getAccountDAO ();
+	
+	public abstract ICarBusyDates getCarBusyDatesDAO();
 }

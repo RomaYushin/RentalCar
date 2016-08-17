@@ -15,7 +15,10 @@ Taglib directives for all views. Connect librarys.
 <%-- JSTL functions tags library --%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
+<%--Custom tag --%>
+<%@ taglib prefix="ct" uri="/WEB-INF/customTagsLibrary.tld" %>
+
 <c:set var="setLanguage" scope="session"
-	value="${not empty selectLanguage ? selectLanguage : pageContext.request.locale.language}" />
+	value="${not empty userLanguage ? userLanguage : pageContext.request.locale.language}" />
 
 <fmt:setLocale value="${setLanguage}" />

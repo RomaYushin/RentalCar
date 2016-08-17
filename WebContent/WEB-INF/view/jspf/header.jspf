@@ -3,7 +3,6 @@
 <%@ include file="/WEB-INF/view/jspf/taglibDirective.jspf"%>
 
 
-
 <div class="header">
 	<div class="headerNameCompany">
 		<p>
@@ -14,16 +13,21 @@
 		<!-- <p>You are logged as Yushin Roman</p> -->
 	</div>
 	<div class="headerChooseLanguage">
-		<form action="controller" method="POST">
-			<input type = "hidden" name = "command" value = "editLanguage">
-		
-			<fmt:message key="header.jspf.chooseLanguge" />
-			<select name = "selectLanguage">
-				<option value = "en"><fmt:message key="header.jspf.en_language" /></option>
-				<option value = "ru"><fmt:message key="header.jspf.ru_language" /></option>
+		<form action="Controller" method="GET">
+			<input type="hidden" name="command" value="editLanguage"> <select
+				id="selectLanguage" name="language" onchange="this.form.submit()">
+				<option value=""><fmt:message key="header.jspf.chooseLanguge" /></option>
+				<option value="ru"><fmt:message	key="header.jspf.ru_language" /></option>
+				<option value="en"><fmt:message	key="header.jspf.en_language" /></option>
 			</select>
-			<input type = "submit" value = "Lang" >
-		</form> 
-		
+		</form>
+	</div>
+	<div class = "loggedAs">
+		<c:choose>
+			<c:when test="${empty user}"></c:when>
+			<c:otherwise>
+				<c:out value="You are logger as: ${userRole} + ${userName}"></c:out>
+			</c:otherwise>
+		</c:choose>
 	</div>
 </div>

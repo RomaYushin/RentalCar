@@ -15,6 +15,10 @@ public interface IUserDAO {
 	
 	List <User> getAllUserssFromDB ();
 	
+	boolean findSpecifiedUserInDB (User specifiedUser);
+	
+	User findUserByEmailAndPassword (String email, String password);
+	
 	void updateUserPassSeries (String newUserPassSeries);
 	
 	void updateUserPassNumber (int newUserPassNumber);
