@@ -1,15 +1,10 @@
-<div class = "driver">
-	1. Do you need personal driver?					
-	<input type = "radio" name = "driver" value = "true" /> Yes
-	<input type = "radio" name = "driver" value = "false" /> No
-</div>
 <div class = "selectDate">
-	2. Select date.	
+	1. Select date.	
 	<label> Rental start: </label>
-	<input id = "orderStartDate" type = "date" name = "orderStartDate"/>
+	<input id = "orderStartDate" type = "date" name = "orderStartDate" onchange = "submitDates()"/>
 					
 	<label> Rental end: </label>
-	<input id = "orderEndDate" type = "date" name = "orderEndDate"/>
+	<input id = "orderEndDate" type = "date" name = "orderEndDate" onchange = "submitDates()"/>
 </div>
 
 <div class = "availableCars">

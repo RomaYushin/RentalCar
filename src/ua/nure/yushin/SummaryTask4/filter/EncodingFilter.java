@@ -37,11 +37,12 @@ public class EncodingFilter implements Filter {
 		LOG.info("Requested URI: " + httpRequest.getRequestURI());
 		
 		String requestEncoding = request.getCharacterEncoding();
-		LOG.info("requestEncoding: " + requestEncoding);
+		LOG.info("requestEncoding before null check: " + requestEncoding);
 		
 		if (requestEncoding == null) {
 			request.setCharacterEncoding(encoding);
 		}
+		LOG.info("requestEncoding after null check: " + request.getCharacterEncoding());
 		
 		filterChain.doFilter(request, response);
 	}

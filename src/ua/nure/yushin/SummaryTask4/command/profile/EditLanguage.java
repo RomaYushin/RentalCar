@@ -47,9 +47,9 @@ public class EditLanguage extends AbstractCommand {
 		//request.getRequestURI()
 		//String uriPath = request.getRequestURI().substring(request.getContextPath().length());      // Получаем путь до страницы типа /index.jsp или /login.jsp
 		
-		LOG.info("getRequestURI(): " + request.getRequestURI());
-		LOG.info("getRequestURL(): " + request.getRequestURL());
-		LOG.info("uriPath: " + request.getRequestURI().substring(request.getContextPath().length()));
+		//LOG.info("getRequestURI(): " + request.getRequestURI());
+		//LOG.info("getRequestURL(): " + request.getRequestURL());
+		//LOG.info("uriPath: " + request.getRequestURI().substring(request.getContextPath().length()));
 		//request.
 		
 		User user = (User) session.getAttribute("user");
@@ -61,7 +61,6 @@ public class EditLanguage extends AbstractCommand {
 			
 			session.setAttribute("userLanguage", language);
 			result = Path.PAGE_WELCOME_AUTHORIZATION;
-			
 		}
 		
 		return result;

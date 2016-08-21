@@ -6,14 +6,15 @@ import java.util.List;
 import ua.nure.yushin.SummaryTask4.entity.Sex;
 import ua.nure.yushin.SummaryTask4.entity.User;
 import ua.nure.yushin.SummaryTask4.entity.UserRole;
+import ua.nure.yushin.SummaryTask4.exception.DBException;
 
 public interface IUserDAO {
 
-	void insertNewUser (User newUser);
+	void insertNewUser (User newUser) throws DBException;
 	
 	void removeParticularUser (User userToRemove);
 	
-	List <User> getAllUserssFromDB ();
+	List <User> getAllUsersFromDB () throws DBException;
 	
 	boolean findSpecifiedUserInDB (User specifiedUser);
 	
@@ -33,7 +34,7 @@ public interface IUserDAO {
 	
 	void updateUserSex (Sex newUserSex);
 	
-	void updateUserBlocking (boolean newUserBlocking);
+	void updateUserBlockingById (int userId, boolean newUserBlocking) throws DBException;
 	
 	void updateUserPassword (String newUserPassword);
 	

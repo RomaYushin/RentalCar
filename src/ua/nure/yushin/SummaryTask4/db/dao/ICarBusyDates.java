@@ -7,7 +7,7 @@ import ua.nure.yushin.SummaryTask4.entity.Car;
 
 public interface ICarBusyDates {
 	
-	void insertNewBusyDate (Car specifiedCar, Date busyDates);
+	void insertNewBusyDates (Car specifiedCar, List <Date> busyDates);
 	
 	void removeParticularBusyDate (Car specifiedCar, Date busyDates );
 	

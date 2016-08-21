@@ -8,3 +8,13 @@ function validateEmail(email) {
 		}
 	}    
 }
+
+function validatePassword(passwordLength) {	
+	
+	if (passwordLength < 4 || passwordLength > 10) {
+		var answer = confirm("Invalid password. Must be more than 4 and less than 10 characters.");
+		if (answer) {
+			$('#password').focus();
+		}
+	} 
+}

@@ -1,7 +1,9 @@
 package ua.nure.yushin.SummaryTask4.command.registration;
 
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,7 +43,7 @@ public class CalculateTotalPriceCommand extends AbstractCommand {
 	
 	private String doPost(HttpServletRequest request, HttpServletResponse response) {
 		
-		LOG.info("Start executing CalculateTotalPriceCommand.doGet");
+		LOG.info("Start executing CalculateTotalPriceCommand");
 		
 		boolean isDriverNeed = Boolean.valueOf(request.getParameter("driver"));
 		Date orderStartDate = Date.valueOf(request.getParameter(FieldsInJSPPages.ORDER_START_DATE));
@@ -49,13 +51,14 @@ public class CalculateTotalPriceCommand extends AbstractCommand {
 		int carId = Integer.valueOf(request.getParameter("carId"));
 		//List <Car> cars = (List<Car>) request.getAttribute("availableCars");
 		HttpSession session = request.getSession();
-		List <Car> cars = (List<Car>) session.getAttribute("availableCars");
+		//List <Car> cars = (List<Car>) session.getAttribute("availableCars");
+		Map <String , List<Car>> availableCars_map = (Map <String , List<Car>>) session.getAttribute("availableCars_map");
 		
 		LOG.info("isDriverNeed: " + isDriverNeed);
 		LOG.info("orderStartDate: " + orderStartDate);
 		LOG.info("orderEndDate: " + orderEndDate);
 		LOG.info("carId: " + carId);
-		LOG.info("cars: " + cars);
+		//LOG.info("cars: " + cars);
 		
 		// водитель
 		int driverKoef = 1;
@@ -68,7 +71,7 @@ public class CalculateTotalPriceCommand extends AbstractCommand {
 		int rentalTime = (int)((orderEndDate.getTime() - orderStartDate.getTime())/oneDayInMilisecond)+1;
 		int carRentalCost = 0;
 		
-		for (Car c : cars) {
+		for (Car c : availableCars_map.get("availableCarsAfterSelect")) {
 			//LOG.info("car_id: " + c.getId() + " carRentelCost: " + c.getCarRentalCost());
 			if (c.getId() == carId) {
 				carRentalCost = c.getCarRentalCost();
@@ -90,5 +93,4 @@ public class CalculateTotalPriceCommand extends AbstractCommand {
 		request.setAttribute("totalPrice", totalPrice);
 		return Path.PAGE_FORWARD_CLIENT_TOTAL_PRICE_ASYNC;
 	}
-
 }

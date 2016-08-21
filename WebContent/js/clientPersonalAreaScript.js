@@ -1,145 +1,205 @@
-$(function() {
-	main();
-});
-
-function main() {
+function sendOrderCar() {
 	
-	$('#orderCarButton').click (function () {
-		$.ajax({
-			type : "GET",
-			url : "Controller?command=orderCarButton",
-			success : function(responseText) {
-				//alert ("successResponse" + responseText);
-				$(".mainWindow").html(responseText);
-				selectDates();
-			},
-			error: function () {
-				alert ("error in orderCarButton ");
-			}
-		});
-	});
-	
-	$('#checkOrderStatus').click (function () {
-		$.ajax({
-			type : "GET",
-			url : "Controller?command=checkOrderStatus",
-			success : function(responseText) {
-				//alert ("successResponse" + responseText);
-				$(".mainWindow").html(responseText); 
-				
-			},
-			error: function () {
-				alert ("error in checkOrderStatus ");
-			}
-		});
-	});	
-	
-	$('.sortButtons > button').click(function() {		
-		var sortingType = this.id;
-		var startDate = $('#orderStartDate').val();
-		var endDate = $('#orderEndDate').val();
-		
-		$.ajax({
-			type : "GET",
-			url : "Controller?command=selectCarsByRentalDates",
-			data: {
-				orderStartDate: startDate,
-				orderEndDate: endDate,
-				sortingType: sortingType,
-			} ,
-			success : function(responseText) {
-				//alert ("successResponse" + responseText);
-				$(".availableCars").html(responseText); 
-				$("#createOrderForm").hide();
-				main();
-			},
-			error: function () {
-				alert ("error in checkOrderStatus ");
-				main();
-			}
-		});
-	});
-	
-	$('.car > input').click (function () {
-		var driver = $('.driver > input[name=driver]:checked').val();
-		var startDate = $('#orderStartDate').val();
-		var endDate = $('#orderEndDate').val();
-		var carId = this.id;
-		
-		if (driver == undefined ) {
-			var answer = confirm("Do you need personal driver?");
-			if (answer) {
-				driver = true;
-			} else {
-				driver = false;
-			}
+	$.ajax({
+		type : "GET",
+		url : "Controller?command=orderCarButton",
+		success : function(responseText) {
+			// alert ("successResponse" + responseText);
+			$(".mainWindow").html(responseText);
+			// selectDates();
+		},
+		error : function() {
+			alert("error in orderCarButton ");
 		}
-		//alert (driver + " " + startDate + " " + endDate + " " + carId);
+	});
+}
+
+function sendOrderStatus() {
+	
+	$.ajax({
+		type : "GET",
+		url : "Controller?command=checkOrderStatus",
+		success : function(responseText) {
+			// alert ("successResponse" + responseText);
+			$(".mainWindow").html(responseText);
+
+		},
+		error : function() {
+			alert("error in checkOrderStatus ");
+		}
+	});
+}
+
+function submitDates() {
+
+	var startDate = $('#orderStartDate').val();
+	var endDate = $('#orderEndDate').val();
+
+	if (startDate.length != 0 & endDate.length != 0) {
 
 		$.ajax({
 			type : "POST",
-			url : "Controller?command=calculateTotalPriceAsync",
-			data: {
-				driver : driver,
-				orderStartDate: startDate,
-				orderEndDate: endDate,
-				carId: carId
-			} ,
-			success : function(responseText) {
-				//alert ("successResponse" + responseText);
-				$(".totalPrice").html(responseText);
-				//main();
-				$("#createOrderForm").show();
-				
+			url : "Controller?command=selectCarsByRentalDates",
+			data : {
+				orderStartDate : startDate,
+				orderEndDate : endDate
 			},
-			error: function () {
-				alert ("error");
-				//main();
+			success : function(responseText) {
+				$(".availableCars").html(responseText);
+				$(".driver").hide();
+				$(".totalPrice").hide();
+				$(".createOrder").hide();
+			},
+			error : function() {
+				alert("error");
 			}
 		});
-		
+	}
+}
+
+function sortByPriceASC() {
+	var sortingType = "sortByPriceASC";
+	sendSort(sortingType);
+}
+
+function sortByPriceDESC() {
+	var sortingType = "sortByPriceDESC";
+	sendSort(sortingType);
+}
+
+function sortByCarName() {	
+	var sortingType = "sortByCarName";
+	sendSort(sortingType);
+}
+
+function sendSort(sortingType) {
+	var startDate = $('#orderStartDate').val();
+	var endDate = $('#orderEndDate').val();
+	
+	$.ajax({
+		type : "POST",
+		url : "Controller?command=selectCarsByRentalDates",
+		data : {
+			orderStartDate : startDate,
+			orderEndDate : endDate,
+			sortingType : sortingType			
+		},
+		success : function(responseText) {
+			// alert ("successResponse" + responseText);
+			$(".availableCars").html(responseText);
+			$(".driver").hide();
+			$(".totalPrice").hide();
+			$(".createOrder").hide();
+		},
+		error : function() {
+			alert("error in checkOrderStatus ");
+		}
+	});
+}
+
+function selectCarBrend() {
+	var selectType = "selectCarBrend";
+	var selectOption = $('#carBrend_select > option[name=carBrend_option]:selected').attr('id');
+	sendSelect(selectType, selectOption);
+	
+}
+
+function selectCarQualityClass() {
+	var selectType = "selectCarQualityClass";
+	var selectOption = $('#carQualityClass_select > option[name=carQualityClass_option]:selected').attr('id');
+	sendSelect(selectType, selectOption);
+}
+
+function sendSelect(selectType, selectOption) {	
+	//alert ("selectType: " + selectType + "; selectOption: " + selectOption);
+	var startDate = $('#orderStartDate').val();
+	var endDate = $('#orderEndDate').val();
+	
+	$.ajax({
+		type : "POST",
+		url : "Controller?command=selectCarsByRentalDates",
+		data : {
+			orderStartDate : startDate,
+			orderEndDate : endDate,
+			selectType : selectType,
+			selectOption: selectOption
+		},
+		success : function(responseText) {
+			// alert ("successResponse" + responseText);
+			$(".availableCars").html(responseText);
+			$(".driver").hide();
+			$(".totalPrice").hide();
+			$(".createOrder").hide();
+		},
+		error : function() {
+			alert("error in checkOrderStatus ");
+		}
 	});
 	
 }
 
-function selectDates() {
+function selectCar() {
+	$(".driver").show();
+	var driver = $('.driver > input[name=driver]:checked').val();
+	if (driver != undefined) {
+		sendCar();
+	}
+}
 
-	var startDate;
-	var endDate;
+function sendCar() {
 
-	$('#orderStartDate').change(function() {
-		startDate = $('#orderStartDate').val();
-		submitDates(startDate, endDate);
-	});
+	var driver = $('.driver > input[name=driver]:checked').val();
+	var startDate = $('#orderStartDate').val();
+	var endDate = $('#orderEndDate').val();
+	var carId = $('.car > input[name=car]:checked').attr('id');
+	// alert (driver + " " + startDate + " " + endDate + " " + carId);
 
-	$('#orderEndDate').change(function() {
-		endDate = $('#orderEndDate').val();
-		submitDates(startDate, endDate);
+	$.ajax({
+		type : "POST",
+		url : "Controller?command=calculateTotalPriceAsync",
+		data : {
+			driver : driver,
+			orderStartDate : startDate,
+			orderEndDate : endDate,
+			carId : carId
+		},
+		success : function(responseText) {
+			$(".totalPrice").show();
+			$(".totalPrice").html(responseText);
+			$(".createOrder").show();
+		},
+		error : function() {
+			alert("error");
+		}
 	});
 }
 
+function createNewOrder() {
+	
+	var startDate = $('#orderStartDate').val();
+	var endDate = $('#orderEndDate').val();
+	var car =  $('.car > input[name=car]:checked').attr('value');
+	var carId = $('.car > input[name=car]:checked').attr('id');
+	var driver = $('.driver > input[name=driver]:checked').val();
+	var totalPrice = $('#totalPrice').attr('value');
 
-function submitDates(startDate, endDate) {
-	if (startDate != undefined & endDate != undefined) {
-		// alert (startDate + " " + endDate);
-
-		$.ajax({
-			type : "GET",
-			url : "Controller?command=selectCarsByRentalDates",
-			data: {
-				orderStartDate: startDate,
-				orderEndDate: endDate
-			} ,
-			success : function(responseText) {
-				//alert ("successResponse" + responseText);
-				$(".availableCars").html(responseText);
-				$("#createOrderForm").hide();
-				main();
-			},
-			error: function () {
-				alert ("error");
-				main();
-			}
-		});
+	$('#ordFormStartDate_id').val(startDate);
+	$('#ordFormEndDate_id').val(endDate);
+	$('#ordFormCar_id').val(carId);
+	$('#ordFormDriver_id').val(driver);
+	$('#ordFormTotalPrice_id').val(totalPrice);
+	
+	var message = "Your order parametrs:" + 
+			"\n  1. Start date: " + startDate +
+			"\n  2. End date: " + endDate +
+			"\n  3. Car: " + car + 
+			"\n  4. Presence of the driver: " + driver +
+			"\n  5. Total price: " + totalPrice + 
+			"\n\n If you want to create a new order , click Ok, otherwise click Cancel" ;
+			
+	var answer = confirm(message);	
+	
+	if (answer) {
+		$('#createOrderForm').submit(); 
 	}
 }

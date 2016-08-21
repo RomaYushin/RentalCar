@@ -4,7 +4,9 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +22,7 @@ import ua.nure.yushin.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.yushin.SummaryTask4.db.dao.DatabaseTypes;
 import ua.nure.yushin.SummaryTask4.db.dao.ICarDAO;
 import ua.nure.yushin.SummaryTask4.entity.Car;
+import ua.nure.yushin.SummaryTask4.exception.DBException;
 
 public class SelectCarsByRentalDatesCommand extends AbstractCommand {
 
@@ -30,10 +33,12 @@ public class SelectCarsByRentalDatesCommand extends AbstractCommand {
 
 	private static final Logger LOG = Logger.getLogger(SelectCarsByRentalDatesCommand.class);
 
-	private List<Car> availableCars = null;
-
+	private Map <String , List<Car>> availableCars_map = new HashMap<>();
+	private List<Car> availableCarsSortByDate = null;
+	private List<Car> availableCarsAfterSelect = null;
+	
 	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType) {
+	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType) throws DBException {
 		
 		LOG.info ("Start executing SelectCarsByRentalDatesCommand.execute");
 		String result = null;
@@ -47,39 +52,60 @@ public class SelectCarsByRentalDatesCommand extends AbstractCommand {
 		return result;
 	}
 
-	private String doPost(HttpServletRequest request, HttpServletResponse response) {
-		return Path.COMMAND_REDIRECT_CLIENT_AVAILABLE_CARS_ASYNC;
-	}
-
-	private String doGet(HttpServletRequest request, HttpServletResponse response) {
-
+	private String doPost(HttpServletRequest request, HttpServletResponse response) throws DBException {
+		
 		LOG.debug("Start executing SelectCarsByRentalDatesCommand.doGet");
-		// String result = null;
+		
+		HttpSession session = request.getSession(false);
+		List<Date> busyDates = null;
 
 		Date orderStartDate = Date.valueOf(request.getParameter(FieldsInJSPPages.ORDER_START_DATE));
 		Date orderEndDate = Date.valueOf(request.getParameter(FieldsInJSPPages.ORDER_END_DATE));
 		String sortingType = request.getParameter("sortingType");
-		
+		String selectType = request.getParameter("selectType");
+		String selectOption =  request.getParameter("selectOption");
 		
 		LOG.info("orderStartDate: " + orderStartDate);
 		LOG.info("orderEndDate: " + orderEndDate);
 		LOG.info("sortingType: " + sortingType);
+		LOG.info("selectType: " + selectType);
+		LOG.info("selectOption: " + selectOption);
 
 		// проверка если введенные даты позже, чем сегодня
 		long currentTime = System.currentTimeMillis();
 		if ((orderStartDate.getTime() < currentTime) || (orderEndDate.getTime() < currentTime)) {
-			// выдать предупреждение
+			session.setAttribute("availableCars_map", null);
+			LOG.error("Invalid input dates, early that today:" + orderStartDate + " " + orderEndDate);
+			return Path.COMMAND_REDIRECT_CLIENT_SELECT_CARS_BY_RENTAL_DATES_ASYNC;
+		}
+		
+		// проверка, если дата старта позже даты начала
+		if (orderStartDate.getTime() >= orderEndDate.getTime()) {
+			session.setAttribute("availableCars_map", null);
+			LOG.error("Invalid input dates, early that today:" + orderStartDate + " " + orderEndDate);
+			return Path.COMMAND_REDIRECT_CLIENT_SELECT_CARS_BY_RENTAL_DATES_ASYNC;
 		}
 
-		List<Date> busyDates = fillBusyDates(orderStartDate, orderEndDate);
-
-		availableCars = fillAvailableCars(busyDates);
+		busyDates = fillBusyDates(orderStartDate, orderEndDate);
+		availableCarsSortByDate = fillAvailableCars(busyDates);
 
 		// сортировка авто
 		if (sortingType != null) {
 			switch (sortingType) {
+			case "sortByCarName":
+				Collections.sort(availableCarsSortByDate, new Comparator<Car>() {
+					@Override
+					public int compare(Car car1, Car car2) {
+						int result = car1.getCarBrend().compareToIgnoreCase(car2.getCarBrend());
+						if (result != 0) {
+							return result;
+						}						
+						return car1.getCarModel().compareToIgnoreCase(car2.getCarModel());
+					}
+				});				
+			break;
 			case "sortByPriceDESC":
-				Collections.sort(availableCars, new Comparator<Car>() {
+				Collections.sort(availableCarsSortByDate, new Comparator<Car>() {
 					@Override
 					public int compare(Car car1, Car car2) {
 						return car2.getCarRentalCost() - car1.getCarRentalCost();
@@ -88,7 +114,7 @@ public class SelectCarsByRentalDatesCommand extends AbstractCommand {
 				break;
 			case "sortByPriceASC":
 			default:
-				Collections.sort(availableCars, new Comparator<Car>() {
+				Collections.sort(availableCarsSortByDate, new Comparator<Car>() {
 					@Override
 					public int compare(Car car1, Car car2) {
 						return car1.getCarRentalCost() - car2.getCarRentalCost();
@@ -97,15 +123,50 @@ public class SelectCarsByRentalDatesCommand extends AbstractCommand {
 				break;
 			}
 		}
-
-		LOG.info("availableCars" + availableCars.size());
-		request.setAttribute("availableCars", availableCars);
 		
-		HttpSession session = request.getSession(true);
-		session.setAttribute("availableCars", availableCars);
+		availableCars_map.put("availableCarsSortByDate", availableCarsSortByDate);
+		
+		// выборка авто по бренду или по классу
+		if ( selectType != null) {
+			switch (selectType) {			
+				case "selectCarBrend":
+					availableCarsAfterSelect = new ArrayList<>();
+					for (Car c: availableCarsSortByDate) {
+						availableCarsAfterSelect.add(c);
+					}
+					for (Car car: availableCarsSortByDate) {
+						if (!selectOption.equals(car.getCarBrend())){
+							availableCarsAfterSelect.remove(car);
+						}
+					}
+					break;
+				
+				case "selectCarQualityClass":
+					availableCarsAfterSelect = new ArrayList<>();
+					for (Car c: availableCarsSortByDate) {
+						availableCarsAfterSelect.add(c);
+					}
+					for (Car car: availableCarsSortByDate) {
+						if (!selectOption.equalsIgnoreCase(car.getCarQualityClass().toString().toLowerCase())){
+							availableCarsAfterSelect.remove(car);
+						}
+					}
+				break;				
+			}
+		} else {
+			availableCarsAfterSelect = availableCarsSortByDate;
+		}
+		availableCars_map.put("availableCarsAfterSelect", availableCarsAfterSelect);
+		
+		//LOG.info("availableCars" + availableCars.size());
+		session.setAttribute("availableCars_map", availableCars_map);
+		
+		return Path.COMMAND_REDIRECT_CLIENT_SELECT_CARS_BY_RENTAL_DATES_ASYNC;
+	}
 
-		// return Path.PAGE_FORWARD_CLIENT_PERSONAL_AREA;
+	private String doGet(HttpServletRequest request, HttpServletResponse response) {
 		return Path.PAGE_FORWARD_CLIENT_AVAILABLE_CARS_ASYNC;
+		
 	}
 
 	private List<Date> fillBusyDates(Date orderStartDate, Date orderEndDate) {
@@ -126,16 +187,19 @@ public class SelectCarsByRentalDatesCommand extends AbstractCommand {
 		}
 		return busyDates;
 	}
-
-	private List<Car> fillAvailableCars(List<Date> busyDates) {
-		List<Car> availableCars = null;
+	
+	private List<Car> fillAvailableCars(List<Date> busyDates) throws DBException {
+		List<Car> availableCars = new ArrayList<>();
 		List<Car> allCarsFromDB = null;
 
 		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
 		ICarDAO carDaO = daoFactory.getCarDAO();
 		allCarsFromDB = carDaO.getAllCarsFromDB();
-		availableCars = allCarsFromDB;
-
+		
+		for (Car c: allCarsFromDB) {
+			availableCars.add(c);
+		}
+		
 		for (Car c : allCarsFromDB) {
 			List<Date> carBusyDates = c.getCarBusyDates();
 			for (Date d : carBusyDates) {

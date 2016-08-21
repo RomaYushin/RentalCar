@@ -1,24 +1,25 @@
 package ua.nure.yushin.SummaryTask4.db.dao;
 
-import java.sql.Date;
 import java.util.List;
 
 import ua.nure.yushin.SummaryTask4.entity.Car;
-import ua.nure.yushin.SummaryTask4.entity.CarQualityClass;
-import ua.nure.yushin.SummaryTask4.entity.CarStatus;
+import ua.nure.yushin.SummaryTask4.exception.DBException;
 
 public interface ICarDAO {
 
-	void insertNewCar(Car newCar);
+	void insertNewCar(Car newCar) throws DBException;
 
-	void removeParticularCar(Car carToRemove);
+	void removeParticularCarById(int removeCarId) throws DBException;
 	
-	List<Car> getAllCarsFromDB();
+	List<Car> getAllCarsFromDB()throws DBException;
 	
-	//********************************
+	Car getCarById (int id) throws DBException;
+	
+	void updateCar (Car updateCar) throws DBException;
+	
+	/*
 	public List<Car> getAllCarByModel ();
-	//********************************
-	
+ 
 	void updateCarBrend (String newCarBrend);
 	
 	void updateCarModel (String newCarModel);
@@ -32,5 +33,6 @@ public interface ICarDAO {
 	void updateCarYearOfIssue (Date newCarYearOfIssue);
 	
 	void updateCarBusyDates (List <Date> newCarBusyDates);
+	*/
 
 }

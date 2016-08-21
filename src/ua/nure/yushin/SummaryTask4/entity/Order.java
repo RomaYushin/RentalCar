@@ -1,6 +1,6 @@
 package ua.nure.yushin.SummaryTask4.entity;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class Order extends AbstractEntity {
 
@@ -11,26 +11,32 @@ public class Order extends AbstractEntity {
 
 	private Car orderCar;
 	private User orderClient;
-	private User orderManager;
 	private boolean orderPresenceOfTheDriver;
 	private Date orderStartDate;
 	private Date orderEndDate;
 	private Account orderAccount;
 	private OrderStatus orderStatus;
 	private String orderRejectionReason;
+	private Date createOrderDate;
+	private String managerNameWhoClosedOrder;
 	
-	public Order(Car orderCar, User orderClient, User orderManager, boolean orderPresenceOfTheDriver,
+	public Order() {
+		super();
+	}
+
+	public Order(Car orderCar, User orderClient, boolean orderPresenceOfTheDriver,
 			Date orderStartDate, Date orderEndDate, Account orderAccount) {
 		super();
 		this.orderCar = orderCar;
 		this.orderClient = orderClient;
-		this.orderManager = orderManager;
 		this.orderPresenceOfTheDriver = orderPresenceOfTheDriver;
 		this.orderStartDate = orderStartDate;
 		this.orderEndDate = orderEndDate;
 		this.orderAccount = orderAccount;
 		this.orderStatus = OrderStatus.UNTREATED;
 		this.orderRejectionReason = "no rejection reason";
+		this.createOrderDate = new Date(System.currentTimeMillis());
+		this.managerNameWhoClosedOrder = null;
 	}
 
 	public Car getOrderCar() {
@@ -47,14 +53,6 @@ public class Order extends AbstractEntity {
 
 	public void setOrderClient(User orderClient) {
 		this.orderClient = orderClient;
-	}
-
-	public User getOrderManager() {
-		return orderManager;
-	}
-
-	public void setOrderManager(User orderManager) {
-		this.orderManager = orderManager;
 	}
 
 	public boolean isOrderPresenceOfTheDriver() {
@@ -105,13 +103,32 @@ public class Order extends AbstractEntity {
 		this.orderRejectionReason = orderRejectionReason;
 	}
 
+	public Date getCreateOrderDate() {
+		return createOrderDate;
+	}
+
+	public void setCreateOrderDate(Date createOrderDate) {
+		this.createOrderDate = createOrderDate;
+	}
+
+	public String getManagerNameWhoClosedOrder() {
+		return managerNameWhoClosedOrder;
+	}
+
+	public void setManagerNameWhoClosedOrder(String managerNameWhoClosedOrder) {
+		this.managerNameWhoClosedOrder = managerNameWhoClosedOrder;
+	}
+
 	@Override
 	public String toString() {
-		return "Order [orderCar=" + orderCar + ", orderClient=" + orderClient + ", orderManager=" + orderManager
-				+ ", orderPresenceOfTheDriver=" + orderPresenceOfTheDriver + ", orderStartDate=" + orderStartDate
-				+ ", orderEndDate=" + orderEndDate + ", orderAccount=" + orderAccount + ", orderStatus=" + orderStatus
-				+ ", orderRejectionReason=" + orderRejectionReason + "]";
+		return "Order [orderCar=" + orderCar + ", orderClient=" + orderClient + ", orderPresenceOfTheDriver="
+				+ orderPresenceOfTheDriver + ", orderStartDate=" + orderStartDate + ", orderEndDate=" + orderEndDate
+				+ ", orderAccount=" + orderAccount + ", orderStatus=" + orderStatus + ", orderRejectionReason="
+				+ orderRejectionReason + ", createOrderDate=" + createOrderDate + ", managerNameWhoClosedOrder="
+				+ managerNameWhoClosedOrder + "]";
 	}
+
+	
 	
 	
 	

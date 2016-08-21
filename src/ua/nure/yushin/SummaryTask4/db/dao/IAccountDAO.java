@@ -7,6 +7,10 @@ public interface IAccountDAO {
 	
 	void insertNewAccount (Account newAccount);
 	
+	boolean updateAccountForRentByOrderId(int orderId, boolean value);
+	
+	void deleteAccountById (int account_id);
+	
 	void updateAccountForRent(Account newAccountForRent);
 	
 	void updateAccountForRepair(Account newAccountForRepair);

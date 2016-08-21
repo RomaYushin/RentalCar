@@ -14,9 +14,9 @@
 	</div>
 	<div class="headerChooseLanguage">
 		<form action="Controller" method="GET">
-			<input type="hidden" name="command" value="editLanguage"> <select
-				id="selectLanguage" name="language" onchange="this.form.submit()">
-				<option value=""><fmt:message key="header.jspf.chooseLanguge" /></option>
+			<input type="hidden" name="command" value="editLanguage"> 
+			<select	id="selectLanguage" name="language" onchange="this.form.submit()">
+				<option ><fmt:message key="header.jspf.chooseLanguge" /></option>
 				<option value="ru"><fmt:message	key="header.jspf.ru_language" /></option>
 				<option value="en"><fmt:message	key="header.jspf.en_language" /></option>
 			</select>
@@ -26,8 +26,18 @@
 		<c:choose>
 			<c:when test="${empty user}"></c:when>
 			<c:otherwise>
-				<c:out value="You are logger as: ${userRole} + ${userName}"></c:out>
+				<c:out value="You are logger as: ${userRole} + ${userEmail}"></c:out>
 			</c:otherwise>
 		</c:choose>
 	</div>
+	<!-- 
+	<div>
+		<c:choose>
+			<c:when test="${empty errorMessage}"></c:when>
+			<c:otherwise>
+				<c:out value="${errorMessage}"></c:out>
+			</c:otherwise>
+		</c:choose>
+	</div>
+	-->
 </div>

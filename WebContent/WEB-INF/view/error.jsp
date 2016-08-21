@@ -1,15 +1,25 @@
+<%@ include file="/WEB-INF/view/jspf/pageDirective.jspf"%>
+<%@ include file="/WEB-INF/view/jspf/taglibDirective.jspf"%>
 
-
-
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
-</head>
-<body>
-
-</body>
+	<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<title>ERROR</title>
+	<!-- <link href = "css/welcomeAuthorizationStyle.css" type = "text/css" rel = "stylesheet" /> -->
+	
+	<script src="js/jquery-3.1.0.js" type="text/javascript"></script>
+	<!-- <script src = "js/jquery-3.1.0.min.js" type = "text/javascript"></script>  
+			<script src = "js/clientPersonalAreaScript.js" type = "text/javascript"></script>	-->
+	</head>
+	<body>
+		<div class="wrapper">
+			<h1>ERROR</h1>
+			<c:choose>
+				<c:when test="${empty errorMessage}"></c:when>
+				<c:otherwise>
+					<c:out value="${errorMessage}"></c:out>
+				</c:otherwise>
+			</c:choose>
+		</div>
+	</body>
 </html>

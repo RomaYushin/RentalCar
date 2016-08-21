@@ -1,6 +1,6 @@
 package ua.nure.yushin.SummaryTask4.db.dao;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import ua.nure.yushin.SummaryTask4.entity.Car;
@@ -11,8 +11,16 @@ import ua.nure.yushin.SummaryTask4.entity.User;
 public interface IOrderDAO {
 
 	void insertNewOrder(Order newOrder);
+	
+	void insertNewOrder(Order newOrder, List<Date> busyDates);
 
 	List<Order> getAllOrdersFromDB();
+	
+	Order getOrderById (int orderId);
+	
+	int getAccountIdByOrderIdFromOrder (int orderId);
+	
+	boolean deleteOrderById(int orderId);
 	
 	void updateOrderCar(Car newOrderCar);
 	

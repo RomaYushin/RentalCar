@@ -11,12 +11,16 @@ public class Account extends AbstractEntity {
 	private int accountForRepair;
 	private boolean accountRentPaid;
 	private boolean accountRepairPaid;
+	
+	public Account() {
+		super();
+	}
 
 	public Account(int accountForRent) {
 		super();
 		this.accountForRent = accountForRent;
 		this.accountForRepair = 0;
-		this.accountRentPaid = true;
+		this.accountRentPaid = false;
 		this.accountRepairPaid = true;
 	}
 	

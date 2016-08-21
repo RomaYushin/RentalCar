@@ -23,7 +23,7 @@
 					<input id = "login" type = "text" name = "userEmail" size = 30; onblur = "validateEmail(this.value)"><br>
 					
 					<label><fmt:message key="welcomeAuthorization.jsp.password" /></label>
-					<input id = "password" type = "password" name = "userPassword" size = 30;><br>
+					<input id = "password" type = "password" name = "userPassword" size = 30; onblur = "validatePassword(this.value.length)"><br>
 					
 					<input id = "signIn" type = "submit" value = "<fmt:message key="welcomeAuthorization.jsp.signIn" />" >									
 				</form>

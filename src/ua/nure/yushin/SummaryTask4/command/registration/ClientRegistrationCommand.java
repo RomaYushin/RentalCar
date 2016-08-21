@@ -18,7 +18,8 @@ import ua.nure.yushin.SummaryTask4.db.dao.IUserDAO;
 import ua.nure.yushin.SummaryTask4.entity.Sex;
 import ua.nure.yushin.SummaryTask4.entity.User;
 import ua.nure.yushin.SummaryTask4.entity.UserRole;
-import ua.nure.yushin.SummaryTask4.util.Mail;
+import ua.nure.yushin.SummaryTask4.exception.DBException;
+import ua.nure.yushin.SummaryTask4.util.MailSender;
 import ua.nure.yushinSummaryTask4.validators.ValidatorOfInputParameters;
 
 public class ClientRegistrationCommand extends AbstractCommand {
@@ -31,7 +32,7 @@ public class ClientRegistrationCommand extends AbstractCommand {
 	private static final Logger LOG = Logger.getLogger(ClientRegistrationCommand.class);
 
 	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType) {
+	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType) throws DBException {
 
 		LOG.debug("Start executing ClientRegistrationCommand.execute");
 		String result = null;
@@ -50,7 +51,7 @@ public class ClientRegistrationCommand extends AbstractCommand {
 		return Path.PAGE_FORWARD_CLIENT_REGISTRATION;
 	}
 
-	private String doPost(HttpServletRequest request, HttpServletResponse response) {
+	private String doPost(HttpServletRequest request, HttpServletResponse response) throws DBException {
 		
 		LOG.debug("Start executing ClientRegistrationCommand.doPost");
 		String result = null;
@@ -124,7 +125,7 @@ public class ClientRegistrationCommand extends AbstractCommand {
 			
 			// выслать подтверждение на почту
 			//request.setAttribute("message", arg1);
-			Mail.sendConfirmationMessageToEmail (newUser);
+			MailSender.sendConfirmationMessage (newUser);
 			result = Path.PAGE_WELCOME_AUTHORIZATION;
 		}
 		

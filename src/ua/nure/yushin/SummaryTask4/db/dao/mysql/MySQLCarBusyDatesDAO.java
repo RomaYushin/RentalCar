@@ -19,9 +19,25 @@ public class MySQLCarBusyDatesDAO implements ICarBusyDates {
 	private static final Logger LOG = Logger.getLogger(MySQLCarBusyDatesDAO.class);
 
 	@Override
-	public void insertNewBusyDate(Car specifiedCar, Date busyDates) {
-		// TODO Auto-generated method stub
-
+	public void insertNewBusyDates (Car specifiedCar, List<Date> busyDates) {
+		
+		String query = "INSERT INTO `summary_task4_car_rental`.`car_busy_dates` "
+				+ "(car_id, busyDate) VALUES (?, ?);";
+		
+		for (Date currentBusyDate: busyDates) {		
+			
+			try (Connection connection = DAOFactory.getConnection();
+					PreparedStatement ps = connection.prepareStatement(query)) {
+				LOG.info("insertion of new User start");	
+				
+				ps.setInt(1, specifiedCar.getId());
+				ps.setDate(2, currentBusyDate);		
+				ps.executeUpdate();
+				
+			} catch (SQLException e) {
+				LOG.error("Exception in MySQLCarBusyDatesDAO.insertNewBusyDates: " + e);
+			}
+		}
 	}
 
 	@Override
@@ -39,25 +55,24 @@ public class MySQLCarBusyDatesDAO implements ICarBusyDates {
 
 		List<Car> allAvailableCars = new ArrayList<>();
 		
-		
 		for (Date d : busyDates) {
 			// поиск авто, занятого по этой дате
 			Car c = new Car();
 			// исключение его из списка авто
 			allAvailableCars.remove(c);
 		}
-		
 		return allAvailableCars;
 	}
 
 	@Override
 	public List<Date> getAllBusyDatesBySpecifiedCar(Car specifiedCar) {
 		
-		String query = "SELECT busyDate FROM `car_busy_dates` WHERE id =`" + specifiedCar.getId() + "`;";
+		String query = "SELECT busyDate FROM car_busy_dates WHERE car_id =" + specifiedCar.getId() + ";";
 		List <Date> busyDates = new ArrayList<>();
 		
 		try (Connection connection = DAOFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(query)) {
+			
 			LOG.info("getAllBusyDatesBySpecifiedCar start");	
 			ps.execute();
 			

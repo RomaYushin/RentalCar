@@ -3,13 +3,14 @@ package ua.nure.yushin.SummaryTask4.entity;
 import java.io.Serializable;
 import java.sql.Date;
 
-public class User implements Serializable {
-
+public class User extends AbstractEntity {
+	
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -3020745289226006805L;
-
+	private static final long serialVersionUID = 1884561977997556208L;
+	
+	
 	private String userPassSeries;
 	private int userPassNumber;
 	private String userPassSurname;

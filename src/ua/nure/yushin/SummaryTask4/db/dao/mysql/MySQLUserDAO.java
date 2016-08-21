@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,13 +15,15 @@ import ua.nure.yushin.SummaryTask4.db.dao.IUserDAO;
 import ua.nure.yushin.SummaryTask4.entity.Sex;
 import ua.nure.yushin.SummaryTask4.entity.User;
 import ua.nure.yushin.SummaryTask4.entity.UserRole;
+import ua.nure.yushin.SummaryTask4.exception.DBException;
+import ua.nure.yushin.SummaryTask4.exception.ExceptionMessages;
 
 public class MySQLUserDAO implements IUserDAO {
 	
 	private static final Logger LOG = Logger.getLogger(MySQLUserDAO.class);
 
 	@Override
-	public void insertNewUser(User newUser) {
+	public void insertNewUser(User newUser) throws DBException {
 		
 		String query = "INSERT INTO `summary_task4_car_rental`.`user` "
 				+ "(passSeries, passNumber, passName, passSurname, passPatronomic,"
@@ -31,6 +34,7 @@ public class MySQLUserDAO implements IUserDAO {
 		
 		try (Connection connection = DAOFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(query)) {
+			
 			LOG.info("insertion of new User start");	
 			
 			ps.setString(1, newUser.getUserPassSeries());
@@ -40,12 +44,6 @@ public class MySQLUserDAO implements IUserDAO {
 			ps.setString(5, newUser.getUserPassPatronomic());
 			ps.setDate(6, newUser.getUserPassDateOfBirth());
 			ps.setString(7, newUser.getUserSex().toString());
-			/*
-			if (newUser.isUserBlocking()) {
-				block = 1;
-			}
-			ps.setInt(8, block);
-			*/
 			ps.setString(8, String.valueOf(newUser.isUserBlocking()));
 			ps.setString(9, newUser.getUserPassword());
 			ps.setString(10, newUser.getUserEmail());
@@ -54,7 +52,8 @@ public class MySQLUserDAO implements IUserDAO {
 			ps.executeUpdate();
 			
 		} catch (SQLException e) {
-			LOG.error("Exception in MySQLUserDAO.insertNewUser: " + e);
+			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_INSERT_NEW_USER, e);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_INSERT_NEW_USER, e);
 		}
 	}
 
@@ -64,9 +63,41 @@ public class MySQLUserDAO implements IUserDAO {
 	}
 
 	@Override
-	public List<User> getAllUserssFromDB() {
-		// throw new UnsupportedOperationException();
-		return null;
+	public List<User> getAllUsersFromDB() throws DBException {
+		
+		String query = "SELECT * FROM `user`;";
+		List <User> users = new ArrayList<>();
+ 		
+		try (Connection connection = DAOFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(query)) {
+			
+			ps.executeQuery();
+			ResultSet rs = ps.getResultSet();
+			
+			while (rs.next()) {
+				User user = new User ();
+				user.setId(rs.getInt(1));
+				user.setUserPassSeries(rs.getString(2));
+				user.setUserPassNumber(rs.getInt(3));
+				user.setUserPassSurname(rs.getString(4));
+				user.setUserPassName(rs.getString(5));
+				user.setUserPassPatronomic(rs.getString(6));
+				user.setUserPassDateOfBirth(rs.getDate(7));
+				user.setUserSex(Sex.getByName(rs.getString(8)));
+				user.setUserBlocking(Boolean.valueOf(rs.getString(9)));
+				user.setUserPassword(rs.getString(10));
+				user.setUserEmail(rs.getString(11));
+				user.setUserRole(UserRole.getByName(rs.getString(12)));
+				user.setUserLanguage(rs.getString(13));
+				
+				users.add(user);
+			}
+			
+		} catch (SQLException e) {
+			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ALL_USERS, e);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ALL_USERS, e);
+		}		
+		return users;
 	}
 	
 	@Override
@@ -113,7 +144,6 @@ public class MySQLUserDAO implements IUserDAO {
 		String query = "SELECT * FROM `user` WHERE email = ? AND password = ?";
 		
 		User user = new User();
-		//boolean flag = false;
 		int accounter = 0;
 		
 		try (Connection connection = DAOFactory.getConnection();
@@ -128,6 +158,7 @@ public class MySQLUserDAO implements IUserDAO {
 			while (rs.next()) {
 				++accounter;
 				
+				user.setId(rs.getInt(1));
 				user.setUserPassSeries(rs.getString(2));
 				user.setUserPassNumber(rs.getInt(3));
 				user.setUserPassSurname(rs.getString(4));
@@ -135,9 +166,9 @@ public class MySQLUserDAO implements IUserDAO {
 				user.setUserPassPatronomic(rs.getString(6));
 				user.setUserPassDateOfBirth(rs.getDate(7));
 				user.setUserSex(Sex.getByName(rs.getString(8)));
-				user.setUserEmail(rs.getString(9));
+				user.setUserBlocking(Boolean.parseBoolean(rs.getString(9)));
 				user.setUserPassword(rs.getString(10));
-				user.setUserBlocking(Boolean.parseBoolean(rs.getString(11)));
+				user.setUserEmail(rs.getString(11));
 				user.setUserRole(UserRole.getByName(rs.getString(12)));
 				user.setUserLanguage(rs.getString(13));
 				
@@ -195,8 +226,21 @@ public class MySQLUserDAO implements IUserDAO {
 	}
 
 	@Override
-	public void updateUserBlocking(boolean newUserBlocking) {
-		throw new UnsupportedOperationException();
+	public void updateUserBlockingById (int userId, boolean newUserBlocking) throws DBException {
+			
+		String query = "UPDATE `user` SET `userBlocking`= ? WHERE `id`= ?;";
+		
+		try (Connection connection = DAOFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(query)){
+			
+			ps.setString(1, String.valueOf(newUserBlocking));
+			ps.setInt(2, userId);
+			ps.executeUpdate();		
+			
+		} catch (SQLException e) {
+			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_USER_BLOCKING, e);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_USER_BLOCKING, e);
+		}
 	}
 
 	@Override

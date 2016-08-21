@@ -13,6 +13,8 @@ import org.apache.log4j.Logger;
 
 import ua.nure.yushin.SummaryTask4.command.CommandContainer;
 import ua.nure.yushin.SummaryTask4.command.ICommand;
+import ua.nure.yushin.SummaryTask4.exception.AppException;
+import ua.nure.yushin.SummaryTask4.exception.AsyncResponseException;
 
 /**
  * Servlet implementation class Controller
@@ -43,29 +45,64 @@ public class Controller extends HttpServlet {
 		processRequest(request, response, ActionType.POST);
 	}
 
-	private void processRequest(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType) throws IOException, ServletException {
+	private void processRequest(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType) 
+			throws IOException, ServletException {
 
 		LOG.info("processRequest start");
 		
 		String commandName = request.getParameter("command");
-		LOG.info("Request parameter: 'command' = " + commandName);
+		LOG.info("command (command from request) = " + commandName);
 		
-		ICommand command = CommandContainer.getCommand(commandName);		
-		String path = command.execute(request, response, requestMethodType);
+		ICommand command = CommandContainer.getCommand(commandName);	
+		LOG.info("command (command from CommandContainer) = " + command);
 		
-		if (path == null) {
-			LOG.info ("Redirect to address = " + path);
-			LOG.info ("Controller proccessing finished");
-			response.sendRedirect(Path.PAGE_WELCOME_AUTHORIZATION);
-		} else if (requestMethodType.equals(ActionType.GET)) {
-			LOG.info ("Forward to address = " + path);
-			LOG.info ("Controller proccessing finished");
-			RequestDispatcher disp = request.getRequestDispatcher(path);
+		String path = Path.PAGE_FORWARD_ERROR;
+		RequestDispatcher disp = null;
+		try {
+			path = command.execute(request, response, requestMethodType);
+			
+			if (path == null) {
+				LOG.info ("Redirect to address = " + path);
+				LOG.info ("Controller proccessing finished");
+				disp = request.getRequestDispatcher(Path.PAGE_FORWARD_ERROR);
+				disp.forward(request, response);
+			} else if (requestMethodType.equals(ActionType.GET)) {
+				LOG.info ("Forward to address = " + path);
+				LOG.info ("Controller proccessing finished");
+				disp = request.getRequestDispatcher(path);
+				disp.forward(request, response);
+			} else if (requestMethodType.equals(ActionType.POST)) {
+				LOG.info ("Redirect to address = " + path);
+				LOG.info ("Controller proccessing finished");
+				response.sendRedirect(path);
+			}
+			
+		} catch (AsyncResponseException asyncResponseException) {
+			request.setAttribute("errorMessage", asyncResponseException.getMessage());
+			LOG.error(asyncResponseException.getMessage());			
+			request.getRequestDispatcher(Path.PAGE_FORWARD_ASYNC_ERROR).forward(request, response);	
+			/*
+			if (requestMethodType.equals(ActionType.GET)) { 
+				request.setAttribute("errorMessage", asyncResponseException.getMessage());
+				LOG.error(asyncResponseException.getMessage());			
+				request.getRequestDispatcher(Path.PAGE_FORWARD_ASYNC_ERROR).forward(request, response);	
+				
+			} else if (requestMethodType.equals(ActionType.POST)) {
+				LOG.info ("Redirect to address = " + path);
+				LOG.info ("Controller proccessing finished");
+				//response.sendRedirect(null);
+				disp = request.getRequestDispatcher(Path.PAGE_FORWARD_ERROR);
+				disp.forward(request, response);
+			}
+			*/
+			//response.sendRedirect(path);
+		} catch (AppException appException) {
+			request.setAttribute("errorMessage", appException.getMessage());
+			LOG.error(appException.getMessage());
+			disp = request.getRequestDispatcher(Path.PAGE_FORWARD_ERROR);
 			disp.forward(request, response);
-		} else if (requestMethodType.equals(ActionType.POST)) {
-			LOG.info ("Redirect to address = " + path);
-			LOG.info ("Controller proccessing finished");
-			response.sendRedirect(path);
 		}		
+		
+				
 	}
 }

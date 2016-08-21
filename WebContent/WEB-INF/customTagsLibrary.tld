@@ -15,10 +15,36 @@
 		<body-content>empty</body-content>
 		<attribute>
 			<description></description>
-			<name>availableCars</name>
+			<name>availableCars_map</name>
 			<required>true</required>
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
 	
+	<tag>
+		<description>Tag that shows all cars in DB for admin before deleting</description>
+		<name>printAllCarsFromDB</name>
+		<tag-class>ua.nure.yushin.SummaryTask4.customTag.PrintAllCarsFromDB</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description></description>
+			<name>allCarsFromDB_map</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+	
+	<tag>
+		<description>Tag that shows all users from DB for admin blocking/unblocking</description>
+		<name>printAllUsers</name>
+		<tag-class>ua.nure.yushin.SummaryTask4.customTag.PrintAllUsers</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description></description>
+			<name>allUsers</name>
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
+
 </taglib>
