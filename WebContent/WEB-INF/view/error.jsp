@@ -13,13 +13,8 @@
 	</head>
 	<body>
 		<div class="wrapper">
-			<h1>ERROR</h1>
-			<c:choose>
-				<c:when test="${empty errorMessage}"></c:when>
-				<c:otherwise>
-					<c:out value="${errorMessage}"></c:out>
-				</c:otherwise>
-			</c:choose>
+			<h1> ERROR </h1>
+			<c:out value=" ${errorMessage} "></c:out>
 		</div>
 	</body>
 </html>

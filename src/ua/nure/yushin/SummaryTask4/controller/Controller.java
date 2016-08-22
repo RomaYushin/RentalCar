@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -58,6 +59,7 @@ public class Controller extends HttpServlet {
 		
 		String path = Path.PAGE_FORWARD_ERROR;
 		RequestDispatcher disp = null;
+		HttpSession session = request.getSession(false);
 		try {
 			path = command.execute(request, response, requestMethodType);
 			
@@ -78,31 +80,14 @@ public class Controller extends HttpServlet {
 			}
 			
 		} catch (AsyncResponseException asyncResponseException) {
-			request.setAttribute("errorMessage", asyncResponseException.getMessage());
+			session.setAttribute("errorMessage", asyncResponseException.getMessage());
 			LOG.error(asyncResponseException.getMessage());			
-			request.getRequestDispatcher(Path.PAGE_FORWARD_ASYNC_ERROR).forward(request, response);	
-			/*
-			if (requestMethodType.equals(ActionType.GET)) { 
-				request.setAttribute("errorMessage", asyncResponseException.getMessage());
-				LOG.error(asyncResponseException.getMessage());			
-				request.getRequestDispatcher(Path.PAGE_FORWARD_ASYNC_ERROR).forward(request, response);	
-				
-			} else if (requestMethodType.equals(ActionType.POST)) {
-				LOG.info ("Redirect to address = " + path);
-				LOG.info ("Controller proccessing finished");
-				//response.sendRedirect(null);
-				disp = request.getRequestDispatcher(Path.PAGE_FORWARD_ERROR);
-				disp.forward(request, response);
-			}
-			*/
-			//response.sendRedirect(path);
+			request.getRequestDispatcher(Path.COMMAND_NO_COMMAND).forward(request, response);	
+	
 		} catch (AppException appException) {
-			request.setAttribute("errorMessage", appException.getMessage());
+			session.setAttribute("errorMessage", appException.getMessage());
 			LOG.error(appException.getMessage());
-			disp = request.getRequestDispatcher(Path.PAGE_FORWARD_ERROR);
-			disp.forward(request, response);
-		}		
-		
-				
+			request.getRequestDispatcher(Path.COMMAND_NO_COMMAND).forward(request, response);
+		}						
 	}
 }

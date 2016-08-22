@@ -20,7 +20,7 @@ import ua.nure.yushin.SummaryTask4.entity.User;
 import ua.nure.yushin.SummaryTask4.entity.UserRole;
 import ua.nure.yushin.SummaryTask4.exception.DBException;
 import ua.nure.yushin.SummaryTask4.util.MailSender;
-import ua.nure.yushinSummaryTask4.validators.ValidatorOfInputParameters;
+import ua.nure.yushin.SummaryTask4.validators.ValidatorOfInputParameters;
 
 public class ClientRegistrationCommand extends AbstractCommand {
 

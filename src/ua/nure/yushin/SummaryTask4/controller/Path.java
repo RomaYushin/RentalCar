@@ -7,7 +7,7 @@ public class Path {
 	
 	//error
 	public static final String PAGE_FORWARD_ERROR = "/WEB-INF/view/error.jsp";	
-	public static final String PAGE_FORWARD_ASYNC_ERROR = "/WEB-INF/view/asyncError.jsp";	
+	public static final String COMMAND_NO_COMMAND = "Controller?command=noCommand";	
 	
 	//forward client
 	public static final String PAGE_FORWARD_CLIENT_REGISTRATION = "/WEB-INF/view/jsp/client/clientRegistration.jsp";	

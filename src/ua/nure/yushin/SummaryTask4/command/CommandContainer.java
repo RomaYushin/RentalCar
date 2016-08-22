@@ -74,7 +74,7 @@ public class CommandContainer {
 		commands.put("editCar", new EditCarCommand());
 		commands.put("updateUserBlocking", new UpdateUserBlockingCommand());
 		commands.put("registerNewManager", new RegisterNewManagerCommand());
-		//commands.put("showCarParamForm", new ShowCarParamFormCommand());
+		commands.put("noCommand", new NoCommand());
 
 		LOG.debug("Command container was successfully initialized");
 		LOG.trace("Total number of commands equals to " + commands.size());

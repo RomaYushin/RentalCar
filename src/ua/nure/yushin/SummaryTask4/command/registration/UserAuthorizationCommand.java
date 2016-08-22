@@ -15,7 +15,7 @@ import ua.nure.yushin.SummaryTask4.db.dao.IUserDAO;
 import ua.nure.yushin.SummaryTask4.entity.Sex;
 import ua.nure.yushin.SummaryTask4.entity.User;
 import ua.nure.yushin.SummaryTask4.entity.UserRole;
-import ua.nure.yushinSummaryTask4.validators.ValidatorOfInputParameters;
+import ua.nure.yushin.SummaryTask4.validators.ValidatorOfInputParameters;
 
 public class UserAuthorizationCommand extends AbstractCommand {
 
