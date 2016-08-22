@@ -7,6 +7,7 @@ import ua.nure.yushin.SummaryTask4.entity.Car;
 import ua.nure.yushin.SummaryTask4.entity.Order;
 import ua.nure.yushin.SummaryTask4.entity.OrderStatus;
 import ua.nure.yushin.SummaryTask4.entity.User;
+import ua.nure.yushin.SummaryTask4.exception.DBException;
 
 public interface IOrderDAO {
 
@@ -14,9 +15,11 @@ public interface IOrderDAO {
 	
 	void insertNewOrder(Order newOrder, List<Date> busyDates);
 
-	List<Order> getAllOrdersFromDB();
+	List<Order> getAllOrdersFromDB() throws DBException;
 	
-	Order getOrderById (int orderId);
+	Order getOrderById (int orderId) throws DBException;
+	
+	List<Order> getOrdersByOrderStatus (OrderStatus orderStatus)throws DBException;
 	
 	int getAccountIdByOrderIdFromOrder (int orderId);
 	

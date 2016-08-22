@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -14,11 +15,15 @@ import ua.nure.yushin.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.yushin.SummaryTask4.db.dao.DatabaseTypes;
 import ua.nure.yushin.SummaryTask4.db.dao.IAccountDAO;
 import ua.nure.yushin.SummaryTask4.db.dao.ICarBusyDates;
+import ua.nure.yushin.SummaryTask4.db.dao.ICarDAO;
 import ua.nure.yushin.SummaryTask4.db.dao.IOrderDAO;
+import ua.nure.yushin.SummaryTask4.db.dao.IUserDAO;
 import ua.nure.yushin.SummaryTask4.entity.Car;
 import ua.nure.yushin.SummaryTask4.entity.Order;
 import ua.nure.yushin.SummaryTask4.entity.OrderStatus;
 import ua.nure.yushin.SummaryTask4.entity.User;
+import ua.nure.yushin.SummaryTask4.exception.DBException;
+import ua.nure.yushin.SummaryTask4.exception.ExceptionMessages;
 
 public class MySQLOrderDAO implements IOrderDAO {
 
@@ -140,35 +145,96 @@ public class MySQLOrderDAO implements IOrderDAO {
 	}
 
 	@Override
-	public List<Order> getAllOrdersFromDB() {
-		// throw new UnsupportedOperationException();
-		return null;
-	}
-	
-	@Override
-	public Order getOrderById(int orderId) {
+	public List<Order> getAllOrdersFromDB() throws DBException {
+
+		LOG.info("getting all Orders start");
+		String query = "SELECT * FROM `order`;";
+		List <Order> orders = new ArrayList<>();
+		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
+		ICarDAO iCarDAO = daoFactory.getCarDAO();
+		IUserDAO iUserDAO = daoFactory.getUserDAO();
+		IAccountDAO iAccountDAO = daoFactory.getAccountDAO();
 		/*
-		String query = "SELECT * FROM `order` WHERE id = ?;";
+		Connection connection = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		*/
 		
-		try ( Connection connection = DAOFactory.getConnection();
-				PreparedStatement ps = connection.prepareStatement(query)) {
+		try (Connection connection = DAOFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(query)){
 			
-			ps.setInt(1, orderId);
-			ps.executeUpdate();
-			
+			ps.execute();
 			ResultSet rs = ps.getResultSet();
+			
 			while (rs.next()) {
-				Order newOrder = new Order();
+				Order order = new Order();
 				
-				newOrder.setId(rs.getInt(1));
-				newOrder.set
+				order.setId(rs.getInt(1));
+				order.setOrderCar(iCarDAO.getCarById(rs.getInt(2)));
+				order.setOrderClient(iUserDAO.getUserById(rs.getInt(3)));
+				order.setOrderPresenceOfTheDriver(Boolean.valueOf(rs.getString(4)));
+				order.setOrderStartDate(rs.getDate(5));
+				order.setOrderEndDate(rs.getDate(6));
+				order.setOrderAccount(iAccountDAO.getAccountById(rs.getInt(7)));
+				order.setOrderStatus(OrderStatus.getByName(rs.getString(8)));
+				order.setOrderRejectionReason(rs.getString(9));
+				order.setCreateOrderDate(rs.getDate(10));
+				order.setManagerNameWhoClosedOrder(rs.getString(11));
+				
+				orders.add(order);
 			}
 			
 		} catch (SQLException e) {
+			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ALL_ORDERS, e);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ALL_ORDERS, e);
+		} 
+		return orders;
+	}
+	
+	@Override
+	public Order getOrderById(int orderId) throws DBException {
+		
+		LOG.info("getting Order by ID start");
+		
+		String query = "SELECT * FROM `order` WHERE id = ?;";
+		
+		int counter = 0;
+		Order order = new Order();
+		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
+		ICarDAO iCarDAO = daoFactory.getCarDAO();
+		IUserDAO iUserDAO = daoFactory.getUserDAO();
+		IAccountDAO iAccountDAO = daoFactory.getAccountDAO();
+		
+		try (Connection connection = DAOFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(query)) {
 			
-		}
-		return null;*/
-		throw new UnsupportedOperationException();
+			ps.setInt(1, orderId);
+			ps.execute();
+			
+			ResultSet rs = ps.getResultSet();
+			while (rs.next()) {					
+				if (++counter > 1) {
+					throw new SQLException("must be one order");
+				}
+				order.setId(rs.getInt(1));
+				order.setOrderCar(iCarDAO.getCarById(rs.getInt(2)));
+				order.setOrderClient(iUserDAO.getUserById(rs.getInt(3)));
+				order.setOrderPresenceOfTheDriver(Boolean.valueOf(rs.getString(4)));
+				order.setOrderStartDate(rs.getDate(5));
+				order.setOrderEndDate(rs.getDate(6));
+				order.setOrderAccount(iAccountDAO.getAccountById(rs.getInt(7)));
+				order.setOrderStatus(OrderStatus.getByName(rs.getString(8)));
+				order.setOrderRejectionReason(rs.getString(9));
+				order.setCreateOrderDate(rs.getDate(10));
+				order.setManagerNameWhoClosedOrder(rs.getString(11));							
+			}
+			
+		} catch (SQLException e) {
+			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ORDER_BY_ID, e);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ORDER_BY_ID, e);
+		} 
+		return order;
+
 	}
 	
 	@Override
@@ -181,7 +247,7 @@ public class MySQLOrderDAO implements IOrderDAO {
 				PreparedStatement ps = connection.prepareStatement(query)) {
 			
 			ps.setInt(1, orderId);
-			ps.executeUpdate();
+			ps.execute();
 			
 			ResultSet rs = ps.getResultSet();
 			while (rs.next()) {
@@ -192,6 +258,49 @@ public class MySQLOrderDAO implements IOrderDAO {
 			LOG.error("ERROR in getAccountIdByOrderId" + e);
 		}		
 		return account_id;
+	}
+	
+	@Override
+	public List<Order> getOrdersByOrderStatus (OrderStatus orderStatus) throws DBException {
+		
+		LOG.info("getting Order by OrderStatus start");
+		
+		String query = "SELECT * FROM `order` WHERE orderStatus = ?;";
+		ResultSet rs = null;
+		List <Order> orders = new ArrayList<>();
+		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
+		ICarDAO iCarDAO = daoFactory.getCarDAO();
+		IUserDAO iUserDAO = daoFactory.getUserDAO();
+		IAccountDAO iAccountDAO = daoFactory.getAccountDAO();
+		
+		try ( Connection connection = DAOFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(query)) {
+			
+			ps.setString(1, orderStatus.toString());
+			ps.execute();
+			rs = ps.getResultSet();
+			
+			while (rs.next()) {
+				Order order = new Order ();
+				order.setId(rs.getInt(1));
+				order.setOrderCar(iCarDAO.getCarById(rs.getInt(2)));
+				order.setOrderClient(iUserDAO.getUserById(rs.getInt(3)));
+				order.setOrderPresenceOfTheDriver(Boolean.valueOf(rs.getString(4)));
+				order.setOrderStartDate(rs.getDate(5));
+				order.setOrderEndDate(rs.getDate(6));
+				order.setOrderAccount(iAccountDAO.getAccountById(rs.getInt(7)));
+				order.setOrderStatus(OrderStatus.getByName(rs.getString(8)));
+				order.setOrderRejectionReason(rs.getString(9));
+				order.setCreateOrderDate(rs.getDate(10));
+				order.setManagerNameWhoClosedOrder(rs.getString(11));
+				
+				orders.add(order);
+			}			
+		} catch (SQLException e) {
+			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ORDER_BY_ORDERSTATUS, e);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ORDER_BY_ORDERSTATUS, e);
+		} 
+		return orders;
 	}
 	
 	@Override

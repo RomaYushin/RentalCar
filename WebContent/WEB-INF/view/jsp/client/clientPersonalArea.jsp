@@ -44,6 +44,7 @@
 									gc.setTime(newOrder.getOrderCar().getCarYearOfIssue());
 								%>						
 								<%= gc.get(Calendar.YEAR)%>
+							</p>
 							<p> 2. The presence of the driver:
 								<c:if test="${newOrder.isOrderPresenceOfTheDriver()}">
 									yes

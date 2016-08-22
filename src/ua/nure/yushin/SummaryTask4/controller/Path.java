@@ -9,6 +9,11 @@ public class Path {
 	public static final String PAGE_FORWARD_ERROR = "/WEB-INF/view/error.jsp";	
 	public static final String COMMAND_NO_COMMAND = "Controller?command=noCommand";	
 	
+	/*
+	 * **********************************************************************************************
+	 * ***************************************** FORWARD ********************************************
+	 * **********************************************************************************************
+	 */
 	//forward client
 	public static final String PAGE_FORWARD_CLIENT_REGISTRATION = "/WEB-INF/view/jsp/client/clientRegistration.jsp";	
 	public static final String PAGE_FORWARD_CLIENT_PERSONAL_AREA = "/WEB-INF/view/jsp/client/clientPersonalArea.jsp";
@@ -20,7 +25,6 @@ public class Path {
 	// forward admin
 	public static final String PAGE_FORWARD_ADMIN_PERSONAL_AREA = "/WEB-INF/view/jsp/admin/adminPersonalArea.jsp";
 	public static final String PAGE_FORWARD_ADMIN_SHOW_ADD_CAR_FORM = "/WEB-INF/view/jsp/admin/addNewCarForm.jsp";
-	//public static final String PAGE_FORWARD_ADMIN_SHOW_REMOVE_CAR_FORM = "/WEB-INF/view/jsp/admin/removeCarForm.jsp";
 	public static final String PAGE_FORWARD_ADMIN_SHOW_ALL_CARS_FORM = "/WEB-INF/view/jsp/admin/showAllCarsForm.jsp";
 	public static final String PAGE_FORWARD_ADMIN_SHOW_EDIT_CAR_FORM = "/WEB-INF/view/jsp/admin/editCarForm.jsp";
 	public static final String PAGE_FORWARD_ADMIN_SHOW_BLOCKING_USER_FORM = "/WEB-INF/view/jsp/admin/blockingUserForm.jsp";
@@ -33,7 +37,14 @@ public class Path {
 	
 	//forward manager
 	public static final String PAGE_FORWARD_MANAGER_PERSONAL_AREA = "/WEB-INF/view/jsp/manager/managerPersonalArea.jsp";
+	public static final String PAGE_FORWARD_MANAGER_SHOW_ORDERS_FORM = "/WEB-INF/view/jsp/manager/showOrdersForm.jsp";
+	public static final String PAGE_FORWARD_MANAGER_SHOW_SPECIFIED_ORDER = "/WEB-INF/view/jsp/manager/showSpecifiedOrder.jsp";
 	
+	/*
+	 * ***********************************************************************************************
+	 * ***************************************** REDIRECT ********************************************
+	 * ***********************************************************************************************
+	 */
 	// redirect client
 	public static final String COMMAND_REDIRECT_CLIENT_REGISTRATION = "Controller?command=clientRegistration";	
 	public static final String COMMAND_REDIRECT_CLIENT_PERSONAL_AREA = "Controller?command=clientPersonalArea";
@@ -47,7 +58,6 @@ public class Path {
 	// redirect admin
 	public static final String COMMAND_REDIRECT_ADMIN_PERSONAL_AREA = "Controller?command=adminPersonalArea";
 	public static final String COMMAND_REDIRECT_ADMIN_SHOW_ADD_CAR_FORM = "Controller?command=showAddNewCarForm";
-	//public static final String COMMAND_REDIRECT_ADMIN_SHOW_REMOVE_CAR_FORM = "Controller?command=showRemoveCarForm";
 	public static final String COMMAND_REDIRECT_ADMIN_SHOW_ALL_CARS_FORM = "Controller?command=showAllCarsForm";
 	public static final String COMMAND_REDIRECT_ADMIN_SHOW_EDIT_CAR_FORM = "Controller?command=showEditCarForm";
 	public static final String COMMAND_REDIRECT_ADMIN_SHOW_BLOCKING_USER_FORM = "Controller?command=showBlockUserForm";
@@ -61,5 +71,8 @@ public class Path {
 	
 	// redirect manager
 	public static final String COMMAND_REDIRECT_MANAGER_PERSONAL_AREA = "Controller?command=managerPersonalArea";
+	public static final String COMMAND_REDIRECT_MANAGER_SHOW_ORDERS_COMMAND = "Controller?command=showOrders";
+	public static final String COMMAND_REDIRECT_MANAGER_SHOW_SPECIFIED_ORDER_COMMAND = "Controller?command=showSpecifiedOrder";
+	
 	
 }

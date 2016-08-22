@@ -2,6 +2,7 @@ package ua.nure.yushin.SummaryTask4.db.dao;
 
 
 import ua.nure.yushin.SummaryTask4.entity.Account;
+import ua.nure.yushin.SummaryTask4.exception.DBException;
 
 public interface IAccountDAO {
 	
@@ -10,6 +11,8 @@ public interface IAccountDAO {
 	boolean updateAccountForRentByOrderId(int orderId, boolean value);
 	
 	void deleteAccountById (int account_id);
+	
+	Account getAccountById (int account_id) throws DBException;
 	
 	void updateAccountForRent(Account newAccountForRent);
 	

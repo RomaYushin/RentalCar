@@ -173,21 +173,19 @@ public class MySQLCarDAO implements ICarDAO {
 		LOG.info(" getCarById start");
 		String query = "SELECT * FROM `summary_task4_car_rental`.`car` WHERE id = ?";
 		
-		Connection connection = null;
-		PreparedStatement ps = null;
+		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
+		ICarBusyDates iCarBusyDates = daoFactory.getCarBusyDatesDAO();
 		ResultSet rs = null;
 		Car car = null;
 
-		try {			
-			connection = DAOFactory.getConnection();
-			connection.setAutoCommit(false);			
-			ps = connection.prepareStatement(query);			
+		try (Connection connection = DAOFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(query)){			
+			
 			ps.setInt(1, id);
 			ps.execute();			
 			rs = ps.getResultSet();
 			
 			while (rs.next()) {
-				LOG.info("NEXT in getCarById, must be one");
 				car = new Car();
 				
 				car.setId(rs.getInt(1));
@@ -196,25 +194,11 @@ public class MySQLCarDAO implements ICarDAO {
 				car.setCarQualityClass(CarQualityClass.getByName(rs.getString(4)));
 				car.setCarRentalCost(rs.getInt(5));
 				car.setCarStatus(CarStatus.getByName(rs.getString(6)));
-				car.setCarYearOfIssue(rs.getDate(7));
-				
-				List<Date> carBusyDatesList = new ArrayList<>();
-				DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
-				ICarBusyDates iCarBusyDates = daoFactory.getCarBusyDatesDAO();
-				carBusyDatesList = iCarBusyDates.getAllBusyDatesBySpecifiedCar(car);
-								
-				car.setCarBusyDates(carBusyDatesList);
+				car.setCarYearOfIssue(rs.getDate(7));							
+				car.setCarBusyDates(iCarBusyDates.getAllBusyDatesBySpecifiedCar(car));
 			}
 			
-			LOG.info("car: " + car.toString());
-			
-			connection.commit();					
 		} catch (SQLException e) {
-			try {
-				connection.rollback();
-			} catch (Exception ee) {
-				LOG.error("Exception in MySQLCarDAO.getCarById rollback: " + ee);
-			}
 			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_GET_CAR_BY_ID, e);
 			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_GET_CAR_BY_ID, e);
 		}

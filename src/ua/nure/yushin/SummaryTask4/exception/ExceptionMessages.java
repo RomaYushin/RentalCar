@@ -13,6 +13,12 @@ public class ExceptionMessages {
 	public static final String EXCEPTION_CAN_NOT_GET_ALL_USERS = "Can not get all users from database!";
 	public static final String EXCEPTION_CAN_NOT_UPDATE_USER_BLOCKING = "Can not update user blocking!";
 	public static final String EXCEPTION_CAN_NOT_INSERT_NEW_USER = "Can not insert new user";
+	public static final String EXCEPTION_CAN_NOT_GET_ALL_ORDERS = "Can not get all orders";
+	public static final String EXCEPTION_CAN_NOT_GET_USER_BY_ID = "Can not get user by id";
+	public static final String EXCEPTION_CAN_NOT_GET_ACCOUNT_BY_ID = "Can not get account by id";
+	public static final String EXCEPTION_CAN_NOT_GET_ORDER_BY_ORDERSTATUS = "Can not get order by orderStatus";
+	public static final String EXCEPTION_CAN_NOT_GET_ALL_BUSY_DATES = "Can not get all busy dates!";
+	public static final String EXCEPTION_CAN_NOT_GET_ORDER_BY_ID = "Can not get order by Id!";
 	
 	// exceptions validation add new car
 	public static final String EXCEPTION_VALIDATION_INVALID_CAR_BREND = "Invalid car brend. Name contains wrong character (for example: @#)!";

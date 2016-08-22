@@ -189,6 +189,49 @@ public class MySQLUserDAO implements IUserDAO {
 		}		
 		return user;
 	}	
+	
+	@Override
+	public User getUserById (int userId) throws DBException {
+		
+		LOG.info("getUserById start");
+		
+		String query = "SELECT * FROM `user` WHERE id = ?;";
+		ResultSet rs = null;
+		User user = new User();
+		int counter = 0;
+		
+		try (Connection connection = DAOFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(query)) {
+			
+			ps.setInt(1, userId);
+			ps.execute();
+			rs = ps.getResultSet();
+			
+			while (rs.next()) {
+				if (++counter > 1) {
+					throw new SQLException("Must be one user");
+				}
+				
+				user.setId(rs.getInt(1));
+				user.setUserPassSeries(rs.getString(2));
+				user.setUserPassNumber(rs.getInt(3));
+				user.setUserPassSurname(rs.getString(4));
+				user.setUserPassName(rs.getString(5));
+				user.setUserPassPatronomic(rs.getString(6));
+				user.setUserPassDateOfBirth(rs.getDate(7));
+				user.setUserSex(Sex.getByName(rs.getString(8)));
+				user.setUserBlocking(Boolean.parseBoolean(rs.getString(9)));
+				user.setUserPassword(rs.getString(10));
+				user.setUserEmail(rs.getString(11));
+				user.setUserRole(UserRole.getByName(rs.getString(12)));
+				user.setUserLanguage(rs.getString(13));
+			}
+		} catch (SQLException e) {
+			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_GET_USER_BY_ID, e);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_GET_USER_BY_ID, e);
+		}
+		return user;
+	}
 
 	@Override
 	public void updateUserPassSeries(String newUserPassSeries) {
@@ -262,7 +305,4 @@ public class MySQLUserDAO implements IUserDAO {
 	public void updateUserLanguage(String newUserLanguage) {
 		throw new UnsupportedOperationException();
 	}
-
-	
-
 }

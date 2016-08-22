@@ -20,6 +20,8 @@ public interface IUserDAO {
 	
 	User findUserByEmailAndPassword (String email, String password);
 	
+	User getUserById (int userId) throws DBException;
+	
 	void updateUserPassSeries (String newUserPassSeries);
 	
 	void updateUserPassNumber (int newUserPassNumber);

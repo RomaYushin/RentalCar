@@ -55,6 +55,7 @@ public class ShowAllCarsFormCommand extends AbstractCommand {
 		try {
 			allCarsFromDB = iCarDAO.getAllCarsFromDB();
 		} catch (DBException dbExcep) {
+			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ALL_CARS);
 			throw new AsyncResponseException(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ALL_CARS, dbExcep);		
 		}
 		allCarsFromDB_map.put("allCarsFromDB", allCarsFromDB);

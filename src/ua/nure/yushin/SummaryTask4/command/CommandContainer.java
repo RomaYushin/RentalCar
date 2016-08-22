@@ -20,6 +20,8 @@ import ua.nure.yushin.SummaryTask4.command.admin.RegisterNewManagerCommand;
 import ua.nure.yushin.SummaryTask4.command.admin.RemoveCarCommand;
 import ua.nure.yushin.SummaryTask4.command.async.CheckOrderStatusAsyncCommand;
 import ua.nure.yushin.SummaryTask4.command.async.OrderCarAsyncCommand;
+import ua.nure.yushin.SummaryTask4.command.manager.ShowOrdersCommand;
+import ua.nure.yushin.SummaryTask4.command.manager.ShowSpecifiedOrderCommand;
 import ua.nure.yushin.SummaryTask4.command.profile.EditLanguage;
 import ua.nure.yushin.SummaryTask4.command.registration.AdminPersonalAreaCommand;
 import ua.nure.yushin.SummaryTask4.command.registration.AvailableCarsAsyncCommand;
@@ -61,19 +63,21 @@ public class CommandContainer {
 		commands.put("payOrder", new PayOrderCommand());
 		commands.put("deleteOrder", new DeleteOrderCommand());
 
-		//
+		// admin command
 		commands.put("showAddNewCarForm", new ShowAddNewCarFormCommand());
-		//commands.put("showRemoveCarForm", new ShowAllCarsFormCommand());
 		commands.put("showEditCarForm", new ShowEditCarFormCommand());
 		commands.put("showAllCarsForm", new ShowAllCarsFormCommand());
 		commands.put("showBlockUserForm", new ShowBlockUserFormCommand());
-		commands.put("showRegisterManagerForm", new ShowRegisterManagerFormCommand());
-		
+		commands.put("showRegisterManagerForm", new ShowRegisterManagerFormCommand());		
 		commands.put("registerNewCar", new RegisterNewCarCommand());
 		commands.put("removeCar", new RemoveCarCommand());
 		commands.put("editCar", new EditCarCommand());
 		commands.put("updateUserBlocking", new UpdateUserBlockingCommand());
 		commands.put("registerNewManager", new RegisterNewManagerCommand());
+		
+		// manager command
+		commands.put("showOrders", new ShowOrdersCommand());	
+		commands.put("showSpecifiedOrder", new ShowSpecifiedOrderCommand());
 		commands.put("noCommand", new NoCommand());
 
 		LOG.debug("Command container was successfully initialized");

@@ -46,5 +46,17 @@
 			<rtexprvalue>true</rtexprvalue>
 		</attribute>
 	</tag>
-
+	
+	<tag>
+		<description>Tag that shows orders</description>
+		<name>printOrders</name>
+		<tag-class>ua.nure.yushin.SummaryTask4.customTag.PrintOrders</tag-class>
+		<body-content>empty</body-content>
+		<attribute>
+			<description></description>
+			<name>orders_map</name>	
+			<required>true</required>
+			<rtexprvalue>true</rtexprvalue>
+		</attribute>
+	</tag>
 </taglib>

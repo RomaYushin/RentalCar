@@ -13,6 +13,8 @@ import org.apache.log4j.Logger;
 import ua.nure.yushin.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.yushin.SummaryTask4.db.dao.ICarBusyDates;
 import ua.nure.yushin.SummaryTask4.entity.Car;
+import ua.nure.yushin.SummaryTask4.exception.DBException;
+import ua.nure.yushin.SummaryTask4.exception.ExceptionMessages;
 
 public class MySQLCarBusyDatesDAO implements ICarBusyDates {
 
@@ -65,7 +67,7 @@ public class MySQLCarBusyDatesDAO implements ICarBusyDates {
 	}
 
 	@Override
-	public List<Date> getAllBusyDatesBySpecifiedCar(Car specifiedCar) {
+	public List<Date> getAllBusyDatesBySpecifiedCar(Car specifiedCar) throws DBException {
 		
 		String query = "SELECT busyDate FROM car_busy_dates WHERE car_id =" + specifiedCar.getId() + ";";
 		List <Date> busyDates = new ArrayList<>();
@@ -82,7 +84,8 @@ public class MySQLCarBusyDatesDAO implements ICarBusyDates {
 			}	
 			
 		} catch (SQLException e) {
-			LOG.error("Exception in MySQLCarDAO.getAllCarsFromDB: " + e);
+			LOG.error("Exception in MySQLCarDAO.getAllCarsFromDB: ", e);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ALL_BUSY_DATES, e);
 		}
 		
 		return busyDates;
