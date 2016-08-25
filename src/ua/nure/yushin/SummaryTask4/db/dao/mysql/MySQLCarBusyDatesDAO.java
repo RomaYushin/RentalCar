@@ -21,10 +21,9 @@ public class MySQLCarBusyDatesDAO implements ICarBusyDates {
 	private static final Logger LOG = Logger.getLogger(MySQLCarBusyDatesDAO.class);
 
 	@Override
-	public void insertNewBusyDates (Car specifiedCar, List<Date> busyDates) {
+	public void insertNewBusyDates (Car specifiedCar, List<Date> busyDates) throws DBException {
 		
-		String query = "INSERT INTO `summary_task4_car_rental`.`car_busy_dates` "
-				+ "(car_id, busyDate) VALUES (?, ?);";
+		String query = "INSERT INTO `car_busy_dates` (car_id, busyDate) VALUES (?, ?);";
 		
 		for (Date currentBusyDate: busyDates) {		
 			
@@ -38,14 +37,34 @@ public class MySQLCarBusyDatesDAO implements ICarBusyDates {
 				
 			} catch (SQLException e) {
 				LOG.error("Exception in MySQLCarBusyDatesDAO.insertNewBusyDates: " + e);
+				throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_INSERT_NEW_BYSY_DATE);
 			}
 		}
 	}
 
 	@Override
-	public void removeParticularBusyDate(Car specifiedCar, Date busyDates) {
-		// TODO Auto-generated method stub
-
+	public void removeParticularBusyDate (Car specifiedCar, Date busyDates) {		
+		throw new UnsupportedOperationException();
+	}
+	
+	@Override
+	public void removeBusyDatesByOrderId (int orderId) throws DBException {
+		
+		LOG.info("removeBusyDatesByOrderId start");
+		String query = "DELETE FROM `car_busy_dates` WHERE `car_id` = "
+				+ "(SELECT car_id FROM `order` WHERE id = ?);";
+		
+		try (Connection connection = DAOFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(query)){
+			
+			ps.setInt(1, orderId);
+			ps.execute();
+			
+		} catch (SQLException e) {
+			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_DELETE_CAR_BUSY_DATES_BY_ORDER_ID);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_DELETE_CAR_BUSY_DATES_BY_ORDER_ID);
+		}
+		
 	}
 
 	@Override
@@ -90,5 +109,7 @@ public class MySQLCarBusyDatesDAO implements ICarBusyDates {
 		
 		return busyDates;
 	}
+
+	
 
 }

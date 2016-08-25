@@ -18,7 +18,8 @@ Taglib directives for all views. Connect librarys.
 <%--Custom tag --%>
 <%@ taglib prefix="ct" uri="/WEB-INF/customTagsLibrary.tld" %>
 
-<c:set var="setLanguage" scope="session"
+
+<c:set var="language" scope="session"
 	value="${not empty userLanguage ? userLanguage : pageContext.request.locale.language}" />
 
-<fmt:setLocale value="${setLanguage}" />
+<fmt:setLocale value="${language}" />

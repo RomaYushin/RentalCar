@@ -12,18 +12,26 @@
 		<script src = "js/welcomeAuthorizationScript.js" type = "text/javascript"></script>
 	</head>
 	<body>
+	
+		<c:if test="${not empty sessionScope.user }">
+			<c:redirect url ="Controller?command=clientPersonalArea"></c:redirect>
+		</c:if>
 		<div class="wrapper">
 			<%@ include file = "/WEB-INF/view/jspf/header.jspf" %>
 			<div class = "mainContent" >
 				<fmt:message key="welcomeAuthorization.jsp.mainBlockName" />
 				<form id = "authorizationForm" action="Controller" method="POST" >
 					<input type = "hidden" name = "command" value = "userAuthorization">
+					<input type = "hidden" id = "language" value ="${language}">
 				
 					<label><fmt:message key="welcomeAuthorization.jsp.email" /></label>
-					<input id = "login" type = "text" name = "userEmail" size = 30; onblur = "validateEmail(this.value)"><br>
+					<input id = "login" type = "text" name = "userEmail" size = 30 
+					onkeyup ="validateEmail(this.value)" onclick ="validateEmail(this.value)">
+					<span id="validEmail"></span><br>
 					
 					<label><fmt:message key="welcomeAuthorization.jsp.password" /></label>
-					<input id = "password" type = "password" name = "userPassword" size = 30; onblur = "validatePassword(this.value.length)"><br>
+					<input id = "password" type = "password" name = "userPassword" size = 30; onkeyup = "validatePassword(this.value.length)" onchange = "validatePassword(this.value.length)">
+					<span id="validPassword"></span><br>
 					
 					<input id = "signIn" type = "submit" value = "<fmt:message key="welcomeAuthorization.jsp.signIn" />" >									
 				</form>

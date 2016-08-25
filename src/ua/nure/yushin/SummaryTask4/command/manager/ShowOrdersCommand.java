@@ -5,8 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -58,13 +60,12 @@ public class ShowOrdersCommand extends AbstractCommand {
 			throws AsyncResponseException {	
 		
 		LOG.info ("Start executing ShowOrdersCommand.execute");
+		HttpSession session = request.getSession(false);
 		
 		String tableName = null;
 		String sortingType = request.getParameter("sortingType");
-		Map <String, List> orders_map = new HashMap<>();
-		List <String> param = new ArrayList<>();
 		List <Order> orders = null;
-		
+		LOG.debug("sortingType" + sortingType);
 		
 		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
 		IOrderDAO iOrderDAO = daoFactory.getOrderDAO();
@@ -76,40 +77,42 @@ public class ShowOrdersCommand extends AbstractCommand {
 			switch (sortingType) {
 			case "showUntreatedOrders":	
 				orders = iOrderDAO.getOrdersByOrderStatus(OrderStatus.UNTREATED);
-				tableName = " UNTREATED ORDERS";
+				// UNTREATED ORDERS
+				tableName = "managerPersonalArea.jsp.untreatedOrders_tbl";
 				break;
 			case "showActiveOrders" :
 				orders = iOrderDAO.getOrdersByOrderStatus(OrderStatus.ACTIVE);
-				tableName = " ACTIVE ORDERS";
+				// ACTIVE ORDERS
+				tableName = "managerPersonalArea.jsp.activeOrders_tbl";
 				break;
 			case "showClosedOrders":
 				orders = iOrderDAO.getOrdersByOrderStatus(OrderStatus.CLOSE);
-				tableName = " CLOSE ORDERS";
+				// CLOSE ORDERS
+				tableName = "managerPersonalArea.jsp.closedOrders_tbl";
 				break;
 			case "showRejectedOrders":
 				orders = iOrderDAO.getOrdersByOrderStatus(OrderStatus.REJECTED);
-				tableName = " REJECTED ORDERS";
+				// REJECTED ORDERS
+				tableName = "managerPersonalArea.jsp.rejectedOrders_tbl";
 				break;	
 			case "showAllOrders":
 			default:
 				orders = iOrderDAO.getAllOrdersFromDB();
-				tableName = "ALL ORDERS";
-				break;
+				// ALL ORDERS
+				tableName = "managerPersonalArea.jsp.allOrders_tbl";			
+				break;				
 			}					
 		} catch (DBException dbExcep) {
 			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ALL_ORDERS, dbExcep);
 			throw new AsyncResponseException(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ALL_ORDERS, dbExcep);		
 		}
-	
-		param.add(tableName);
-		orders_map.put("orders", orders);
-		orders_map.put("param", param);
 		
-		request.setAttribute("orders_map", orders_map);
+		session.setAttribute("sortingType", sortingType);
+		request.setAttribute("orders", orders);
+		request.setAttribute("tableName", tableName);
 		
 		LOG.info ("End executing ShowOrdersCommand.execute");		
 		return Path.PAGE_FORWARD_MANAGER_SHOW_ORDERS_FORM;
-		
 	}
 	
 	private static String doPost (HttpServletRequest request, HttpServletResponse response) 

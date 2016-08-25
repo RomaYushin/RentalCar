@@ -24,6 +24,8 @@ function showAllOrders() {
 }
 
 function sendCommandAsync (command) {
+	
+	//alert (command);
 	$.ajax({
 		type : "GET",
 		url : "Controller?command=showOrders",
@@ -32,6 +34,8 @@ function sendCommandAsync (command) {
 		},
 		success : function(responseText) {
 			$(".mainWindow").html(responseText);
+			
+			//alert(responseText);
 		},
 		error : function() {
 			alert("error");
@@ -48,6 +52,8 @@ function openOrder (orderId) {
 		},
 		success : function(responseText) {
 			$(".mainWindow").html(responseText);
+			$(".rejTextArea").hide();
+			//alert(responseText);
 		},
 		error : function() {
 			alert("error");
@@ -55,3 +61,72 @@ function openOrder (orderId) {
 	});	
 }
 
+function approveOrder () {	
+	
+	var orderId = $('#orderId').val();
+
+	$.ajax({
+		type : "POST",
+		url : "Controller?command=approveOrder",
+		data : {
+			orderId: orderId 
+		},
+		success : function(responseText) {
+			$(".mainWindow").html(responseText);
+			$(".rejTextArea").hide();
+			//alert(responseText);
+		},
+		error : function() {
+			alert("error");
+		}
+	});	
+}
+
+function closeOrder () {
+	
+	var orderId = $('#orderId').val();
+	
+	$.ajax({
+		type : "POST",
+		url : "Controller?command=closeOrder",
+		data : {
+			orderId: orderId 
+		},
+		success : function(responseText) {
+			$(".mainWindow").html(responseText);
+			$(".rejTextArea").hide();
+			//alert(responseText);
+		},
+		error : function() {
+			alert("error");
+		}
+	});	
+}
+
+function rejectOrder () {	
+	
+	var orderId = $('#orderId').val();
+	var rejectionReason = $('#ta').val();
+	//alert("orderId " + orderId + ", rejectionReason: " + rejectionReason);
+	
+	
+	$.ajax({
+		type : "POST",
+		url : "Controller?command=rejectOrder",
+		data : {
+			orderId: orderId,
+			rejectionReason: rejectionReason
+		}, 
+		success : function(responseText) {
+			$(".mainWindow").html(responseText);
+		},
+		error : function() {
+			alert("error");
+		}
+	});
+	
+}
+
+function showTextArea () {
+	$('.rejTextArea').show();
+}

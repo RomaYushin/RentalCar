@@ -4,6 +4,7 @@ public class Path {
 	
 	// welcome (index) page
 	public static final String PAGE_WELCOME_AUTHORIZATION = "welcomeAuthorization.jsp";	
+	public static final String COMMAND_REDIRECT_WELCOME_AUTHORIZATION = "/";	
 	
 	//error
 	public static final String PAGE_FORWARD_ERROR = "/WEB-INF/view/error.jsp";	
@@ -21,6 +22,7 @@ public class Path {
 	public static final String PAGE_FORWARD_CLIENT_ORDER_CAR_ASYNC = "/WEB-INF/view/jsp/client/orderCarAsync.jsp";
 	public static final String PAGE_FORWARD_CLIENT_CHECK_ORDER_STATUS_ASYNC = "/WEB-INF/view/jsp/client/checkOrderStatusAsync.jsp";
 	public static final String PAGE_FORWARD_CLIENT_TOTAL_PRICE_ASYNC = "/WEB-INF/view/jsp/client/totalPriceAsync.jsp";	
+	public static final String PAGE_FORWARD_CLIENT_CONFIRM_REGISTRATION = "/WEB-INF/view/confirmRegistrationView.jsp";	
 	
 	// forward admin
 	public static final String PAGE_FORWARD_ADMIN_PERSONAL_AREA = "/WEB-INF/view/jsp/admin/adminPersonalArea.jsp";
@@ -40,11 +42,16 @@ public class Path {
 	public static final String PAGE_FORWARD_MANAGER_SHOW_ORDERS_FORM = "/WEB-INF/view/jsp/manager/showOrdersForm.jsp";
 	public static final String PAGE_FORWARD_MANAGER_SHOW_SPECIFIED_ORDER = "/WEB-INF/view/jsp/manager/showSpecifiedOrder.jsp";
 	
+	
+	
 	/*
 	 * ***********************************************************************************************
 	 * ***************************************** REDIRECT ********************************************
 	 * ***********************************************************************************************
 	 */
+	
+	public static final String COMMAND_REDIRECT_TO_COMMAND= "Controller?command=";
+	
 	// redirect client
 	public static final String COMMAND_REDIRECT_CLIENT_REGISTRATION = "Controller?command=clientRegistration";	
 	public static final String COMMAND_REDIRECT_CLIENT_PERSONAL_AREA = "Controller?command=clientPersonalArea";
@@ -73,6 +80,7 @@ public class Path {
 	public static final String COMMAND_REDIRECT_MANAGER_PERSONAL_AREA = "Controller?command=managerPersonalArea";
 	public static final String COMMAND_REDIRECT_MANAGER_SHOW_ORDERS_COMMAND = "Controller?command=showOrders";
 	public static final String COMMAND_REDIRECT_MANAGER_SHOW_SPECIFIED_ORDER_COMMAND = "Controller?command=showSpecifiedOrder";
-	
-	
+	public static final String COMMAND_REDIRECT_MANAGER_APPROVE_ORDER = "Controller?command=approveOrder";
+	public static final String COMMAND_REDIRECT_MANAGER_REJECT_ORDER = "Controller?command=rejectOrder";
+	public static final String COMMAND_REDIRECT_MANAGER_CLOSE_ORDER = "Controller?command=closeOrder";
 }

@@ -1,4 +1,4 @@
-package ua.nure.yushin.SummaryTask4.command.registration;
+package ua.nure.yushin.SummaryTask4.command.client;
 
 import java.sql.Date;
 import java.util.ArrayList;
@@ -23,6 +23,8 @@ import ua.nure.yushin.SummaryTask4.db.dao.DatabaseTypes;
 import ua.nure.yushin.SummaryTask4.db.dao.ICarDAO;
 import ua.nure.yushin.SummaryTask4.entity.Car;
 import ua.nure.yushin.SummaryTask4.exception.DBException;
+import ua.nure.yushin.SummaryTask4.exception.ValidationException;
+import ua.nure.yushin.SummaryTask4.validators.ValidatorOfInputParameters;
 
 public class SelectCarsByRentalDatesCommand extends AbstractCommand {
 
@@ -38,7 +40,7 @@ public class SelectCarsByRentalDatesCommand extends AbstractCommand {
 	private List<Car> availableCarsAfterSelect = null;
 	
 	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType) throws DBException {
+	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType) throws DBException, ValidationException {
 		
 		LOG.info ("Start executing SelectCarsByRentalDatesCommand.execute");
 		String result = null;
@@ -52,7 +54,7 @@ public class SelectCarsByRentalDatesCommand extends AbstractCommand {
 		return result;
 	}
 
-	private String doPost(HttpServletRequest request, HttpServletResponse response) throws DBException {
+	private String doPost(HttpServletRequest request, HttpServletResponse response) throws DBException, ValidationException {
 		
 		LOG.debug("Start executing SelectCarsByRentalDatesCommand.doGet");
 		
@@ -71,6 +73,7 @@ public class SelectCarsByRentalDatesCommand extends AbstractCommand {
 		LOG.info("selectType: " + selectType);
 		LOG.info("selectOption: " + selectOption);
 
+		/*
 		// проверка если введенные даты позже, чем сегодня
 		long currentTime = System.currentTimeMillis();
 		if ((orderStartDate.getTime() < currentTime) || (orderEndDate.getTime() < currentTime)) {
@@ -85,6 +88,9 @@ public class SelectCarsByRentalDatesCommand extends AbstractCommand {
 			LOG.error("Invalid input dates, early that today:" + orderStartDate + " " + orderEndDate);
 			return Path.COMMAND_REDIRECT_CLIENT_SELECT_CARS_BY_RENTAL_DATES_ASYNC;
 		}
+		*/
+		
+		ValidatorOfInputParameters.validateOrderDate(orderStartDate, orderEndDate);
 
 		busyDates = fillBusyDates(orderStartDate, orderEndDate);
 		availableCarsSortByDate = fillAvailableCars(busyDates);

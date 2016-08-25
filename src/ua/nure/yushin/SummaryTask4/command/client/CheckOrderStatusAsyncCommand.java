@@ -1,4 +1,4 @@
-package ua.nure.yushin.SummaryTask4.command.async;
+package ua.nure.yushin.SummaryTask4.command.client;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

@@ -8,9 +8,11 @@ import ua.nure.yushin.SummaryTask4.exception.DBException;
 
 public interface ICarBusyDates {
 	
-	void insertNewBusyDates (Car specifiedCar, List <Date> busyDates);
+	void insertNewBusyDates (Car specifiedCar, List <Date> busyDates) throws DBException;
 	
-	void removeParticularBusyDate (Car specifiedCar, Date busyDates );
+	void removeParticularBusyDate (Car specifiedCar, Date busyDates);
+	
+	void removeBusyDatesByOrderId (int orderId ) throws DBException;
 	
 	List <Car> findAllFreeCarsByBusyDates (List<Date> busyDates);
 	

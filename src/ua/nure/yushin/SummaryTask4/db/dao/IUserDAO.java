@@ -1,27 +1,29 @@
 package ua.nure.yushin.SummaryTask4.db.dao;
 
-import java.util.Date;
 import java.util.List;
 
-import ua.nure.yushin.SummaryTask4.entity.Sex;
 import ua.nure.yushin.SummaryTask4.entity.User;
-import ua.nure.yushin.SummaryTask4.entity.UserRole;
 import ua.nure.yushin.SummaryTask4.exception.DBException;
 
 public interface IUserDAO {
 
 	void insertNewUser (User newUser) throws DBException;
 	
-	void removeParticularUser (User userToRemove);
+	void removeParticularUser (User userToRemove) throws DBException;
 	
 	List <User> getAllUsersFromDB () throws DBException;
 	
-	boolean findSpecifiedUserInDB (User specifiedUser);
+	User getUserByEmail (String userEmail)throws DBException;
 	
-	User findUserByEmailAndPassword (String email, String password);
+	User getUserByEmailAndPassword (String email, String password) throws DBException;
 	
 	User getUserById (int userId) throws DBException;
 	
+	void checkIsUserAlreadyInDBByEmail (String userEmail) throws DBException;
+	
+	void updateUserById (User user) throws DBException;
+	
+	/*
 	void updateUserPassSeries (String newUserPassSeries);
 	
 	void updateUserPassNumber (int newUserPassNumber);
@@ -45,4 +47,5 @@ public interface IUserDAO {
 	void updateUserRole (UserRole newUserRole);
 	
 	void updateUserLanguage (String newUserLanguage);
+	*/
 }

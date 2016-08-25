@@ -1,4 +1,4 @@
-package ua.nure.yushin.SummaryTask4.command.registration;
+package ua.nure.yushin.SummaryTask4.command.client;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +13,8 @@ import ua.nure.yushin.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.yushin.SummaryTask4.db.dao.DatabaseTypes;
 import ua.nure.yushin.SummaryTask4.db.dao.IAccountDAO;
 import ua.nure.yushin.SummaryTask4.db.dao.IOrderDAO;
+import ua.nure.yushin.SummaryTask4.exception.AppException;
+import ua.nure.yushin.SummaryTask4.exception.ExceptionMessages;
 
 public class PayOrderCommand extends AbstractCommand {
 
@@ -24,7 +26,7 @@ public class PayOrderCommand extends AbstractCommand {
 	private static final Logger LOG = Logger.getLogger(PayOrderCommand.class);
 
 	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType) {
+	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType) throws AppException {
 		LOG.info("Start executing PayOrderCommand.execute");
 		String result = null;
 
@@ -37,26 +39,24 @@ public class PayOrderCommand extends AbstractCommand {
 		return result;
 	}
 
-	private String doPost(HttpServletRequest request, HttpServletResponse response) {
+	private String doPost(HttpServletRequest request, HttpServletResponse response) throws AppException {
 		
 		// получение счета по id заказа и изменение его переменной на оплачено
 		// вернуть сообщение об успешной оплате
 		LOG.info("PayOrderCommand.doPost start");
+		int orderId = 0;
 		
 		HttpSession session = request.getSession(false);
-		int orderId = (int) Integer.valueOf(request.getParameter("orderId"));
+		try {
+			 orderId = (int) Integer.valueOf(request.getParameter("orderId"));
+		} catch (Exception e) {
+			throw new AppException(ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR);
+		}
 		
 		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
 		IAccountDAO iAccountDAO = daoFactory.getAccountDAO();
-		boolean result = iAccountDAO.updateAccountForRentByOrderId(orderId, true);
 		
-		// если операция не выполнена
-		if (!result) {	
-			//request.setAttribute("errorMessage", "payment is not made");
-			session.setAttribute("payment", false);
-			LOG.error("payment is not made");
-			return Path.COMMAND_REDIRECT_CLIENT_PAY_ORDER;
-		}		
+		iAccountDAO.updateAccountForRentByOrderId(orderId, true);		
 		
 		session.setAttribute("payment", true);
 		

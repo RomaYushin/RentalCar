@@ -63,4 +63,6 @@ public abstract class DAOFactory {
 	public abstract IAccountDAO getAccountDAO ();
 	
 	public abstract ICarBusyDates getCarBusyDatesDAO();
+	
+	public abstract IOrderDates getOrderDatesDAO();
 }

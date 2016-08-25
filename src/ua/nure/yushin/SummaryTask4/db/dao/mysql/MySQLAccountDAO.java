@@ -49,7 +49,7 @@ public class MySQLAccountDAO implements IAccountDAO {
 	}
 	
 	@Override
-	public boolean updateAccountForRentByOrderId(int orderId, boolean value) {
+	public void updateAccountForRentByOrderId (int orderId, boolean value) throws DBException {
 		
 		String query = "UPDATE `account` SET `accountRentPaid`= ? WHERE `id` = "
 				+ "(SELECT `order`.`account_id` FROM `order` WHERE id = ?);";
@@ -62,10 +62,10 @@ public class MySQLAccountDAO implements IAccountDAO {
 			ps.executeUpdate();
 			
 		} catch (SQLException e) {
-			LOG.error("ERROR in updateAccountForRentByOrderId");
-			return false;
+			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_ACCOUNT);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_ACCOUNT);		
 		}		
-		return true;
+
 	}
 
 	@Override

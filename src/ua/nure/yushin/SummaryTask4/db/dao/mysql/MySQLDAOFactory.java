@@ -5,6 +5,7 @@ import ua.nure.yushin.SummaryTask4.db.dao.IAccountDAO;
 import ua.nure.yushin.SummaryTask4.db.dao.ICarBusyDates;
 import ua.nure.yushin.SummaryTask4.db.dao.ICarDAO;
 import ua.nure.yushin.SummaryTask4.db.dao.IOrderDAO;
+import ua.nure.yushin.SummaryTask4.db.dao.IOrderDates;
 import ua.nure.yushin.SummaryTask4.db.dao.IUserDAO;
 
 public class MySQLDAOFactory extends DAOFactory {
@@ -38,6 +39,12 @@ public class MySQLDAOFactory extends DAOFactory {
 	@Override
 	public ICarBusyDates getCarBusyDatesDAO() {
 		return new MySQLCarBusyDatesDAO();
+	}
+
+	@Override
+	public IOrderDates getOrderDatesDAO() {
+		// TODO Auto-generated method stub
+		return new MySQLOrderDatesDAO();
 	}
 
 }

@@ -1,4 +1,4 @@
-package ua.nure.yushin.SummaryTask4.command.registration;
+package ua.nure.yushin.SummaryTask4.command.client;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,23 +9,18 @@ import ua.nure.yushin.SummaryTask4.command.AbstractCommand;
 import ua.nure.yushin.SummaryTask4.controller.ActionType;
 import ua.nure.yushin.SummaryTask4.controller.Path;
 
-public class AvailableCarsAsyncCommand extends AbstractCommand {
+public class OrderCarAsyncCommand extends AbstractCommand {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7041355534487078565L;
-
-	private static final Logger LOG = Logger.getLogger(AvailableCarsAsyncCommand.class);
+	private static final long serialVersionUID = 4152834749976920215L;
 	
-	//private List <Car> availableCars = null;
+	private static final Logger LOG = Logger.getLogger(OrderCarAsyncCommand.class);
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType) {
-		
-		LOG.info("availableCars:" + request.getAttribute("availableCars"));
-		return Path.PAGE_FORWARD_CLIENT_AVAILABLE_CARS_ASYNC;
-		
+		LOG.info("Start executing OrderCarAsyncCommand.execute");
+		return Path.PAGE_FORWARD_CLIENT_ORDER_CAR_ASYNC;
 	}
-
 }

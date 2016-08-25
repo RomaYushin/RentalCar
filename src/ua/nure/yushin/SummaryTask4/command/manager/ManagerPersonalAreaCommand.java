@@ -1,4 +1,4 @@
-package ua.nure.yushin.SummaryTask4.command.registration;
+package ua.nure.yushin.SummaryTask4.command.manager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -9,18 +9,18 @@ import ua.nure.yushin.SummaryTask4.command.AbstractCommand;
 import ua.nure.yushin.SummaryTask4.controller.ActionType;
 import ua.nure.yushin.SummaryTask4.controller.Path;
 
-public class AdminPersonalAreaCommand extends AbstractCommand {
+public class ManagerPersonalAreaCommand extends AbstractCommand {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 2675712153083154954L;
-
-	private static final Logger LOG = Logger.getLogger(AdminPersonalAreaCommand.class);
+	private static final long serialVersionUID = 6419656412787805193L;
+	
+	private static final Logger LOG = Logger.getLogger(ManagerPersonalAreaCommand .class);
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType) {
-		LOG.debug("Start executing AdminPersonalAreaCommand");
+		LOG.debug("Start executing ManagerPersonalAreaCommand");
 		String result = null;
 		
 		if (requestMethodType == ActionType.POST) {
@@ -31,7 +31,7 @@ public class AdminPersonalAreaCommand extends AbstractCommand {
 			result = null;
 		}
 
-		LOG.debug("End executing AdminPersonalAreaCommand");
+		LOG.debug("End executing ManagerPersonalAreaCommand");
 		return result;
 		
 	}
@@ -41,7 +41,7 @@ public class AdminPersonalAreaCommand extends AbstractCommand {
 	}
 
 	private String doGet(HttpServletRequest request, HttpServletResponse response) {
-		return Path.PAGE_FORWARD_ADMIN_PERSONAL_AREA;
+		return Path.PAGE_FORWARD_MANAGER_PERSONAL_AREA;
 	}
 
 }

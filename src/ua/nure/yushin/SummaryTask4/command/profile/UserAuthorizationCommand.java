@@ -1,9 +1,10 @@
-package ua.nure.yushin.SummaryTask4.command.registration;
+package ua.nure.yushin.SummaryTask4.command.profile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 
 import ua.nure.yushin.SummaryTask4.command.AbstractCommand;
@@ -12,9 +13,10 @@ import ua.nure.yushin.SummaryTask4.controller.Path;
 import ua.nure.yushin.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.yushin.SummaryTask4.db.dao.DatabaseTypes;
 import ua.nure.yushin.SummaryTask4.db.dao.IUserDAO;
-import ua.nure.yushin.SummaryTask4.entity.Sex;
 import ua.nure.yushin.SummaryTask4.entity.User;
 import ua.nure.yushin.SummaryTask4.entity.UserRole;
+import ua.nure.yushin.SummaryTask4.exception.AppException;
+import ua.nure.yushin.SummaryTask4.exception.ExceptionMessages;
 import ua.nure.yushin.SummaryTask4.validators.ValidatorOfInputParameters;
 
 public class UserAuthorizationCommand extends AbstractCommand {
@@ -27,7 +29,7 @@ public class UserAuthorizationCommand extends AbstractCommand {
 	private static final Logger LOG = Logger.getLogger(UserAuthorizationCommand.class);
 
 	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType) {
+	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType) throws AppException {
 
 		LOG.info("Start executing UserAuthorizationCommand.execute");
 		String result = null;
@@ -35,51 +37,39 @@ public class UserAuthorizationCommand extends AbstractCommand {
 		if (requestMethodType.equals(ActionType.POST)) {
 			result = doPost (request, response);
 		} else {
-			result = null;
-		}
+			result = doGet (request, response);		}
 		
 		LOG.info("End executing UserAuthorizationCommand.execute");
 		return result;
 	}
 	
-	private String doPost (HttpServletRequest request, HttpServletResponse response) {
+	private String doPost (HttpServletRequest request, HttpServletResponse response) throws AppException {
 		
 		LOG.info("Start executing UserAuthorizationCommand");
 		
 		// получение email и  password
 		String userEmail = request.getParameter("userEmail");
-		String userPassword = request.getParameter("userPassword");
+		String userPassword = DigestUtils.md5Hex(request.getParameter("userPassword"));
 		
 		LOG.info("userEmail: " + userEmail);
 		LOG.info("userPassword: " + userPassword);
 		
 		// валидация email и password
-		if (!ValidatorOfInputParameters.validateUserEmail(userEmail)) {
-			request.setAttribute("errorMessage", "Email is not valid. Check your email!");
-			LOG.error("error: invalid email at the time of authorization");
-			return null;
-		} else if (!ValidatorOfInputParameters.validateUserPassword(userPassword)) {
-			request.setAttribute("errorMessage", "Password is not valid. Check your password!");
-			LOG.error("error: invalid password at the time of authorization");
-			return null;
-		}
+		ValidatorOfInputParameters.validateUserEmail(userEmail);
+		ValidatorOfInputParameters.validateUserPassword(userPassword);
 		
 		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
 		IUserDAO userDAO = daoFactory.getUserDAO();
-		User userFromDB = userDAO.findUserByEmailAndPassword(userEmail, userPassword);
+		User userFromDB = userDAO.getUserByEmailAndPassword(userEmail, userPassword);
 		
-		// если user не найден, то перебросить на стартовую страницу
-		if (userFromDB == null) {
-			request.setAttribute("errorMessage", "Cannot find user with such login/password");
-			LOG.error("error: Cannot find user with such login/password");
-			return null;
-		} 
+		// проверка на подтверждение почты
+		if (!userFromDB.isUserConfirmation()) {
+			throw new AppException(ExceptionMessages.EXCEPTION_UNCONFIRMED_USER);
+		}
 		
-		// если клиент заблокирован, перебросить на стартовую страницу
+		// проверить заблокирован ли клиент
 		if (userFromDB.isUserBlocking()) {
-			request.setAttribute("errorMessage", "User is blocked");
-			LOG.error("error: User is blocked");
-			return null;
+			throw new AppException(ExceptionMessages.EXCEPTION_BLOCKED_USER);
 		}
 		/*
 		LOG.info("userFromDB.getId: " + userFromDB.getId());
@@ -115,6 +105,10 @@ public class UserAuthorizationCommand extends AbstractCommand {
 		} else {
 			return null;
 		}
+	}
+	
+	private String doGet (HttpServletRequest request, HttpServletResponse response) {
+		return Path.PAGE_WELCOME_AUTHORIZATION;
 	}
 
 }

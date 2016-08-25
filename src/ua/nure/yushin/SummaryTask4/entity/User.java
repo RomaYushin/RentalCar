@@ -18,11 +18,12 @@ public class User extends AbstractEntity {
 	private String userPassPatronomic;
 	private Date userPassDateOfBirth;
 	private Sex userSex;
-	private String userEmail;
-	private String userPassword;
 	private boolean userBlocking;
+	private String userPassword;
+	private String userEmail;	
 	private UserRole userRole;
 	private String userLanguage;
+	private boolean userConfirmation;
 
 	public User () {
 	}
@@ -43,6 +44,7 @@ public class User extends AbstractEntity {
 		this.userBlocking = userBlocking;
 		this.userRole = userRole;
 		this.userLanguage = userLanguage;
+		this.userConfirmation = false;
 	}
 
 	public String getUserPassSeries() {
@@ -141,8 +143,23 @@ public class User extends AbstractEntity {
 		this.userLanguage = userLanguage;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public boolean isUserConfirmation() {
+		return userConfirmation;
 	}
+
+	public void setUserConfirmation(boolean userConfirmation) {
+		this.userConfirmation = userConfirmation;
+	}
+
+	@Override
+	public String toString() {
+		return "User [userPassSeries=" + userPassSeries + ", userPassNumber=" + userPassNumber + ", userPassSurname="
+				+ userPassSurname + ", userPassName=" + userPassName + ", userPassPatronomic=" + userPassPatronomic
+				+ ", userPassDateOfBirth=" + userPassDateOfBirth + ", userSex=" + userSex + ", userEmail=" + userEmail
+				+ ", userPassword=" + userPassword + ", userBlocking=" + userBlocking + ", userRole=" + userRole
+				+ ", userLanguage=" + userLanguage + ", userConfirmation=" + userConfirmation + "]";
+	}
+
+	
 
 }

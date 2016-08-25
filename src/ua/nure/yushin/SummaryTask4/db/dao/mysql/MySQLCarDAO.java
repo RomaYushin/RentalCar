@@ -112,22 +112,23 @@ public class MySQLCarDAO implements ICarDAO {
 		LOG.info(" getAllCarsFromDB start");
 
 		String query = "SELECT * FROM `car`";
-		Connection connection = null;
-		PreparedStatement ps = null;
+		//Connection connection = null;
+		//PreparedStatement ps = null;
 		ResultSet rs = null;		
 		List <Car> cars = new ArrayList<>();
-		
+		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
+		ICarBusyDates carBusyDatesDAO = daoFactory.getCarBusyDatesDAO();
 		//DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
 		//ICarBusyDates carBusyDatesDAO = daoFactory.getCarBusyDatesDAO();
 
-		/*
+		
 		try (Connection connection = DAOFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(query)) {
-		*/
-		try {
-			connection = DAOFactory.getConnection();
-			connection.setAutoCommit(false);
-			ps = connection.prepareStatement(query);			
+		
+		//try {
+			//connection = DAOFactory.getConnection();
+			//connection.setAutoCommit(false);
+			//ps = connection.prepareStatement(query);			
 			ps.execute();
 			
 			rs = ps.getResultSet();
@@ -139,31 +140,31 @@ public class MySQLCarDAO implements ICarDAO {
 				car.setCarQualityClass(CarQualityClass.getByName(rs.getString(4)));
 				car.setCarRentalCost(rs.getInt(5));
 				car.setCarStatus(CarStatus.getByName(rs.getString(6)));				
-				car.setCarYearOfIssue(rs.getDate(7));
-				
-				DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
-				ICarBusyDates carBusyDatesDAO = daoFactory.getCarBusyDatesDAO();
+				car.setCarYearOfIssue(rs.getDate(7));								
 				car.setCarBusyDates(carBusyDatesDAO.getAllBusyDatesBySpecifiedCar(car));
 				
 				cars.add(car);
-				LOG.info(car.toString());	
+				//LOG.info(car.toString());	
 			}
-			connection.commit();
+			//connection.commit();
 			
 		} catch (SQLException e) {
+			/*
 			try {
 				connection.rollback();
 			} catch (SQLException ee) {
 				LOG.error("SQLException in MySQLCarDAO.getAllCarsFromDB after trying rollback" + ee);
 			}
+			*/
 			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ALL_CARS, e);
 			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ALL_CARS, e);
 			
-		} finally {
+		} /*finally {
 			//close connection
             try {connection.close();} catch (SQLException e) {}
             try {ps.close();} catch (SQLException e) {}
 		}	
+		*/
 		return cars;		
 	}
 

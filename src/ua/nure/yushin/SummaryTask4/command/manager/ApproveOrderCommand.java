@@ -12,7 +12,7 @@ import ua.nure.yushin.SummaryTask4.controller.Path;
 import ua.nure.yushin.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.yushin.SummaryTask4.db.dao.DatabaseTypes;
 import ua.nure.yushin.SummaryTask4.db.dao.IOrderDAO;
-import ua.nure.yushin.SummaryTask4.entity.Order;
+import ua.nure.yushin.SummaryTask4.entity.OrderStatus;
 import ua.nure.yushin.SummaryTask4.exception.AppException;
 import ua.nure.yushin.SummaryTask4.exception.AsyncResponseException;
 import ua.nure.yushin.SummaryTask4.exception.DBException;
@@ -20,19 +20,20 @@ import ua.nure.yushin.SummaryTask4.exception.ExceptionMessages;
 import ua.nure.yushin.SummaryTask4.exception.ValidationException;
 import ua.nure.yushin.SummaryTask4.validators.ValidatorOfInputParameters;
 
-public class ShowSpecifiedOrderCommand extends AbstractCommand {
+public class ApproveOrderCommand extends AbstractCommand {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -7720333559650283023L;
+	private static final long serialVersionUID = 3282654514047280781L;
 	
-	private static final Logger LOG = Logger.getLogger(ShowSpecifiedOrderCommand.class);
+	private static final Logger LOG = Logger.getLogger(ApproveOrderCommand.class);
+
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType)
 			throws AppException {
-		
+
 		LOG.info ("Start executing ShowSpecifiedOrderCommand.execute");
 		String result = null;
 
@@ -43,61 +44,57 @@ public class ShowSpecifiedOrderCommand extends AbstractCommand {
 		}
 		LOG.info ("End executing ShowSpecifiedOrderCommand.execute");
 		return result;
-	}
-
-	private static String doGet (HttpServletRequest request, HttpServletResponse response)
-			throws DBException, AsyncResponseException {
-		
-		LOG.info ("Start executing ShowSpecifiedOrderCommand.doGet");
-		HttpSession session = request.getSession(false);
-		Order order = null;
-		try {
-			order = (Order) session.getAttribute("order");
-			session.removeAttribute("order");
-		} catch (Exception e) {
-			session.removeAttribute("order");
-			throw new AsyncResponseException (ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR, e);
-		}
-		request.setAttribute("order", order);
-		
-		return Path.PAGE_FORWARD_MANAGER_SHOW_SPECIFIED_ORDER;
 		
 	}
 	
 	private static String doPost (HttpServletRequest request, HttpServletResponse response)
-			throws DBException, AsyncResponseException {
+			throws AppException {
 		
-		LOG.info ("Start executing ShowSpecifiedOrderCommand.doPost");
-		HttpSession session = request.getSession(false);
+		LOG.info ("Start executing ApproveOrderCommand.doPost");
+		
 		int orderId = 0;
-		Order order = null;
 		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
 		IOrderDAO iOrderDAO = daoFactory.getOrderDAO();
 		
 		try {
 			orderId = Integer.parseInt(request.getParameter("orderId"));
-		} catch (Exception e) {
-			throw new AsyncResponseException (ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR, e);
+		} catch (Exception e) {		
+			LOG.error(ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR);
+			throw new AppException(ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR);
 		}
-		
-		LOG.info("orderId: " + orderId);
 		
 		try {
 			ValidatorOfInputParameters.validateId(orderId);
-		} catch (ValidationException e) {
-			throw new AsyncResponseException(e.getMessage(), e);
+		} catch (ValidationException v) {
+			throw new AsyncResponseException(ExceptionMessages.EXCEPTION_VALIDATION_INVALID_ORDER_ID);
 		}
 		
 		try {
-			order = iOrderDAO.getOrderById(orderId);
+			OrderStatus os = OrderStatus.ACTIVE;
+			iOrderDAO.updateOrderStatusById (orderId, os);
 		} catch (DBException e) {
-			throw new AsyncResponseException(ExceptionMessages.EXCEPTION_CAN_NOT_INSERT_NEW_CAR, e);
-		}	
-		
-		session.setAttribute("order", order);
-		
-		return Path.COMMAND_REDIRECT_MANAGER_SHOW_SPECIFIED_ORDER_COMMAND;
-		
+			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_ORDER);
+		}
+		return Path.COMMAND_REDIRECT_MANAGER_APPROVE_ORDER;
 	}
 	
+	private static String doGet (HttpServletRequest request, HttpServletResponse response)
+			throws DBException, AsyncResponseException {
+		
+		HttpSession session = request.getSession(false);
+		String sortingType = (String) session.getAttribute("sortingType");
+		
+		LOG.debug("sortingType :" + sortingType);
+		// ответ
+		request.setAttribute("respMessage", "Order was successfully approved");
+		request.setAttribute("type", "approve");
+		request.setAttribute("sortingType", sortingType);
+		
+		//return Path.COMMAND_REDIRECT_MANAGER_SHOW_ORDERS_COMMAND + "&sortingType="+sortingType;
+		//return Path.COMMAND_REDIRECT_MANAGER_SHOW_SPECIFIED_ORDER_COMMAND;
+		return Path.PAGE_FORWARD_MANAGER_SHOW_SPECIFIED_ORDER;
+	}
+	
+	
+
 }

@@ -98,7 +98,11 @@ public class UpdateUserBlockingCommand extends AbstractCommand {
 				isUserBlocking = true;
 			}
 			
-			iUserDAO.updateUserBlockingById(userId, isUserBlocking);
+			// Получение user по id
+			User user = iUserDAO.getUserById(userId);
+			user.setUserBlocking(isUserBlocking);
+			
+			iUserDAO.updateUserById(user);
 		} catch (DBException dbExcep) {
 			throw new AsyncResponseException(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_USER_BLOCKING, dbExcep);
 		}	

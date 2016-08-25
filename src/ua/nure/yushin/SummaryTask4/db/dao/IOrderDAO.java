@@ -11,15 +11,15 @@ import ua.nure.yushin.SummaryTask4.exception.DBException;
 
 public interface IOrderDAO {
 
-	void insertNewOrder(Order newOrder);
+	//void insertNewOrder(Order newOrder);
 	
-	void insertNewOrder(Order newOrder, List<Date> busyDates);
+	void insertNewOrder(Order newOrder, List<Date> busyDates) throws DBException;
 
 	List<Order> getAllOrdersFromDB() throws DBException;
 	
 	Order getOrderById (int orderId) throws DBException;
 	
-	List<Order> getOrdersByOrderStatus (OrderStatus orderStatus)throws DBException;
+	List<Order> getOrdersByOrderStatus (OrderStatus orderStatus) throws DBException;
 	
 	int getAccountIdByOrderIdFromOrder (int orderId);
 	
@@ -39,9 +39,9 @@ public interface IOrderDAO {
 	
 	void updateOrderAccount (int newOrderAccount);
 	
-	void updateOrderStatus (OrderStatus newOrderStatus);
+	void updateOrderStatusById (int orderId, OrderStatus newOrderStatus) throws DBException;
 	
-	void updateOrderRejectionReason(String newOrderRejectionReason);
+	void updateRejectionReasonById (int orderId, String newOrderRejectionReason) throws DBException;
 	
 
 }

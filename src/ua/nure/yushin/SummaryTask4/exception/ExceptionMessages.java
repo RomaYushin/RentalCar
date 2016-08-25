@@ -19,16 +19,45 @@ public class ExceptionMessages {
 	public static final String EXCEPTION_CAN_NOT_GET_ORDER_BY_ORDERSTATUS = "Can not get order by orderStatus";
 	public static final String EXCEPTION_CAN_NOT_GET_ALL_BUSY_DATES = "Can not get all busy dates!";
 	public static final String EXCEPTION_CAN_NOT_GET_ORDER_BY_ID = "Can not get order by Id!";
+	public static final String EXCEPTION_CAN_NOT_GET_USER_BY_EMAIL_AND_PASSWORD = "Can not get user by id and password!";
+	public static final String EXCEPTION_USER_ALREADY_EXIST = "User with such email, pass number and pass series alredy exist!";
+	public static final String EXCEPTION_CAN_NOT_UPDATE_USER = " Can not update user parametrs!";
+	public static final String EXCEPTION_CAN_NOT_SEND_EMAIL = " Can not send confirmation email to user!";
+	public static final String EXCEPTION_CAN_NOT_REMOVE_USER = " Can not remove user!";
+	public static final String EXCEPTION_CAN_NOT_UPDATE_ACCOUNT = " Can not update account (Can not pay the order)!";
+	public static final String EXCEPTION_CAN_NOT_UPDATE_ORDER = " Can not update order!";
+	public static final String EXCEPTION_CAN_NOT_UPDATE_REJECTION_REASON = " Can not update rejection reason!";
+	public static final String EXCEPTION_CAN_NOT_DELETE_CAR_BUSY_DATES_BY_ORDER_ID = " Can not delete car busy dates for specified car by order id!";
+	public static final String EXCEPTION_ROLLBACK_CLOSE_ORDER = " Can not close order (rollback)!";
+	public static final String EXCEPTION_CAN_NOT_CLOSE_ORDER = " Can not close order!";
+	public static final String EXCEPTION_CAN_NOT_INSERT_ORDER_DATES = " Can not insert order dates!";
+	public static final String EXCEPTION_CAN_NOT_INSERT_NEW_ORDER = " Can not insert new order!";
+	public static final String EXCEPTION_CAN_NOT_INSERT_NEW_BYSY_DATE = " Can not insert new busy date!";
 	
 	// exceptions validation add new car
 	public static final String EXCEPTION_VALIDATION_INVALID_CAR_BREND = "Invalid car brend. Name contains wrong character (for example: @#)!";
 	public static final String EXCEPTION_VALIDATION_INVALID_CAR_MODEL = "Invalid car model. Name contains wrong character (for example: @#)!";
-	public static final String EXCEPTION_VALIDATION_INVALID_YEAR_OF_ISSUE = "Invalid year of issue. Cars can not be made earlier than today! ";
+	public static final String EXCEPTION_VALIDATION_INVALID_YEAR_OF_ISSUE = "Invalid year of issue. Cars can not be made earlier than today!";
 	public static final String EXCEPTION_VALIDATION_INVALID_CAR_QUALITY_CLASS = "Invalid car quality class. No such car quality class exist!";
 	public static final String EXCEPTION_VALIDATION_INVALID_CAR_STATUS = "Invalid car status. No such car status exist!";
-	public static final String EXCEPTION_VALIDATION_INVALID_CAR_RENTAL_COST= "Invalid car rental cost. Price can't be less than 0 or 0!";
-	public static final String EXCEPTION_VALIDATION_INVALID_CAR_ID= "Invalid car id!";
-	public static final String EXCEPTION_VALIDATION_INVALID_SEX= "Invalid user sex!";
+	public static final String EXCEPTION_VALIDATION_INVALID_CAR_RENTAL_COST = "Invalid car rental cost. Price can't be less than 0 or 0!";
+	public static final String EXCEPTION_VALIDATION_INVALID_CAR_ID = "Invalid car id!";
+	public static final String EXCEPTION_VALIDATION_INVALID_SEX = "Invalid user sex!";
+	public static final String EXCEPTION_VALIDATION_INVALID_ROLE = "Invalid user Role!";
+	public static final String EXCEPTION_VALIDATION_INVALID_EMAIL = "Invalid email!";
+	public static final String EXCEPTION_VALIDATION_INVALID_PASSWORD = "Invalid password!";
+	public static final String EXCEPTION_VALIDATION_INVALID_PASS_SERIES = "Invalid pass series!";
+	public static final String EXCEPTION_VALIDATION_INVALID_PASS_NUMBER = "Invalid pass number!";
+	public static final String EXCEPTION_VALIDATION_INVALID_FIO = "Invalid name or surname or Patronomic!";
+	public static final String EXCEPTION_VALIDATION_INVALID_DATE_OF_BIRTH = "You are to young to use this application. You must be older than 14! (Invalid date of Birth)";
+	public static final String EXCEPTION_VALIDATION_INVALID_NOT_THE_SAME_PASSWORD = "Not the same password!";
+	public static final String EXCEPTION_VALIDATION_INVALID_ORDER_ID = "Invalid order id!";
+	public static final String EXCEPTION_VALIDATION_INVALID_REJECTION_REASON = "Invalid rejection reason!";
+	public static final String EXCEPTION_VALIDATION_INVALID_ORDER_DATE = "Invalid order date!";
+	
+	// App
+	public static final String EXCEPTION_BLOCKED_USER= "User is blocked!";
+	public static final String EXCEPTION_UNCONFIRMED_USER= "User is unconfirmed!";
 	
 	public static final String EXCEPTION_NULL_IN_REQUEST_PARAMETR = "Empty field!";
 }

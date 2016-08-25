@@ -77,12 +77,7 @@ public class Controller extends HttpServlet {
 				LOG.info ("Redirect to address = " + path);
 				LOG.info ("Controller proccessing finished");
 				response.sendRedirect(path);
-			}
-			
-		} catch (AsyncResponseException asyncResponseException) {
-			session.setAttribute("errorMessage", asyncResponseException.getMessage());
-			LOG.error(asyncResponseException.getMessage());			
-			request.getRequestDispatcher(Path.COMMAND_NO_COMMAND).forward(request, response);	
+			}	
 	
 		} catch (AppException appException) {
 			session.setAttribute("errorMessage", appException.getMessage());

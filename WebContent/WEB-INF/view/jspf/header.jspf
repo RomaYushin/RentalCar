@@ -13,14 +13,19 @@
 		<!-- <p>You are logged as Yushin Roman</p> -->
 	</div>
 	<div class="headerChooseLanguage">
+		
+	
 		<form action="Controller" method="GET">
 			<input type="hidden" name="command" value="editLanguage"> 
+			<input type="hidden" name = "currentCommand" value="${param.command}"></input>
+			
 			<select	id="selectLanguage" name="language" onchange="this.form.submit()">
 				<option ><fmt:message key="header.jspf.chooseLanguge" /></option>
 				<option value="ru"><fmt:message	key="header.jspf.ru_language" /></option>
 				<option value="en"><fmt:message	key="header.jspf.en_language" /></option>
 			</select>
 		</form>
+		
 	</div>
 	<div class = "loggedAs">
 		<c:choose>
@@ -30,14 +35,13 @@
 			</c:otherwise>
 		</c:choose>
 	</div>
-	<!-- 
 	<div>
-		<c:choose>
-			<c:when test="${empty errorMessage}"></c:when>
-			<c:otherwise>
-				<c:out value="${errorMessage}"></c:out>
-			</c:otherwise>
-		</c:choose>
+		<c:if test="${not empty sessionScope.user }" > 
+			<form action="Controller" method = "POST">
+				<input type = "hidden" name = "command" value = "logout">				
+				<input type = "submit" value = "<fmt:message key="header.jspf.logout" />" >
+			</form>
+		</c:if>
+		
 	</div>
-	-->
 </div>

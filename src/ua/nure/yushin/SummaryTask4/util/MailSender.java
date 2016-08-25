@@ -17,7 +17,6 @@ import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import javax.naming.InitialContext;
 
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 
 import ua.nure.yushin.SummaryTask4.entity.User;
@@ -26,7 +25,7 @@ public class MailSender {
 	
 	private static final Logger LOG = Logger.getLogger(MailSender.class);	
 	private static final Session SESSION  = init();
-	private static final String CONFIRM_URL = "http://localhost:8080/SummaryTask4/Controller?command=confirmRegistration&MessageId=";
+	private static final String CONFIRM_URL = "http://localhost:8080/SummaryTask4/Controller?command=showConfirmView&userEmail=";
 	private static final String EMAIL_FROM = "summarytask4carrental@gmail.com";
 	
 	private static Session init() {
@@ -51,7 +50,7 @@ public class MailSender {
 			message.addRecipient(Message.RecipientType.TO, internetAdressTo);
 			message.setSentDate(new Date());
 			
-			setContentToConfirmationMessage(message, user, user.getUserLanguage());
+			setContentToConfirmationMessage(message, user);
 	
 			message.setSentDate(new Date());	
 			Transport.send(message);
@@ -65,22 +64,22 @@ public class MailSender {
 		}		 
 	}
 	
-	private static void setContentToConfirmationMessage(Message message, User user, String language ) 
+	private static void setContentToConfirmationMessage(Message message, User user ) 
 			throws MessagingException, UnsupportedEncodingException {
 		
-		String md5HexCipher = DigestUtils.md5Hex(user.getUserEmail());
+		//String md5HexCipher = DigestUtils.md5Hex(user.getUserEmail());
 		String confirmLinkName = null;
 		String greetings = null;
 		String confirmLink = null;
 		
-		switch (language) {
+		switch (user.getUserLanguage()) {
 			case "ru":
 				confirmLinkName = "Ссылка для подтверждения регистрации";
 				greetings = "Здравствуйте, " +  user.getUserPassSurname()+ " "
 						+ user.getUserPassName() + " " + user.getUserPassPatronomic() + " !\n"
 						+ "Вы успешно прошли регистрацию на нашем сайте компании по прокату авто \"Юпитер\".\n";
 				confirmLink = "Подтвердите регистрацию кликнув по этой "
-						+ "<a href= \""+ CONFIRM_URL + md5HexCipher + "\">ссылке</a>";
+						+ "<a href= \""+ CONFIRM_URL + user.getUserEmail() + "\">ссылке</a>";
 				break;
 			case "en":
 				confirmLinkName = "A link to confirm your registration";
@@ -88,7 +87,7 @@ public class MailSender {
 						+ user.getUserPassName() + " " + user.getUserPassPatronomic() + " !\n"
 						+ "You have successfully been registered on our company website for rental cars \"Jupiter\".\n\n\n";
 				confirmLink = "Confirm your registration by clicking on this "
-						+ "<a href= \""+ CONFIRM_URL + md5HexCipher + "\">link</a>";
+						+ "<a href= \""+ CONFIRM_URL + user.getUserEmail() + "\">link</a>";
 			default:
 				break;		
 		}
@@ -102,6 +101,8 @@ public class MailSender {
 		MimeBodyPart linkAndData = null;
 		
 		greetingsHeader.addHeader("Content-type", "text/plain; charset=UTF-8");
+		LOG.info(greetings);
+		LOG.info(greetingsHeader);
 		greetingAndData = new MimeBodyPart(greetingsHeader, (greetings).getBytes("UTF-8"));
 		confirmLinkHeader.addHeader("Content-type", "text/html; charset=UTF-8");		
 		linkAndData = new MimeBodyPart(confirmLinkHeader, confirmLink.getBytes(StandardCharsets.UTF_8));		

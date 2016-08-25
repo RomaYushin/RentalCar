@@ -62,12 +62,12 @@ public class RegisterNewManagerCommand extends AbstractCommand {
 		LOG.info ("Start executing RegisterNewManagerCommand.doPost");
 		
 		String userPassSeries = null;		
-		String userPassNumber_s = null;	
+		int userPassNumber = 0;	
 		String userPassSurname = null;
 		String userPassName = null;
 		String userPassPatronomic = null;		
-		String userPassDateOfBirth_s = null;
-		String userSex_s = null;
+		Date userPassDateOfBirth = null;
+		Sex userSex = null;
 		String userEmail = null;
 		String userPassword = null;
 		String userLanguage = null;
@@ -75,23 +75,23 @@ public class RegisterNewManagerCommand extends AbstractCommand {
 		try {
 			
 			userPassSeries = request.getParameter(FieldsInJSPPages.USER_PASS_SERIES);		
-			userPassNumber_s = request.getParameter(FieldsInJSPPages.USER_PASS_NUMBER);
+			userPassNumber = Integer.valueOf(request.getParameter(FieldsInJSPPages.USER_PASS_NUMBER));
 			userPassSurname = request.getParameter(FieldsInJSPPages.USER_PASS_SURNAME);
 			userPassName = request.getParameter(FieldsInJSPPages.USER_PASS_NAME);
 			userPassPatronomic = request.getParameter(FieldsInJSPPages.USER_PASS_PATRONOMIC);			
-			userPassDateOfBirth_s = request.getParameter(FieldsInJSPPages.USER_PASS_DATE_OF_BIRTH);
-			userSex_s = request.getParameter(FieldsInJSPPages.USER_PASS_SEX);
+			userPassDateOfBirth =  Date.valueOf(request.getParameter(FieldsInJSPPages.USER_PASS_DATE_OF_BIRTH));
+			userSex = Sex.getByName(request.getParameter(FieldsInJSPPages.USER_PASS_SEX));
 			userEmail = request.getParameter(FieldsInJSPPages.USER_EMAIL);
 			userPassword = request.getParameter(FieldsInJSPPages.USER_PASSWORD);
 			userLanguage = request.getParameter(FieldsInJSPPages.USER_LANGUAGE);
 			
 			LOG.info("userPassSeries: " + userPassSeries);		
-			LOG.info("userPassNumber_s: " + userPassNumber_s);
+			LOG.info("userPassNumber_s: " + userPassNumber);
 			LOG.info("userPassSurname: " + userPassSurname);
 			LOG.info("userPassName: " + userPassName);
 			LOG.info("userPassPatronomic: " + userPassPatronomic);
-			LOG.info("userPassDateOfBirth_s: " + userPassDateOfBirth_s);
-			LOG.info("userSex_s: " + userSex_s);
+			LOG.info("userPassDateOfBirth_s: " + userPassDateOfBirth);
+			LOG.info("userSex_s: " + userSex);
 			LOG.info("userEmail: " + userEmail);
 			LOG.info("userPassword: " + userPassword);
 			LOG.info("userLanguage: " + userLanguage);
@@ -103,12 +103,12 @@ public class RegisterNewManagerCommand extends AbstractCommand {
 		try {
 			
 			ValidatorOfInputParameters.validateUserPassSeries(userPassSeries);
-			ValidatorOfInputParameters.validateUserPassNumber(userPassNumber_s);
+			ValidatorOfInputParameters.validateUserPassNumber(userPassNumber);
 			ValidatorOfInputParameters.validateUserFIO(userPassName);
 			ValidatorOfInputParameters.validateUserFIO(userPassSurname);
 			ValidatorOfInputParameters.validateUserFIO(userPassPatronomic);
-			ValidatorOfInputParameters.validateUserPassDateOfBirth(userPassDateOfBirth_s);
-			ValidatorOfInputParameters.validateSex(userSex_s);
+			ValidatorOfInputParameters.validateUserPassDateOfBirth(userPassDateOfBirth);
+			ValidatorOfInputParameters.validateSex(userSex);
 			ValidatorOfInputParameters.validateUserEmail(userEmail);
 			ValidatorOfInputParameters.validateUserPassword(userPassword);			
 			
@@ -117,9 +117,9 @@ public class RegisterNewManagerCommand extends AbstractCommand {
 			throw new AsyncResponseException(vExcep.getMessage());
 		}
 		
-		int userPassNumber = Integer.valueOf(userPassNumber_s);
-		Date userPassDateOfBirth = Date.valueOf(userPassDateOfBirth_s);
-		Sex userSex = Sex.getByName(userSex_s);
+		//int userPassNumber = Integer.valueOf(userPassNumber_s);
+		//Date userPassDateOfBirth = Date.valueOf(userPassDateOfBirth_s);
+		//Sex userSex = Sex.getByName(userSex_s);
 		boolean userBlocking = false;
 		UserRole userRole = UserRole.MANAGER;
 		

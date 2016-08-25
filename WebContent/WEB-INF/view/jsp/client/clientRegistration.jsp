@@ -16,7 +16,7 @@
 				<fmt:message key="clientRegistration.jsp.mainBlockName" />
 				<form id="registrationForm" action="Controller" method="POST">
 					<input type = "hidden" name = "command" value = "clientRegistration" />
-					<input type = "hidden" name = "userLanguage" value = "${setLanguage}">
+					<input type = "hidden" name = "userLanguage" value = "${language}">
 					
 					<div class="registrationForm_left">
 						<div class="field">
@@ -69,14 +69,20 @@
 							<label>9. <fmt:message key="clientRegistration.jsp.userPassword" /> </label> 
 							<input type="password" name="userPassword" size=20 />
 						</div> 
+						
+						<div class="field">
+							<label>10. <fmt:message key="clientRegistration.jsp.userPassword2" /> </label> 
+							<input type="password" name="userPassword" size=20 />
+						</div> 
 					</div>					
 					<input id = "signUp" type="submit" value="<fmt:message key="clientRegistration.jsp.signUp" />">					
 				</form>
-					
-				<form action="Controller" method="POST">
-					<input type = "hidden" name = "command" value = "logout" />
-					<input id = "exit" type="submit" value="<fmt:message key="clientRegistration.jsp.Exit" />">
-				</form>
+				<div class = "exitForm">
+					<form action="Controller" method="POST">
+						<input type = "hidden" name = "command" value = "logout" />
+						<input id = "exit" type="submit" value="<fmt:message key="clientRegistration.jsp.Exit" />">
+					</form>
+				</div>
 			</div>
 	
 			<%@ include file = "/WEB-INF/view/jspf/footer.jspf" %>

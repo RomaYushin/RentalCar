@@ -17,7 +17,7 @@ public class Car extends AbstractEntity {
 	private int carRentalCost;
 	private CarStatus carStatus;
 	private Date carYearOfIssue;
-	private List<Date> carBusyDates = new ArrayList<Date>();
+	private List<Date> carBusyDates;
 
 	public Car() {
 		super();

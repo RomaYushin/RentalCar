@@ -1,3 +1,8 @@
-<%@ taglib prefix="ct" uri="/WEB-INF/customTagsLibrary.tld" %>
+<%@ include file = "/WEB-INF/view/jspf/pageDirective.jspf" %>
+<%@ taglib prefix="ct" uri="/WEB-INF/customTagsLibrary.tld"%>
 
-<ct:printOrders orders_map = "${ orders_map }" />
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<ct:printOrders orders="${ orders }" tableName="${tableName}" />

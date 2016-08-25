@@ -44,6 +44,9 @@ select {
 	opacity: 0.8;
 }
 
+span {
+	font:14px "Arial Black", Gadget, sans-serif;
+}
 
 .mainContent {
 	border: solid #443F31 4px;
@@ -60,7 +63,7 @@ select {
 
 #authorizationForm, #registerForm {
 	text-align: left;
-	padding-left: 330px;;
+	padding-left: 300px;
 	margin-top: 15px;
 }
 
@@ -70,7 +73,7 @@ select {
 
 #signIn {
 	
-	margin-left: 230px;
+	margin-left: 255px;
 	margin-top: 15px;
 	font:18px "Arial Black", Gadget, sans-serif;
 	opacity: 0.8;

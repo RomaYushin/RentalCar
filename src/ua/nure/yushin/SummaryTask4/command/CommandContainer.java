@@ -13,29 +13,33 @@ import ua.nure.yushin.SummaryTask4.command.admin.ShowEditCarFormCommand;
 //import ua.nure.yushin.SummaryTask4.command.admin.ShowEditCarFormCommand;
 import ua.nure.yushin.SummaryTask4.command.admin.ShowRegisterManagerFormCommand;
 import ua.nure.yushin.SummaryTask4.command.admin.UpdateUserBlockingCommand;
+import ua.nure.yushin.SummaryTask4.command.client.AvailableCarsAsyncCommand;
+import ua.nure.yushin.SummaryTask4.command.client.CalculateTotalPriceCommand;
+import ua.nure.yushin.SummaryTask4.command.client.CheckOrderStatusAsyncCommand;
+import ua.nure.yushin.SummaryTask4.command.client.ClientPersonalAreaCommand;
+import ua.nure.yushin.SummaryTask4.command.client.ClientRegistrationCommand;
+import ua.nure.yushin.SummaryTask4.command.client.ConfirmRegistrationCommand;
+import ua.nure.yushin.SummaryTask4.command.client.CreateOrderCommand;
+import ua.nure.yushin.SummaryTask4.command.client.DeleteOrderCommand;
+import ua.nure.yushin.SummaryTask4.command.client.OrderCarAsyncCommand;
+import ua.nure.yushin.SummaryTask4.command.client.PayOrderCommand;
+import ua.nure.yushin.SummaryTask4.command.client.SelectCarsByRentalDatesCommand;
+import ua.nure.yushin.SummaryTask4.command.admin.AdminPersonalAreaCommand;
 import ua.nure.yushin.SummaryTask4.command.admin.EditCarCommand;
 //import ua.nure.yushin.SummaryTask4.command.admin.ShowAllCarsFormCommand;
 import ua.nure.yushin.SummaryTask4.command.admin.RegisterNewCarCommand;
 import ua.nure.yushin.SummaryTask4.command.admin.RegisterNewManagerCommand;
 import ua.nure.yushin.SummaryTask4.command.admin.RemoveCarCommand;
-import ua.nure.yushin.SummaryTask4.command.async.CheckOrderStatusAsyncCommand;
-import ua.nure.yushin.SummaryTask4.command.async.OrderCarAsyncCommand;
+import ua.nure.yushin.SummaryTask4.command.manager.ApproveOrderCommand;
+import ua.nure.yushin.SummaryTask4.command.manager.CloseOrderCommand;
+import ua.nure.yushin.SummaryTask4.command.manager.ManagerPersonalAreaCommand;
+import ua.nure.yushin.SummaryTask4.command.manager.RejectOrderCommand;
 import ua.nure.yushin.SummaryTask4.command.manager.ShowOrdersCommand;
 import ua.nure.yushin.SummaryTask4.command.manager.ShowSpecifiedOrderCommand;
-import ua.nure.yushin.SummaryTask4.command.profile.EditLanguage;
-import ua.nure.yushin.SummaryTask4.command.registration.AdminPersonalAreaCommand;
-import ua.nure.yushin.SummaryTask4.command.registration.AvailableCarsAsyncCommand;
-import ua.nure.yushin.SummaryTask4.command.registration.CalculateTotalPriceCommand;
-import ua.nure.yushin.SummaryTask4.command.registration.ClientPersonalAreaCommand;
-import ua.nure.yushin.SummaryTask4.command.registration.ClientRegistrationCommand;
-import ua.nure.yushin.SummaryTask4.command.registration.ConfirmRegistrationCommand;
-import ua.nure.yushin.SummaryTask4.command.registration.CreateOrderCommand;
-import ua.nure.yushin.SummaryTask4.command.registration.DeleteOrderCommand;
-import ua.nure.yushin.SummaryTask4.command.registration.LogoutCommand;
-import ua.nure.yushin.SummaryTask4.command.registration.ManagerPersonalAreaCommand;
-import ua.nure.yushin.SummaryTask4.command.registration.PayOrderCommand;
-import ua.nure.yushin.SummaryTask4.command.registration.SelectCarsByRentalDatesCommand;
-import ua.nure.yushin.SummaryTask4.command.registration.UserAuthorizationCommand;
+import ua.nure.yushin.SummaryTask4.command.profile.EditLanguageCommand;
+import ua.nure.yushin.SummaryTask4.command.profile.LogoutCommand;
+import ua.nure.yushin.SummaryTask4.command.profile.ShowConfirmViewCommand;
+import ua.nure.yushin.SummaryTask4.command.profile.UserAuthorizationCommand;
 
 public class CommandContainer {
 
@@ -44,7 +48,7 @@ public class CommandContainer {
 	private static Map<String, ICommand> commands = new TreeMap<String, ICommand>();
 
 	static {
-		commands.put("editLanguage", new EditLanguage());
+		commands.put("editLanguage", new EditLanguageCommand());
 		commands.put("logout", new LogoutCommand());
 		commands.put("userAuthorization", new UserAuthorizationCommand());
 		commands.put("clientRegistration", new ClientRegistrationCommand());
@@ -60,6 +64,7 @@ public class CommandContainer {
 		commands.put("calculateTotalPriceAsync", new CalculateTotalPriceCommand());
 		commands.put("createOrder", new CreateOrderCommand());
 		commands.put("confirmRegistration", new ConfirmRegistrationCommand());
+		commands.put("showConfirmView", new ShowConfirmViewCommand());
 		commands.put("payOrder", new PayOrderCommand());
 		commands.put("deleteOrder", new DeleteOrderCommand());
 
@@ -78,6 +83,11 @@ public class CommandContainer {
 		// manager command
 		commands.put("showOrders", new ShowOrdersCommand());	
 		commands.put("showSpecifiedOrder", new ShowSpecifiedOrderCommand());
+		commands.put("approveOrder", new ApproveOrderCommand());
+		commands.put("rejectOrder", new RejectOrderCommand());
+		commands.put("closeOrder", new CloseOrderCommand());
+		
+		// no Command
 		commands.put("noCommand", new NoCommand());
 
 		LOG.debug("Command container was successfully initialized");

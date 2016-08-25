@@ -1,4 +1,4 @@
-package ua.nure.yushin.SummaryTask4.command.registration;
+package ua.nure.yushin.SummaryTask4.command.client;
 
 import java.sql.Date;
 import java.util.HashMap;
