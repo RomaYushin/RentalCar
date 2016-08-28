@@ -32,6 +32,9 @@
 						
 					<button id = "showAllOrders_btn" onclick ="showAllOrders()">
 						 <fmt:message key="managerPersonalArea.jsp.allOrders_btn" /> </button>
+						 
+					<button id = "showUnpaidRepairOrders" onclick ="showUnpaidRepairOrders()">
+						 <fmt:message key="managerPersonalArea.jsp.unpaidRepairs" /></button>
 				</div>	
 				<div class = "mainWindow">
 					

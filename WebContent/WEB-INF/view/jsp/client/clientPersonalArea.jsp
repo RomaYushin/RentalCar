@@ -10,7 +10,7 @@
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		<title>clientPersonalArea</title>	
+		<title><fmt:message key="cliPerArea.jsp.title" /></title>	
 		<!-- <link href = "css/welcomeAuthorizationStyle.css" type = "text/css" rel = "stylesheet" /> -->
 		
 		<script src = "js/jquery-3.1.0.js" type = "text/javascript"></script>
@@ -22,20 +22,23 @@
 			<%@ include file = "/WEB-INF/view/jspf/header.jspf" %>
 			<div class = "mainContent" >
 				<!--<fmt:message key="welcomeAuthorization.jsp.mainBlockName" /> -->
-				<h1>Client personal Area</h1>
+				<h1> <fmt:message key="cliPerArea.jsp.mainContent" /> </h1>
 				<div class = "mainButtons">
-					<!-- ajax submin in js file -->
-					<button id = "orderCarButton" onclick ="sendOrderCar()"> Order Car </button>
-					<button id = "checkOrderStatus" onclick ="sendOrderStatus()" > Check order status </button>
+					<input id = "clientId" type = "hidden" value="${ user.getId() }" >
+					<!-- ajax submin in js file --> 
+					<button id = "orderCarButton" onclick ="sendOrderCar()"> <fmt:message key="cliPerArea.jsp.orderCar_btn" /> </button>
+					<button id = "myOrders" onclick ="sendMyOrders()" > <fmt:message key="cliPerArea.jsp.myOrders_btn" /> </button>
+					<button id = "carsReview" onclick ="sendCarsReview()" > <fmt:message key="cliPerArea.jsp.carsReview_btn" /> </button>
+					<button id = "ordersArchive" onclick ="sendOrdersArchive()" > <fmt:message key="cliPerArea.jsp.ordersArchive_btn" /> </button>
 				</div>
 				
 				<div class = "mainWindow">
 				<c:if test="${not empty isCreateOrderSuccess}">
 					<c:if test="${isCreateOrderSuccess}">
 						<div class = "createOrderSuccess">
-							<p> Your order was successfully created!!! </p>
-							<p> Date of your order:</p>
-							<p> 1. Car:
+							<p> <fmt:message key="cliPerArea.jsp.yourOrderSuccessCreated" /> </p>
+							<p> <fmt:message key="cliPerArea.jsp.yourOrderDate" />: </p>
+							<p> 1. <fmt:message key="cliPerArea.jsp.yourOrderCar" />:
 								${newOrder.getOrderCar().getCarBrend()}  
 								${newOrder.getOrderCar().getCarModel()}								
 								<%
@@ -45,28 +48,28 @@
 								%>						
 								<%= gc.get(Calendar.YEAR)%>
 							</p>
-							<p> 2. The presence of the driver:
+							<p> 2. <fmt:message key="cliPerArea.jsp.yourDriver" />:
 								<c:if test="${newOrder.isOrderPresenceOfTheDriver()}">
-									yes
+									<fmt:message key="cliPerArea.jsp.personalDriverYes" />
 								</c:if>
 								<c:if test="${not newOrder.isOrderPresenceOfTheDriver()}">
-									no
+									<fmt:message key="cliPerArea.jsp.personalDriverNo" />
 								</c:if>
 							</p>
-							<p> 3. Start date of order (inclusive):	${newOrder.getOrderStartDate()} </p>
-							<p> 4. End date of order (inclusive): ${newOrder.getOrderEndDate()}  </p>
-							<p> 5. Account id: ${newOrder.getOrderAccount().getId()} </p>
-							<p> 6. Total rent price:  ${newOrder.getOrderAccount().getAccountForRent()} </p>
+							<p> 3. <fmt:message key="cliPerArea.jsp.yourStartDate" />:	${newOrder.getOrderStartDate()} </p>
+							<p> 4. <fmt:message key="cliPerArea.jsp.yourEndDate" />: ${newOrder.getOrderEndDate()}  </p>
+							<p> 5. <fmt:message key="cliPerArea.jsp.yourAccountId" />: ${newOrder.getOrderAccount().getId()} </p>
+							<p> 6. <fmt:message key="cliPerArea.jsp.totalPrice" />:  ${newOrder.getOrderAccount().getAccountForRent()} </p>
 							<div class = "createOrderSuccess_buttons">
 								<form action = "Controller" method = "POST">
 									<input type = "hidden" name = "command" value = "payOrder"/>
 									<input type = "hidden" name = "orderId" value = "${newOrder.getId()}"/>
-									<input type = "submit" value = "Pay" />
+									<input type = "submit" value = " <fmt:message key="cliPerArea.jsp.payOrder" />" />
 								</form>
 								<form action = "Controller" method = "POST">
 									<input type = "hidden" name = "command" value = "deleteOrder"/>
 									<input type = "hidden" name = "orderId" value = "${newOrder.getId()}"/>
-									<input type = "submit" value = "Delete order" />
+									<input type = "submit" value = "<fmt:message key="cliPerArea.jsp.deleteOrder" />" />
 								</form>
 							</div> 																	
 						</div>
@@ -79,12 +82,13 @@
 				
 				<c:if test="${not empty payment}">
 					<c:if test="${payment}">
-						<p> Payment was successfull! </p>
+						<p> <fmt:message key="cliPerArea.jsp.succesfullPayment" />! </p>
 					</c:if>
 					<c:if test="${not payment}">
-						<p> Payment was not made! </p>
+						<p> <fmt:message key="cliPerArea.jsp.failPayment" />! </p>
 					</c:if>
-				</c:if>		
+				</c:if>	
+				
 				</div>								
 			</div>
 		</div>

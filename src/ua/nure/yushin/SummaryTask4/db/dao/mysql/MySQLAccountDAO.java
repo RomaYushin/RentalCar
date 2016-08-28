@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -69,9 +71,11 @@ public class MySQLAccountDAO implements IAccountDAO {
 	}
 
 	@Override
-	public void deleteAccountById (int account_id) {
+	public void deleteAccountById (int account_id) throws DBException {
 		
-		String query = "DELETE FROM `summary_task4_car_rental`.`account` WHERE `id`= ;";
+		String query = "DELETE FROM `account` WHERE `id`= ?;";
+		
+		LOG.info("deleteAccountById start");
 		
 		try (Connection connection = DAOFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(query)) {
@@ -80,11 +84,9 @@ public class MySQLAccountDAO implements IAccountDAO {
 			ps.executeUpdate();
 			
 		} catch (SQLException e) {
-			LOG.error("ERROR in deleteAccountById ");
-		}
-		
-		
-		
+			LOG.error("ERROR in deleteAccountById ", e);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_DELETE_ACCOUNT, e);
+		}		
 	}
 	
 	@Override
@@ -121,6 +123,40 @@ public class MySQLAccountDAO implements IAccountDAO {
 		return account;
 	}
 
+	@Override
+	public List<Account> getAccountsByRepairPaid (boolean state) throws DBException {
+	
+		LOG.info("getAccountsByRepairPaid start");
+		
+		String query = "SELECT * FROM account WHERE `accountRepairPaid` = ?";
+		List <Account> accounts = new ArrayList<>();
+		
+		try (Connection connection = DAOFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(query)) {
+			
+			ps.setString(1, String.valueOf(state));
+			ps.execute();
+			ResultSet rs = ps.getResultSet();
+			
+			while (rs.next()) {
+				Account account = new Account();
+				
+				account.setId(rs.getInt(1));
+				account.setAccountForRent(rs.getInt(2));
+				account.setAccountForRepair(rs.getInt(3));
+				account.setAccountRentPaid(Boolean.valueOf(rs.getString(4)));
+				account.setAccountRepairPaid(Boolean.valueOf(rs.getString(5)));
+				
+				accounts.add(account);
+			}
+			
+		} catch (SQLException e) {
+			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ALL_ACCOUNTS_WITH_UNPAID_REPAIRS, e);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ALL_ACCOUNTS_WITH_UNPAID_REPAIRS, e);
+		}
+		return accounts;
+		
+	}
 	
 	@Override
 	public void updateAccountForRent(Account newAccountForRent) {
@@ -142,6 +178,60 @@ public class MySQLAccountDAO implements IAccountDAO {
 		throw new UnsupportedOperationException();
 	}
 
-	
-	
+	@Override
+	public void updateAccountForRepairAndRepairPaidByOrderId(int orderId, int priceForRepair, boolean repairPaid)
+			throws DBException {
+		
+		LOG.info("updateAccountForRepairAndRepairPaidByOrderId start");
+		
+		String query = "UPDATE `account` SET `accountForRepair`= ?, `accountRepairPaid` = ? "
+				+ "WHERE `id` = (SELECT `account_id` FROM `order` WHERE `id` = ?);";
+		
+		try (Connection connection = DAOFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(query)) {
+			
+			ps.setInt(1, priceForRepair);
+			ps.setString(2, String.valueOf(repairPaid));
+			ps.setInt(3, orderId);
+			ps.execute();
+			
+		} catch (SQLException e) {
+			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_ACCOUNT_FOR_REPAIR_AND_REPAIR_PAID_BY_ORDER_ID, e);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_ACCOUNT_FOR_REPAIR_AND_REPAIR_PAID_BY_ORDER_ID, e);
+		}		
+	}	
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,4 +1,4 @@
-package ua.nure.yushin.SummaryTask4.command.client;
+package ua.nure.yushin.SummaryTask4.command.outOfControl;
 
 import java.sql.Date;
 

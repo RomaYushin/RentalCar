@@ -109,7 +109,7 @@ public class ValidatorOfInputParameters {
 	}
 
 	public static void validateRejectionReason(String rejectionReason) throws ValidationException {
-		if (rejectionReason.length() < 10) {
+		if (rejectionReason.length() < 2) {
 			throw new ValidationException(ExceptionMessages.EXCEPTION_VALIDATION_INVALID_REJECTION_REASON);
 		}
 	}
@@ -191,6 +191,12 @@ public class ValidatorOfInputParameters {
 		if (start.getTime() >= end.getTime()) {
 			LOG.error("Invalid input dates, early that today:" + start + " " + end);
 			throw new ValidationException(ExceptionMessages.EXCEPTION_VALIDATION_INVALID_ORDER_DATE);
+		}
+	}
+	
+	public static void validatePrice (int price) throws ValidationException {
+		if (price <= 0) {
+			throw new ValidationException(ExceptionMessages.EXCEPTION_VALIDATION_INVALID_PRICE);
 		}
 	}
 

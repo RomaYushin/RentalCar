@@ -21,15 +21,21 @@ public interface IOrderDAO {
 	
 	List<Order> getOrdersByOrderStatus (OrderStatus orderStatus) throws DBException;
 	
-	int getAccountIdByOrderIdFromOrder (int orderId);
+	int getAccountIdByOrderId (int orderId) throws DBException;
 	
-	boolean deleteOrderById(int orderId);
+	List <Order> getOrdersByClientIdAndOrderStatus (int clientId, OrderStatus orderStatus) throws DBException;
+	
+	List <Order> getAllOrdersWithUnpaidRepair () throws DBException;
+	
+	void deleteOrderById(int orderId) throws DBException;
+	
+	
 	
 	void updateOrderCar(Car newOrderCar);
 	
 	void updateOrderClient (User newOrderClient);
 	
-	void updateOrderManager (User newOrderManager);
+	void updateOrderManager (User newOrderManager, int orderId) throws DBException;
 	
 	void updateOrderPresenceOfTheDriver (boolean newOrderPresenceOfTheDriver);
 	

@@ -20,9 +20,12 @@ public class Path {
 	public static final String PAGE_FORWARD_CLIENT_PERSONAL_AREA = "/WEB-INF/view/jsp/client/clientPersonalArea.jsp";
 	public static final String PAGE_FORWARD_CLIENT_AVAILABLE_CARS_ASYNC = "/WEB-INF/view/jsp/client/availableCars.jsp";
 	public static final String PAGE_FORWARD_CLIENT_ORDER_CAR_ASYNC = "/WEB-INF/view/jsp/client/orderCarAsync.jsp";
-	public static final String PAGE_FORWARD_CLIENT_CHECK_ORDER_STATUS_ASYNC = "/WEB-INF/view/jsp/client/checkOrderStatusAsync.jsp";
+	public static final String PAGE_FORWARD_CLIENT_CLIENT_NOT_CLOSED_ORDERS = "/WEB-INF/view/jsp/client/clientNotClosedOrders.jsp";
 	public static final String PAGE_FORWARD_CLIENT_TOTAL_PRICE_ASYNC = "/WEB-INF/view/jsp/client/totalPriceAsync.jsp";	
-	public static final String PAGE_FORWARD_CLIENT_CONFIRM_REGISTRATION = "/WEB-INF/view/confirmRegistrationView.jsp";	
+	public static final String PAGE_FORWARD_CLIENT_CONFIRM_REGISTRATION = "/WEB-INF/view/confirmRegistrationView.jsp";
+	public static final String PAGE_FORWARD_CLIENT_OPEN_ORDER = "/WEB-INF/view/jsp/client/openClientOrder.jsp";
+	public static final String PAGE_FORWARD_CLIENT_CARS_REVIEW = "/WEB-INF/view/jsp/client/carsReview.jsp";
+	public static final String PAGE_FORWARD_CLIENT_ARCHIVE_ORDERS = "/WEB-INF/view/jsp/client/archiveOrders.jsp";
 	
 	// forward admin
 	public static final String PAGE_FORWARD_ADMIN_PERSONAL_AREA = "/WEB-INF/view/jsp/admin/adminPersonalArea.jsp";
@@ -61,6 +64,9 @@ public class Path {
 	public static final String COMMAND_REDIRECT_CLIENT_CREATE_ORDER = "Controller?command=createOrder";
 	public static final String COMMAND_REDIRECT_CLIENT_PAY_ORDER = "Controller?command=payOrder";
 	public static final String COMMAND_REDIRECT_CLIENT_DELETE_ORDER = "Controller?command=deleteOrder";	
+	public static final String COMMAND_REDIRECT_CLIENT_NOT_CLOSED_ORDERS = "Controller?command=clientNotClosedOrders";	
+	public static final String COMMAND_REDIRECT_CLIENT_OPEN_ORDER = "Controller?command=openClientOrder";
+	public static final String COMMAND_REDIRECT_CLIENT_CARS_REVIEW = "Controller?command=clientCarsReview";
 	
 	// redirect admin
 	public static final String COMMAND_REDIRECT_ADMIN_PERSONAL_AREA = "Controller?command=adminPersonalArea";
@@ -83,4 +89,36 @@ public class Path {
 	public static final String COMMAND_REDIRECT_MANAGER_APPROVE_ORDER = "Controller?command=approveOrder";
 	public static final String COMMAND_REDIRECT_MANAGER_REJECT_ORDER = "Controller?command=rejectOrder";
 	public static final String COMMAND_REDIRECT_MANAGER_CLOSE_ORDER = "Controller?command=closeOrder";
+	public static final String COMMAND_REDIRECT_MANAGER_CREATE_BILL_FOR_REPAIR = "Controller?command=createBillForRepair";
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

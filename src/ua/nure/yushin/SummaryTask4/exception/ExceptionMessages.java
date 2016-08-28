@@ -1,9 +1,9 @@
 package ua.nure.yushin.SummaryTask4.exception;
 
 public class ExceptionMessages {
-	
-	// public static final String ERR_CANNOT_OBTAIN_USER_ORDER_BEANS = 
-	//"Cannot obtain user order beans";
+
+	// public static final String ERR_CANNOT_OBTAIN_USER_ORDER_BEANS =
+	// "Cannot obtain user order beans";
 
 	public static final String EXCEPTION_CAN_NOT_INSERT_NEW_CAR = "Can not insert new Car in DB";
 	public static final String EXCEPTION_CAN_NOT_GET_ALL_CARS = "Can not get cars from DB";
@@ -33,7 +33,15 @@ public class ExceptionMessages {
 	public static final String EXCEPTION_CAN_NOT_INSERT_ORDER_DATES = " Can not insert order dates!";
 	public static final String EXCEPTION_CAN_NOT_INSERT_NEW_ORDER = " Can not insert new order!";
 	public static final String EXCEPTION_CAN_NOT_INSERT_NEW_BYSY_DATE = " Can not insert new busy date!";
-	
+	public static final String EXCEPTION_CAN_NOT_GET_ORDERS_BY_CLIENT_ID_AND_ORDER_STATUS = " Can not get orders by client id and order status!";
+	public static final String EXCEPTION_CAN_NOT_DELETE_ORDER = " Can not delete order!";
+	public static final String EXCEPTION_CAN_NOT_DELETE_ACCOUNT = " Can not delete account!";
+	public static final String EXCEPTION_CAN_NOT_GET_ACCOUNT_ID_BY_ORDER_ID = " Can not get account id by order id!";
+	public static final String EXCEPTION_CAN_NOT_GET_ALL_ORDERS_WITH_UNPAID_REPAIRS = "Can not get all orders with unpaid repairs!";
+	public static final String EXCEPTION_CAN_NOT_GET_ALL_ACCOUNTS_WITH_UNPAID_REPAIRS = "Can not get all accounts with unpaid repairs!";
+	public static final String EXCEPTION_CAN_NOT_UPDATE_MANAGER_NAME_WHO_CLOSED_ORDER = "Can not update manager name who closed order!";
+	public static final String EXCEPTION_CAN_NOT_UPDATE_ACCOUNT_FOR_REPAIR_AND_REPAIR_PAID_BY_ORDER_ID = "Can not update account for repair and repair paid by order id!";
+
 	// exceptions validation add new car
 	public static final String EXCEPTION_VALIDATION_INVALID_CAR_BREND = "Invalid car brend. Name contains wrong character (for example: @#)!";
 	public static final String EXCEPTION_VALIDATION_INVALID_CAR_MODEL = "Invalid car model. Name contains wrong character (for example: @#)!";
@@ -54,10 +62,11 @@ public class ExceptionMessages {
 	public static final String EXCEPTION_VALIDATION_INVALID_ORDER_ID = "Invalid order id!";
 	public static final String EXCEPTION_VALIDATION_INVALID_REJECTION_REASON = "Invalid rejection reason!";
 	public static final String EXCEPTION_VALIDATION_INVALID_ORDER_DATE = "Invalid order date!";
-	
+	public static final String EXCEPTION_VALIDATION_INVALID_PRICE = "Invalid price!";
+
 	// App
-	public static final String EXCEPTION_BLOCKED_USER= "User is blocked!";
-	public static final String EXCEPTION_UNCONFIRMED_USER= "User is unconfirmed!";
-	
+	public static final String EXCEPTION_BLOCKED_USER = "User is blocked!";
+	public static final String EXCEPTION_UNCONFIRMED_USER = "User is unconfirmed!";
+
 	public static final String EXCEPTION_NULL_IN_REQUEST_PARAMETR = "Empty field!";
 }

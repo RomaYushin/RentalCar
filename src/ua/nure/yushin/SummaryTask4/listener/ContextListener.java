@@ -21,7 +21,6 @@ public class ContextListener implements ServletContextListener {
 	 * Default constructor.
 	 */
 	public ContextListener() {
-		// TODO Auto-generated constructor stub
 	}
 
 	/**
@@ -56,16 +55,14 @@ public class ContextListener implements ServletContextListener {
 	}
 
 	private void initCommandContainer() {
-
-		/*
+		
 		// initialize commands container
 		// just load class to JVM
 		try {
 			Class.forName("ua.nure.yushin.SummaryTask4.command.CommandContainer");
 		} catch (ClassNotFoundException ex) {
 			throw new IllegalStateException("Cannot initialize Command Container");
-		}
-		*/
+		}		
 	}
 
 	private void printLog(String msg) {

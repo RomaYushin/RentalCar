@@ -44,7 +44,6 @@ public class ApproveOrderCommand extends AbstractCommand {
 		}
 		LOG.info ("End executing ShowSpecifiedOrderCommand.execute");
 		return result;
-		
 	}
 	
 	private static String doPost (HttpServletRequest request, HttpServletResponse response)

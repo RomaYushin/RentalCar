@@ -2,7 +2,6 @@ package ua.nure.yushin.SummaryTask4.command.client;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -11,7 +10,11 @@ import ua.nure.yushin.SummaryTask4.controller.ActionType;
 import ua.nure.yushin.SummaryTask4.controller.Path;
 import ua.nure.yushin.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.yushin.SummaryTask4.db.dao.DatabaseTypes;
+import ua.nure.yushin.SummaryTask4.db.dao.IAccountDAO;
 import ua.nure.yushin.SummaryTask4.db.dao.IOrderDAO;
+import ua.nure.yushin.SummaryTask4.exception.AppException;
+import ua.nure.yushin.SummaryTask4.exception.ExceptionMessages;
+import ua.nure.yushin.SummaryTask4.validators.ValidatorOfInputParameters;
 
 public class DeleteOrderCommand extends AbstractCommand {
 
@@ -20,7 +23,7 @@ public class DeleteOrderCommand extends AbstractCommand {
 	private static final Logger LOG = Logger.getLogger(DeleteOrderCommand.class);
 
 	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType) {
+	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType) throws AppException {
 
 		LOG.info("Start executing DeleteOrderCommand execute");
 		String result = null;
@@ -34,50 +37,29 @@ public class DeleteOrderCommand extends AbstractCommand {
 		return result;
 	}
 
-	private String doPost (HttpServletRequest request, HttpServletResponse response) {
+	private String doPost (HttpServletRequest request, HttpServletResponse response) throws AppException {
 		
 		LOG.info("PayOrderCommand.doPost start");
+		int orderId = 0;
 		
-		HttpSession session = request.getSession(false);
-		int orderId = (int) Integer.valueOf(request.getParameter("orderId"));
+		try {
+			orderId = (int) Integer.valueOf(request.getParameter("orderId"));
+		} catch (Exception e) {
+			throw new AppException(ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR);
+		}
+		
+		ValidatorOfInputParameters.validateId(orderId);
 		
 		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
-		IOrderDAO iOrderDAO = daoFactory.getOrderDAO();
-		boolean result = iOrderDAO.deleteOrderById (orderId);
-		
-		if (!result) {
-			LOG.error("ERROR  order wasn't deleted");
-			session.setAttribute("deleteOrder", false);
-			return Path.COMMAND_REDIRECT_CLIENT_DELETE_ORDER;
-		}		
-		session.setAttribute("deleteOrder", true);		
+		IOrderDAO iOrderDAO = daoFactory.getOrderDAO();		
+		iOrderDAO.deleteOrderById(orderId);
 		
 		LOG.info("PayOrderCommand.doPost end");
 		return Path.COMMAND_REDIRECT_CLIENT_DELETE_ORDER;
 	}
 
-	private String doGet (HttpServletRequest request, HttpServletResponse response) {
-		
-		LOG.info ("Start executing DeleteOrderCommand.doGet");
-		HttpSession session = request.getSession(false);
-		
-		if (session.getAttribute("deleteOrder") == null) {
-			LOG.error("invalid doGet request");
-			return Path.PAGE_FORWARD_CLIENT_PERSONAL_AREA;
-		}
-		
-		boolean isDeleteOrder = (boolean)(session.getAttribute("deleteOrder"));
-		session.removeAttribute("deleteOrder");
-		
-		LOG.info("isDeleteOrderr in doGet: " + isDeleteOrder);
-		
-		if (!isDeleteOrder) {
-			request.setAttribute("isDeleteOrder", false);
-			return Path.PAGE_FORWARD_CLIENT_PERSONAL_AREA;
-		}
-		
-		request.setAttribute("isDeleteOrder", isDeleteOrder);
-		
-		return Path.PAGE_FORWARD_ADMIN_PERSONAL_AREA;
+	private String doGet (HttpServletRequest request, HttpServletResponse response) {		
+		LOG.info ("Start executing DeleteOrderCommand.doGet");		
+		return Path.PAGE_FORWARD_CLIENT_PERSONAL_AREA;
 	}
 }

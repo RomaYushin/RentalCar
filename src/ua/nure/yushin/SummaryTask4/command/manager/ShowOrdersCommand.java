@@ -1,27 +1,19 @@
 package ua.nure.yushin.SummaryTask4.command.manager;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import javax.mail.Session;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
-import com.mysql.fabric.xmlrpc.base.Param;
-
 import ua.nure.yushin.SummaryTask4.command.AbstractCommand;
-import ua.nure.yushin.SummaryTask4.command.ICommand;
-import ua.nure.yushin.SummaryTask4.command.admin.ShowAllCarsFormCommand;
+
 import ua.nure.yushin.SummaryTask4.controller.ActionType;
 import ua.nure.yushin.SummaryTask4.controller.Path;
 import ua.nure.yushin.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.yushin.SummaryTask4.db.dao.DatabaseTypes;
-import ua.nure.yushin.SummaryTask4.db.dao.ICarDAO;
 import ua.nure.yushin.SummaryTask4.db.dao.IOrderDAO;
 import ua.nure.yushin.SummaryTask4.entity.Order;
 import ua.nure.yushin.SummaryTask4.entity.OrderStatus;
@@ -95,6 +87,10 @@ public class ShowOrdersCommand extends AbstractCommand {
 				// REJECTED ORDERS
 				tableName = "managerPersonalArea.jsp.rejectedOrders_tbl";
 				break;	
+			case "showUnpaidRepairOrders":
+				orders = iOrderDAO.getAllOrdersWithUnpaidRepair();
+				tableName = "managerPersonalArea.jsp.unpaidRepairs";
+				break;
 			case "showAllOrders":
 			default:
 				orders = iOrderDAO.getAllOrdersFromDB();

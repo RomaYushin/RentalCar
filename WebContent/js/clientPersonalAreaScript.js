@@ -1,3 +1,9 @@
+
+/************************************
+ * ******** main buttons ************
+ * **********************************
+ * */
+ 
 function sendOrderCar() {
 	
 	$.ajax({
@@ -14,13 +20,50 @@ function sendOrderCar() {
 	});
 }
 
-function sendOrderStatus() {
+function sendMyOrders() {
+	
+	var clientId = $('#clientId').val();
+	//alert(clientId);
+	
+	$.ajax({
+		type : "POST",
+		url : "Controller?command=clientNotClosedOrders",
+		data: {
+			clientId: clientId
+		},
+		success : function(responseText) {
+			$(".mainWindow").html(responseText);
+
+		},
+		error : function() {
+			alert("error in checkOrderStatus ");
+		}
+	});
+	
+}
+
+function sendCarsReview () {
 	
 	$.ajax({
 		type : "GET",
-		url : "Controller?command=checkOrderStatus",
+		url : "Controller?command=clientCarsReview",
 		success : function(responseText) {
-			// alert ("successResponse" + responseText);
+			$(".mainWindow").html(responseText);
+
+		},
+		error : function() {
+			alert("error in checkOrderStatus ");
+		}
+	});
+	
+}
+
+function sendOrdersArchive() {
+	
+	$.ajax({
+		type : "GET",
+		url : "Controller?command=clientOrdersArchive",
+		success : function(responseText) {
 			$(".mainWindow").html(responseText);
 
 		},
@@ -29,7 +72,10 @@ function sendOrderStatus() {
 		}
 	});
 }
-
+/**************************************
+ * ********* after orderCar *********** 
+ * ************************************
+ */
 function submitDates() {
 
 	var startDate = $('#orderStartDate').val();
@@ -203,3 +249,54 @@ function createNewOrder() {
 		$('#createOrderForm').submit(); 
 	}
 }
+
+/******************************************
+ * ******* after my orders ****************
+ * ****************************************
+ */
+function openOrder (orderId) {
+	
+	
+	$.ajax({
+		type : "POST",
+		url : "Controller?command=openClientOrder",
+		data : {
+			orderId : orderId
+		},
+		success : function(responseText) {
+			$(".mainWindow").html(responseText);
+		},
+		error : function() {
+			alert("error");
+		}
+	});
+}
+
+/******************************************
+ * ******* after cars review **************
+ * ****************************************
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

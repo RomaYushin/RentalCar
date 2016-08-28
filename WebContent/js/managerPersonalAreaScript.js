@@ -23,6 +23,11 @@ function showAllOrders() {
 	sendCommandAsync(command);
 }
 
+function showUnpaidRepairOrders () {
+	var command = "showUnpaidRepairOrders";
+	sendCommandAsync (command);
+}
+
 function sendCommandAsync (command) {
 	
 	//alert (command);
@@ -53,6 +58,7 @@ function openOrder (orderId) {
 		success : function(responseText) {
 			$(".mainWindow").html(responseText);
 			$(".rejTextArea").hide();
+			$('.priceForRepair').hide();
 			//alert(responseText);
 		},
 		error : function() {
@@ -74,6 +80,7 @@ function approveOrder () {
 		success : function(responseText) {
 			$(".mainWindow").html(responseText);
 			$(".rejTextArea").hide();
+			$('.priceForRepair').hide();
 			//alert(responseText);
 		},
 		error : function() {
@@ -85,17 +92,19 @@ function approveOrder () {
 function closeOrder () {
 	
 	var orderId = $('#orderId').val();
+	var managerId = $('#userId').val();
 	
 	$.ajax({
 		type : "POST",
 		url : "Controller?command=closeOrder",
 		data : {
-			orderId: orderId 
+			orderId: orderId, 
+			userId: managerId
 		},
 		success : function(responseText) {
 			$(".mainWindow").html(responseText);
 			$(".rejTextArea").hide();
-			//alert(responseText);
+			$('.priceForRepair').hide();
 		},
 		error : function() {
 			alert("error");
@@ -129,4 +138,29 @@ function rejectOrder () {
 
 function showTextArea () {
 	$('.rejTextArea').show();
+}
+
+function showAreaForRepairPrice () {
+	$('.priceForRepair').show();	
+}
+
+function createBillForRepair() {
+	
+	var orderId = $('#orderId').val();
+	var priceForRepair = $('#priceForRepair').val();
+	
+	$.ajax({
+		type : "POST",
+		url : "Controller?command=createBillForRepair",
+		data : {
+			orderId: orderId,
+			priceForRepair: priceForRepair
+		}, 
+		success : function(responseText) {
+			$(".mainWindow").html(responseText);
+		},
+		error : function() {
+			alert("error");
+		}
+	});
 }

@@ -1,10 +1,11 @@
-package ua.nure.yushin.SummaryTask4.command;
+package ua.nure.yushin.SummaryTask4.command.common;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.Logger;
 
+import ua.nure.yushin.SummaryTask4.command.AbstractCommand;
 import ua.nure.yushin.SummaryTask4.controller.ActionType;
 import ua.nure.yushin.SummaryTask4.controller.Path;
 import ua.nure.yushin.SummaryTask4.exception.AppException;

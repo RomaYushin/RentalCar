@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.omg.DynamicAny.DynAnyOperations;
 
 import ua.nure.yushin.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.yushin.SummaryTask4.db.dao.DatabaseTypes;
@@ -17,8 +16,9 @@ import ua.nure.yushin.SummaryTask4.db.dao.IAccountDAO;
 import ua.nure.yushin.SummaryTask4.db.dao.ICarBusyDates;
 import ua.nure.yushin.SummaryTask4.db.dao.ICarDAO;
 import ua.nure.yushin.SummaryTask4.db.dao.IOrderDAO;
-import ua.nure.yushin.SummaryTask4.db.dao.IOrderDates;
+//import ua.nure.yushin.SummaryTask4.db.dao.IOrderDates;
 import ua.nure.yushin.SummaryTask4.db.dao.IUserDAO;
+import ua.nure.yushin.SummaryTask4.entity.Account;
 import ua.nure.yushin.SummaryTask4.entity.Car;
 import ua.nure.yushin.SummaryTask4.entity.Order;
 import ua.nure.yushin.SummaryTask4.entity.OrderStatus;
@@ -29,6 +29,9 @@ import ua.nure.yushin.SummaryTask4.exception.ExceptionMessages;
 public class MySQLOrderDAO implements IOrderDAO {
 
 	private static final Logger LOG = Logger.getLogger(MySQLOrderDAO.class);
+	
+	
+	
 	/*
 	@Override
 	public void insertNewOrder(Order newOrder) {
@@ -85,9 +88,13 @@ public class MySQLOrderDAO implements IOrderDAO {
 	}
 	*/
 	
+	
+	
+	
 	public void insertNewOrder(Order newOrder, List<Date> busyDates) throws DBException {
 		
 		LOG.info("insertion of new Order start");
+		
 		
 		int counter = 0;
 		int current_id = 0;
@@ -99,13 +106,15 @@ public class MySQLOrderDAO implements IOrderDAO {
 		String query_insertNewOrder = "INSERT INTO `summary_task4_car_rental`.`order` "
 				+ "(`car_id`, `client_id`, `presenceOfTheDriver`, `startDate`, "
 				+ "`endDate`, `account_id`, `orderStatus`, `rejectionReason`, `createOrderDate`,"
-				+ "`managerNameWhoClosedOrder`, `order_dates_id`) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+				+ "`managerNameWhoClosedOrder`) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 		
+		/*
 		String query_insertDatesForSpecifiedOrderById = "INSERT INTO `order_dates` "
 				+ "(order_id, order_date) VALUES (?, ?);";
+				*/
 		
-		String query_updateOrderDatesId = "UPDATE `order` SET `order_dates_id` = ? WHERE id = ?";
+		//String query_updateOrderDatesId = "UPDATE `order` SET `order_dates_id` = ? WHERE id = ?";
 		
 		String query_insertCarBusyDates = "INSERT INTO `car_busy_dates` (car_id, busyDate, order_id) VALUES (?, ?, ?);";
 		
@@ -154,7 +163,7 @@ public class MySQLOrderDAO implements IOrderDAO {
 			ps.setString(8, newOrder.getOrderRejectionReason());	
 			ps.setDate(9, newOrder.getCreateOrderDate());
 			ps.setString(10, newOrder.getManagerNameWhoClosedOrder());
-			ps.setNull(11, java.sql.Types.INTEGER);			
+			//ps.setNull(11, java.sql.Types.INTEGER);			
 			ps.execute();
 			
 			//rs = ps.executeQuery("SELECT LAST_INSERT_ID()");
@@ -170,6 +179,7 @@ public class MySQLOrderDAO implements IOrderDAO {
 			newOrder.setId(current_id);
 			//************* добавить даты заказа в order_dates по current_id
 			//iOrderDates.insertDatesForSpecifiedOrderById(busyDates, current_id);
+			/*
 			for (Date currentOrderDate: busyDates) {		
 				ps = connection.prepareStatement(query_insertDatesForSpecifiedOrderById);					
 				LOG.info("insertion of date start");	
@@ -178,12 +188,15 @@ public class MySQLOrderDAO implements IOrderDAO {
 				ps.setDate(2, currentOrderDate);		
 				ps.executeUpdate();				
 			}
+			*/
 			
 			// *******дабавить в таблицу order.order_date_id id заказа
+			/*
 			ps = connection.prepareStatement( query_updateOrderDatesId);
 			ps.setInt(1, newOrder.getId());
 			ps.setInt(2, newOrder.getId());		
 			ps.executeUpdate();
+			*/
 			
 			// *****добавить забронированные даты заказа к авто			
 			//iCarBusyDatesDAO.insertNewBusyDates(newOrder.getOrderCar(), busyDates);
@@ -310,10 +323,11 @@ public class MySQLOrderDAO implements IOrderDAO {
 	}
 	
 	@Override
-	public int getAccountIdByOrderIdFromOrder (int orderId) {
+	public int getAccountIdByOrderId (int orderId) throws DBException {
 		
-		String query = "SELECT `order`.`account_id` FROM `order` WHERE id = ?;";
+		String query = "SELECT `account_id` FROM `order` WHERE id = ?;";
 		int account_id = 0;
+		int counter = 0;
 		
 		try ( Connection connection = DAOFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(query)) {
@@ -323,11 +337,15 @@ public class MySQLOrderDAO implements IOrderDAO {
 			
 			ResultSet rs = ps.getResultSet();
 			while (rs.next()) {
+				if (++counter > 1) {
+					throw new SQLException("Must be one");
+				}				
 				account_id = rs.getInt(1);
 			}
 			
 		} catch (SQLException e) {
 			LOG.error("ERROR in getAccountIdByOrderId" + e);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ACCOUNT_ID_BY_ORDER_ID, e);
 		}		
 		return account_id;
 	}
@@ -376,46 +394,147 @@ public class MySQLOrderDAO implements IOrderDAO {
 	}
 	
 	@Override
-	public boolean deleteOrderById (int orderId) {
+	public List<Order>  getOrdersByClientIdAndOrderStatus (int clientId, OrderStatus orderStatus)  throws DBException {
 
-		String query = "DELETE FROM `summary_task4_car_rental`.`order` WHERE `id`= ?;";
-		boolean flag = true;
+		LOG.info("getOrdersByCkientId start");
 		
+		String query = "SELECT * FROM `order` WHERE client_id = ? AND orderStatus <> ?;";
+		List <Order> orders = new ArrayList<>();
+		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
+		ICarDAO iCarDAO = daoFactory.getCarDAO();
+		IUserDAO iUserDAO = daoFactory.getUserDAO();
+		IAccountDAO iAccountDAO = daoFactory.getAccountDAO();
+ 		
+		try (Connection connection = DAOFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(query)) {
+			
+			ps.setInt(1, clientId);
+			ps.setString(2, orderStatus.toString());
+			ps.execute();
+			
+			ResultSet rs = ps.getResultSet();
+			while (rs.next()) {
+				Order order = new Order ();
+				
+				order.setId(rs.getInt(1));
+				order.setOrderCar(iCarDAO.getCarById(rs.getInt(2)));
+				order.setOrderClient(iUserDAO.getUserById(rs.getInt(3)));
+				order.setOrderPresenceOfTheDriver(Boolean.valueOf(rs.getString(4)));
+				order.setOrderStartDate(rs.getDate(5));
+				order.setOrderEndDate(rs.getDate(6));
+				order.setOrderAccount(iAccountDAO.getAccountById(rs.getInt(7)));
+				order.setOrderStatus(OrderStatus.getByName(rs.getString(8)));
+				order.setOrderRejectionReason(rs.getString(9));
+				order.setCreateOrderDate(rs.getDate(10));
+				order.setManagerNameWhoClosedOrder(rs.getString(11));
+				
+				orders.add(order);
+			}
+			
+		} catch (SQLException e) {
+			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ORDERS_BY_CLIENT_ID_AND_ORDER_STATUS);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ORDERS_BY_CLIENT_ID_AND_ORDER_STATUS);
+		}
+		
+		
+		return orders;
+	}
+	
+	@Override
+	public List<Order> getAllOrdersWithUnpaidRepair() throws DBException {
+
+		LOG.info(" getAllOrdersWithUnpaidRepair start");
+		
+		String query = "SELECT * FROM `order` WHERE `account_id` = ? AND `orderStatus` <> 'CLOSE';";		
+		
+		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
+		ICarDAO iCarDAO = daoFactory.getCarDAO();
+		IUserDAO iUserDAO = daoFactory.getUserDAO();		
+		IAccountDAO iAccountDAO = daoFactory.getAccountDAO();
+		List <Account> accountsWithUnpaidRepair = iAccountDAO.getAccountsByRepairPaid(false);
+		List <Order> orders = new ArrayList<>();
+		
+		for (Account a : accountsWithUnpaidRepair) {			
+			try (Connection connection = DAOFactory.getConnection();
+					PreparedStatement ps = connection.prepareStatement(query)){
+				
+				ps.setInt(1, a.getId());
+				ps.execute();
+				ResultSet rs = ps.getResultSet();
+				
+				while (rs.next()) {
+					Order order = new Order();
+					
+					order.setId(rs.getInt(1));
+					order.setOrderCar(iCarDAO.getCarById(rs.getInt(2)));
+					order.setOrderClient(iUserDAO.getUserById(rs.getInt(3)));
+					order.setOrderPresenceOfTheDriver(Boolean.valueOf(rs.getString(4)));
+					order.setOrderStartDate(rs.getDate(5));
+					order.setOrderEndDate(rs.getDate(6));
+					order.setOrderAccount(iAccountDAO.getAccountById(rs.getInt(7)));
+					order.setOrderStatus(OrderStatus.getByName(rs.getString(8)));
+					order.setOrderRejectionReason(rs.getString(9));
+					order.setCreateOrderDate(rs.getDate(10));
+					order.setManagerNameWhoClosedOrder(rs.getString(11));
+					
+					orders.add(order);
+				}				
+			} catch (SQLException e) {
+				LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ALL_ORDERS_WITH_UNPAID_REPAIRS, e);
+				throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_GET_ALL_ORDERS_WITH_UNPAID_REPAIRS, e);
+			}
+		}
+		return orders;	
+	}
+	
+	@Override
+	public void deleteOrderById (int orderId) throws DBException {
+
+		LOG.info(" deleteOrderById start");
+		
+		String query = "DELETE FROM `order` WHERE `id`= ?;";
+		
+		String query2 = "DELETE FROM `account` WHERE `id`= ?;";
+		
+		int account_id = 0;
+		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
+		IAccountDAO iAccountDAO = daoFactory.getAccountDAO();
 		Connection connection = null;
 		PreparedStatement ps = null;
-		ResultSet rs = null;
+		ResultSet rs = null;			
 		
 		try {
 			connection = DAOFactory.getConnection();
 			connection.setAutoCommit(false);
 			
 			// получить id счета перед удалением
-			int account_id = getAccountIdByOrderIdFromOrder(orderId);			
+			account_id = getAccountIdByOrderId(orderId);			
 			
 			ps = connection.prepareStatement(query);
 			ps.setInt(1, orderId);
-			ps.executeUpdate(query);			
+			ps.executeUpdate();			
 			
 			// удалить счет
-			DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
-			IAccountDAO iAccountDAO = daoFactory.getAccountDAO();
-			iAccountDAO.deleteAccountById (orderId);			
+			ps = connection.prepareStatement(query2);
+			ps.setInt(1, account_id);
+			ps.executeUpdate();			
 			
 			connection.commit();
+			
 		} catch (SQLException e) {
-			flag = false;
 			try {
 				connection.rollback();
 			} catch (SQLException ee) {
 				
 			}
+			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_DELETE_ORDER, e);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_DELETE_ORDER, e);
 			
 		} finally {
 			//close connection
             try {connection.close();} catch (SQLException e) {}
             try {ps.close();} catch (SQLException e) {}
-		}		
-		return flag;
+		}	
 	}	
 
 	@Override
@@ -429,8 +548,23 @@ public class MySQLOrderDAO implements IOrderDAO {
 	}
 
 	@Override
-	public void updateOrderManager(User newOrderManager) {
-		throw new UnsupportedOperationException();
+	public void updateOrderManager (User newOrderManager, int orderId) throws DBException {
+		
+		LOG.info(" updateOrderManager start");
+		
+		String query = "UPDATE `order` SET `managerNameWhoClosedOrder`= ? WHERE `id` = ?;";
+		
+		try (Connection connection = DAOFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(query)) {
+			
+			ps.setString(1, (newOrderManager.getUserPassSurname() + " " + newOrderManager.getUserPassName()) );
+			ps.setInt(2, orderId);
+			ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_MANAGER_NAME_WHO_CLOSED_ORDER, e);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_MANAGER_NAME_WHO_CLOSED_ORDER, e);
+		}		
 	}
 
 	@Override
@@ -527,5 +661,5 @@ public class MySQLOrderDAO implements IOrderDAO {
 			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_REJECTION_REASON);
 			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_REJECTION_REASON);
 		}	
-	}
+	}	
 }

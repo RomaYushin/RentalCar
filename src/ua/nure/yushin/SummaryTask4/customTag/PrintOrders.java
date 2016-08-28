@@ -54,9 +54,19 @@ public class PrintOrders extends TagSupport {
 		String nameVal = LocaleUtil.getValueByKey("managerPersonalArea.jsp.name_clmn", session);
 		String patronomicVal = LocaleUtil.getValueByKey("managerPersonalArea.jsp.patronomic_clmn", session);
 		String emailVal = LocaleUtil.getValueByKey("managerPersonalArea.jsp.email_clmn", session);
-		String accountIdVal = LocaleUtil.getValueByKey("managerPersonalArea.jsp.orderId_clmn", session);
-		String orderCreationDateVal = LocaleUtil.getValueByKey("managerPersonalArea.jsp.orderId_clmn", session);
-		String openOrderVal = LocaleUtil.getValueByKey("managerPersonalArea.jsp.orderId_clmn", session);
+		String accountIdVal = LocaleUtil.getValueByKey("managerPersonalArea.jsp.accountId_clmn", session);
+		String orderCreationDateVal = LocaleUtil.getValueByKey("managerPersonalArea.jsp.orderCreationDate_clmn", session);
+		String orderPaymentCondition  = LocaleUtil.getValueByKey("managerPersonalArea.jsp.orderPaymentCondition", session);
+		
+		String orderStatus = LocaleUtil.getValueByKey("managerPersonalArea.jsp.orderStatus", session);
+		String orderUntreated = LocaleUtil.getValueByKey("managerPersonalArea.jsp.UNTREATED", session);
+		String orderActive = LocaleUtil.getValueByKey("managerPersonalArea.jsp.ACTIVE", session);
+		String orderClose = LocaleUtil.getValueByKey("managerPersonalArea.jsp.CLOSE", session);
+		String orderRejected = LocaleUtil.getValueByKey("managerPersonalArea.jsp.REJECTED", session);
+		
+		String orderPaymentYes  = LocaleUtil.getValueByKey("managerPersonalArea.jsp.orderPaymentYes", session);
+		String orderPaymentNo  = LocaleUtil.getValueByKey("managerPersonalArea.jsp.orderPaymentNo", session);
+		String openOrderVal = LocaleUtil.getValueByKey("managerPersonalArea.jsp.openOrder_clmn", session);
 		String openOrderButton = LocaleUtil.getValueByKey("managerPersonalArea.jsp.openOrder_clmn", session);
 
 		int number = 0;
@@ -80,6 +90,8 @@ public class PrintOrders extends TagSupport {
 			jspOut.println("<th>" + emailVal + "</th>");
 			jspOut.println("<th>" + accountIdVal + "</th>");
 			jspOut.println("<th>" + orderCreationDateVal + "</th>");
+			jspOut.println("<th>" + orderPaymentCondition + "</th>");
+			jspOut.println("<th>" + orderStatus + "</th>");
 			jspOut.println("<th>" + openOrderVal + "</th>");
 
 			jspOut.println("</tr>");
@@ -95,8 +107,28 @@ public class PrintOrders extends TagSupport {
 				jspOut.println("<td>" + order.getOrderClient().getUserEmail() + "</td>");
 				jspOut.println("<td>" + order.getOrderAccount().getId() + "</td>");
 				jspOut.println("<td>" + order.getCreateOrderDate() + "</td>");
+				
+				if (order.getOrderAccount().isAccountRentPaid()) {
+					jspOut.println("<td>" + orderPaymentYes + "</td>");
+				} else {
+					jspOut.println("<td>" + orderPaymentNo + "</td>");
+				}
+				
+				switch (order.getOrderStatus().toString()) {
+				case "UNTREATED":
+					jspOut.println("<td>" + orderUntreated + "</td>");
+					break;
+				case "ACTIVE":
+					jspOut.println("<td>" + orderActive + "</td>");
+					break;
+				case "CLOSE":
+					jspOut.println("<td>" + orderClose + "</td>");
+					break;
+				case "REJECTED":
+					jspOut.println("<td>" + orderRejected + "</td>");
+					break;				
+				}
 				jspOut.println("<td> <button onclick =\"openOrder(" + order.getId() + ");\"> "+ openOrderButton +"</button></td>");
-
 				jspOut.println("</tr>");
 			}
 			jspOut.println("</table>");

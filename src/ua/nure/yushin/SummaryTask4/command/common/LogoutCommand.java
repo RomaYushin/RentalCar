@@ -1,4 +1,4 @@
-package ua.nure.yushin.SummaryTask4.command.profile;
+package ua.nure.yushin.SummaryTask4.command.common;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

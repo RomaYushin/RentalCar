@@ -21,7 +21,6 @@ public class Order extends AbstractEntity {
 	private String orderRejectionReason;
 	private Date createOrderDate;
 	private String managerNameWhoClosedOrder;
-	private List<Date> orderDates;
 	
 	public Order() {
 		super();
@@ -40,7 +39,6 @@ public class Order extends AbstractEntity {
 		this.orderRejectionReason = "no rejection reason";
 		this.createOrderDate = new Date(System.currentTimeMillis());
 		this.managerNameWhoClosedOrder = null;
-		this.orderDates = new ArrayList<>();
 	}
 
 	public Car getOrderCar() {
@@ -123,22 +121,16 @@ public class Order extends AbstractEntity {
 		this.managerNameWhoClosedOrder = managerNameWhoClosedOrder;
 	}
 
-	public List<Date> getOrderDates() {
-		return orderDates;
-	}
-
-	public void setOrderDates(List<Date> orderDates) {
-		this.orderDates = orderDates;
-	}
-
 	@Override
 	public String toString() {
 		return "Order [orderCar=" + orderCar + ", orderClient=" + orderClient + ", orderPresenceOfTheDriver="
 				+ orderPresenceOfTheDriver + ", orderStartDate=" + orderStartDate + ", orderEndDate=" + orderEndDate
 				+ ", orderAccount=" + orderAccount + ", orderStatus=" + orderStatus + ", orderRejectionReason="
 				+ orderRejectionReason + ", createOrderDate=" + createOrderDate + ", managerNameWhoClosedOrder="
-				+ managerNameWhoClosedOrder + ", orderDates=" + orderDates + "]";
+				+ managerNameWhoClosedOrder + "]";
 	}
+
+	 
 
 
 

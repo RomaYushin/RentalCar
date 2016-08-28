@@ -11,31 +11,26 @@ import ua.nure.yushin.SummaryTask4.controller.ActionType;
 import ua.nure.yushin.SummaryTask4.controller.Path;
 import ua.nure.yushin.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.yushin.SummaryTask4.db.dao.DatabaseTypes;
-import ua.nure.yushin.SummaryTask4.db.dao.IOrderDAO;
-import ua.nure.yushin.SummaryTask4.db.dao.IUserDAO;
-import ua.nure.yushin.SummaryTask4.entity.OrderStatus;
-import ua.nure.yushin.SummaryTask4.entity.User;
+import ua.nure.yushin.SummaryTask4.db.dao.IAccountDAO;
 import ua.nure.yushin.SummaryTask4.exception.AppException;
-import ua.nure.yushin.SummaryTask4.exception.AsyncResponseException;
 import ua.nure.yushin.SummaryTask4.exception.DBException;
 import ua.nure.yushin.SummaryTask4.exception.ExceptionMessages;
-import ua.nure.yushin.SummaryTask4.exception.ValidationException;
 import ua.nure.yushin.SummaryTask4.validators.ValidatorOfInputParameters;
 
-public class CloseOrderCommand extends AbstractCommand {
+public class CreateBillForRepairCommand extends AbstractCommand {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 7466360847471930749L;
+	private static final long serialVersionUID = -5001925151775187194L;
 	
-	private static final Logger LOG = Logger.getLogger(CloseOrderCommand.class);
+	private static final Logger LOG = Logger.getLogger(CreateBillForRepairCommand.class);
 
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType)
 			throws AppException {
 		
-		LOG.info ("Start executing CloseOrderCommand.execute");
+		LOG.info ("Start executing CreateBillForRepairCommand.execute");
 		String result = null;
 
 		if (requestMethodType.equals(ActionType.GET)) {
@@ -43,59 +38,54 @@ public class CloseOrderCommand extends AbstractCommand {
 		} else if (requestMethodType.equals(ActionType.POST)) {
 			result = doPost(request, response);
 		}
-		LOG.info ("End executing ShowSpecifiedOrderCommand.execute");
+		LOG.info ("End executing CreateBillForRepairCommand.execute");
 		return result;
 	}
 	
 	private static String doPost (HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		
-		LOG.info ("Start executing CloseOrderCommand.doPost");
+		LOG.info ("Start executing CreateBillForRepairCommand.doPost");
 		
 		int orderId = 0;
-		int userId = 0;
-		User manager = null;
+		int priceForRepair = 0;
+		
 		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
-		IOrderDAO iOrderDAO = daoFactory.getOrderDAO();
-		IUserDAO iUserDAO = daoFactory.getUserDAO();
+		IAccountDAO iAccountDAO = daoFactory.getAccountDAO();
 		
 		try {
-			orderId = Integer.parseInt(request.getParameter("orderId"));
-			userId =  Integer.parseInt(request.getParameter("userId"));
-		} catch (Exception e) {		
-			LOG.error(ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR);
-			throw new AppException(ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR);
-		}
-		
-		ValidatorOfInputParameters.validateId(userId);
-		ValidatorOfInputParameters.validateId(orderId);
-		
-		try {		
-			OrderStatus os = OrderStatus.CLOSE;
-			iOrderDAO.updateOrderStatusById (orderId, os);
+			orderId = Integer.valueOf(request.getParameter("orderId"));
+			priceForRepair = Integer.valueOf(request.getParameter("priceForRepair"));
 			
-			manager = iUserDAO.getUserById(userId);
-			iOrderDAO.updateOrderManager(manager, orderId);			
-		} catch (DBException e) {
-			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_ORDER);
+			LOG.info ("orderId: " + orderId);
+			LOG.info ("priceForRepair: " + priceForRepair);
+			
+		} catch (Exception e) {
+			throw new DBException(ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR, e);
 		}
 		
-		return Path.COMMAND_REDIRECT_MANAGER_CLOSE_ORDER;
+		ValidatorOfInputParameters.validateId(orderId);
+		ValidatorOfInputParameters.validatePrice(priceForRepair);
+		
+		iAccountDAO.updateAccountForRepairAndRepairPaidByOrderId(orderId, priceForRepair, false);
+		
+		return Path.COMMAND_REDIRECT_MANAGER_CREATE_BILL_FOR_REPAIR;
 	}
 	
 	private static String doGet (HttpServletRequest request, HttpServletResponse response)
 			throws AppException {
 		
-		LOG.info ("Start executing CloseOrderCommand.doGet");
-
+		LOG.info ("Start CreateBillForRepairCommand.doGet");
 		HttpSession session = request.getSession(false);
 		String sortingType = (String) session.getAttribute("sortingType");
 		
-		request.setAttribute("respMessage", "Order was successfully closed");
-		request.setAttribute("type", "close");
+		request.setAttribute("respMessage", "Bill was succesfully created!");
+		//request.setAttribute("type", "close");
 		request.setAttribute("sortingType", sortingType);
 		
 		return Path.PAGE_FORWARD_MANAGER_SHOW_SPECIFIED_ORDER;
 	}
+	
+	
 
 }
