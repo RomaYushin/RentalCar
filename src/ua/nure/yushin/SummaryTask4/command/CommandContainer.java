@@ -24,6 +24,7 @@ import ua.nure.yushin.SummaryTask4.command.client.DeleteOrderCommand;
 import ua.nure.yushin.SummaryTask4.command.client.OpenClientOrderCommand;
 import ua.nure.yushin.SummaryTask4.command.client.OrderCarAsyncCommand;
 import ua.nure.yushin.SummaryTask4.command.client.PayOrderCommand;
+import ua.nure.yushin.SummaryTask4.command.client.PayRepairCommand;
 import ua.nure.yushin.SummaryTask4.command.client.SelectCarsByRentalDatesCommand;
 import ua.nure.yushin.SummaryTask4.command.common.LogoutCommand;
 import ua.nure.yushin.SummaryTask4.command.common.NoCommand;
@@ -76,6 +77,7 @@ public class CommandContainer {
 		commands.put("createOrder", new CreateOrderCommand());
 		commands.put("deleteOrder", new DeleteOrderCommand());
 		commands.put("orderCarButton", new OrderCarAsyncCommand());
+		commands.put("payRepair", new PayRepairCommand());		
 		commands.put("payOrder", new PayOrderCommand());
 		commands.put("selectCarsByRentalDates", new SelectCarsByRentalDatesCommand());	
 		commands.put("openClientOrder", new OpenClientOrderCommand());

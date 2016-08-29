@@ -151,7 +151,6 @@
 					</c:choose>
 				</c:if>
 				<c:if test="${not order.getOrderAccount().isAccountRepairPaid() }">
-					<button onclick = "closeOrder()" > <fmt:message key="showSpecifiedOrder.jsp.close_btn" /> </button>	
 				</c:if>
 			</div>
 			

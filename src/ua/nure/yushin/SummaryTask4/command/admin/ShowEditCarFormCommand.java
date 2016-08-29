@@ -1,9 +1,5 @@
 package ua.nure.yushin.SummaryTask4.command.admin;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -17,8 +13,6 @@ import ua.nure.yushin.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.yushin.SummaryTask4.db.dao.DatabaseTypes;
 import ua.nure.yushin.SummaryTask4.db.dao.ICarDAO;
 import ua.nure.yushin.SummaryTask4.entity.Car;
-import ua.nure.yushin.SummaryTask4.entity.CarQualityClass;
-import ua.nure.yushin.SummaryTask4.entity.CarStatus;
 import ua.nure.yushin.SummaryTask4.exception.AppException;
 import ua.nure.yushin.SummaryTask4.exception.AsyncResponseException;
 import ua.nure.yushin.SummaryTask4.exception.DBException;

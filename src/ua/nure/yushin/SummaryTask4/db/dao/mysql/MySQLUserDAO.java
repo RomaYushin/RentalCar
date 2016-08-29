@@ -243,6 +243,7 @@ public class MySQLUserDAO implements IUserDAO {
 
 			LOG.info("update of User start");
 
+			
 			ps.setString(1, user.getUserPassSeries());
 			ps.setInt(2, user.getUserPassNumber());
 			ps.setString(3, user.getUserPassName());
@@ -255,7 +256,7 @@ public class MySQLUserDAO implements IUserDAO {
 			ps.setString(10, user.getUserEmail());
 			ps.setString(11, user.getUserRole().toString());
 			ps.setString(12, user.getUserLanguage());
-			ps.setString(13, String.valueOf(false));
+			ps.setString(13,  String.valueOf(user.isUserConfirmation()));
 			ps.setInt(14, user.getId());
 			ps.executeUpdate();
 

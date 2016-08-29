@@ -129,9 +129,9 @@ public class ClientRegistrationCommand extends AbstractCommand {
 		// проверка на наличие такого же пользователя в базе
 		// проверяем по email
 		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);		
-		IUserDAO userDAO = daoFactory.getUserDAO();
+		IUserDAO userDAO = daoFactory.getUserDAO();		
+		userDAO.checkIsUserAlreadyInDBByEmail(newUser.getUserEmail());
 		
-		userDAO.getUserByEmail (newUser.getUserEmail());
 		// добавление пользователя в базу
 		userDAO.insertNewUser(newUser);
 			

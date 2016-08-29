@@ -496,6 +496,8 @@ public class MySQLOrderDAO implements IOrderDAO {
 		
 		String query2 = "DELETE FROM `account` WHERE `id`= ?;";
 		
+		String query3 = "DELETE FROM `car_busy_dates` WHERE `order_id`= ?;";
+		
 		int account_id = 0;
 		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
 		IAccountDAO iAccountDAO = daoFactory.getAccountDAO();
@@ -504,6 +506,7 @@ public class MySQLOrderDAO implements IOrderDAO {
 		ResultSet rs = null;			
 		
 		try {
+			int i = 0;
 			connection = DAOFactory.getConnection();
 			connection.setAutoCommit(false);
 			
@@ -517,10 +520,15 @@ public class MySQLOrderDAO implements IOrderDAO {
 			// удалить счет
 			ps = connection.prepareStatement(query2);
 			ps.setInt(1, account_id);
-			ps.executeUpdate();			
+			ps.executeUpdate();	
 			
-			connection.commit();
+			// удалить даты заказа авто
+			ps = connection.prepareStatement(query3);
+			ps.setInt(1, orderId);
+			ps.executeUpdate();	
 			
+			
+			connection.commit();			
 		} catch (SQLException e) {
 			try {
 				connection.rollback();

@@ -4,86 +4,90 @@
 <%@page import="ua.nure.yushin.SummaryTask4.entity.CarQualityClass" %>
 <%@page import="ua.nure.yushin.SummaryTask4.entity.CarStatus" %>
 
-
-Edit car form
-
+<br>
+<fmt:message key="adminPerArea.jsp.editCarForm" />
 	<div class="existingCarParam_left">
 		<br>
-		Existing car parametrs:
+		<fmt:message key="adminPerArea.jsp.existingCarParametrs" />
 		<div class="field">
-			<label>1. Brend : </label> 
+			<label>1. <fmt:message key="adminPerArea.jsp.exCarBrend" />: </label> 
 			<c:out value="${ carForEdit.getCarBrend() }"></c:out>
 		</div>
 
 		<div class="field">
-			<label>2. Model: </label> 
+			<label>2. <fmt:message key="adminPerArea.jsp.exCarModel" />: </label> 
 			<c:out value="${ carForEdit.getCarModel() }"></c:out>
 		</div>
 
 		<div class="field">
-			<label>3. Year of issue: </label> 
+			<label>3. <fmt:message key="adminPerArea.jsp.exCarYearOfIssue" />: </label> 
 			<c:out value="${ carForEdit.getCarYearOfIssue() }"></c:out>
 		</div>
 
 		<div class="field">
-			<label>4. Quality class: </label> 
+			<label>4. <fmt:message key="adminPerArea.jsp.exQualityClass" />: </label> 
 			<c:out value="${ carForEdit.getCarQualityClass() }"></c:out>
 		</div>
 
 		<div class="field">
-			<label>5. Rental cost: </label>
+			<label>5. <fmt:message key="adminPerArea.jsp.exRentalCost" />: </label>
 			<c:out value="${ carForEdit.getCarRentalCost() }"></c:out>
 		</div>
 		<div class="field">
-			<label>6. Car status: </label>
+			<label>6. <fmt:message key="adminPerArea.jsp.exCarStatus" />: </label>
 			<c:out value="${ carForEdit.getCarStatus() }"></c:out>
 		</div>
 	</div>	
 	
 	<div class="newCarParam_right">
 		<br>
-		New car parametrs:
-		<input type = "hidden" id = "carId" value = "<c:out value="${ carForEdit.getId() }"></c:out>" />
-		<div class="field">
-			<label>1. New brend: </label>
-			<input type="text" name="newCarBrend" size=20 />			
-		</div>
-
-		<div class="field">
-			<label>2. New model: </label> 
-			<input type="text" name="newCarModel" size=20 />
-		</div>
-
-		<div class="field">
-			<label>3. New year of issue:</label>
-			<input type="date" name="newCarYearOfIssue" />
-		</div>
-
-		<div class="field">
-			<label>4. New quality class </label>
-			<select id="newCarQualityClass">
-				<option> New car quality class </option>
-				<%	for (CarQualityClass c: CarQualityClass.values()) { %>
-					<option value="<%= c.toString() %>" > <%= c.toString() %> </option>
-				<% } %>	
-			</select>
-		</div>
-		
-		<div class="field">
-			<label>5. New rental cost:</label>
-			<input type="text" name="newCarRentalCost" />
-		</div>
-		
-		<div class="field">
-			<label>6. New staus:</label>
-			<select id="newCarStatus">
-				<option> New car status </option>
-				<%	for (CarStatus s: CarStatus.values()) { %>
-					<option value="<%= s.toString() %>" > <%= s.toString() %> </option>
-				<% } %>
-			</select>
-		</div>
-		<button onclick = "saveNewCarParametrs()"> Save new car parametrs </button>
+		<form action = "Controller" method = "POST" >
+			<fmt:message key="adminPerArea.jsp.NewCarParametrs" />
+			<input type="hidden" name="command" value = "editCar" />
+			<input type = "hidden" id = "carId" name = "carId" 
+				value = "<c:out value="${ carForEdit.getId() }"></c:out>" />
+			<div class="field">
+				<label>1. <fmt:message key="adminPerArea.jsp.newCarBrend" />: </label>
+				<input type="text" name="newCarBrend" size=20  autofocus value ="${ carForEdit.getCarBrend() }"/>			
+			</div>
+	
+			<div class="field">
+				<label>2. <fmt:message key="adminPerArea.jsp.newCarModel" />: </label> 
+				<input type="text" name="newCarModel" size=20 value ="${ carForEdit.getCarModel() }" />
+			</div>
+	
+			<div class="field">
+				<label>3. <fmt:message key="adminPerArea.jsp.newCarYearOfIssue" />:</label>
+				<input type="date" name="newCarYearOfIssue" value ="${ carForEdit.getCarYearOfIssue() }" />
+			</div>
+	
+			<div class="field">
+				<label>4. <fmt:message key="adminPerArea.jsp.newQualityClass" /> </label>
+				<select id="newCarQualityClass" name = "newCarQualityClass">
+					<option> <fmt:message key="adminPerArea.jsp.chooseNewQualityClass" /> </option>
+					<%	for (CarQualityClass c: CarQualityClass.values()) { %>
+						<option value="<%= c.toString() %>" > <%= c.toString() %> </option>
+					<% } %>	
+				</select>
+			</div>
+			
+			<div class="field">
+				<label>5. <fmt:message key="adminPerArea.jsp.newRentalCost" />:</label>
+				<input type="text" name="newCarRentalCost" value ="${ carForEdit.getCarRentalCost() }" />
+			</div>
+			
+			<div class="field">
+				<label>6. <fmt:message key="adminPerArea.jsp.newCarStatus" />:</label>
+				<select id="newCarStatus" name = "newCarStatus" >
+					<option> <fmt:message key="adminPerArea.jsp.chooseNewCarStatus" /> </option>
+					<%	for (CarStatus s: CarStatus.values()) { %>
+						<option value="<%= s.toString() %>" > <%= s.toString() %> </option>
+					<% } %>
+				</select>
+			</div>
+			<!-- <button onclick = "saveNewCarParametrs()"> <fmt:message key="adminPerArea.jsp.saveParam_btn" /> </button>  -->
+			<input type = "submit" value = " <fmt:message key="adminPerArea.jsp.saveParam_btn" />"/>
+		</form>
 	</div>
 
 

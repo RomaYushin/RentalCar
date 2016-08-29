@@ -75,7 +75,7 @@ public class ConfirmRegistrationCommand extends AbstractCommand {
 		// сообщить, что регистрация прошла успешно
 		
 
-		return Path.COMMAND_REDIRECT_CLIENT_PERSONAL_AREA;
+		return Path.COMMAND_REDIRECT_CONFIRM_REGISTRATION;
 	}
 
 	private String doGet(HttpServletRequest request, HttpServletResponse response) {
@@ -83,7 +83,7 @@ public class ConfirmRegistrationCommand extends AbstractCommand {
 		LOG.debug("Start executing ConfirmRegistrationCommand.doGet");
 
 		// String decodedMessage = new String ()
-		return Path.PAGE_FORWARD_CLIENT_PERSONAL_AREA;
+		return Path.PAGE_WELCOME_AUTHORIZATION;
 
 	}
 

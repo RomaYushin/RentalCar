@@ -54,6 +54,7 @@ public class Path {
 	 */
 	
 	public static final String COMMAND_REDIRECT_TO_COMMAND= "Controller?command=";
+	public static final String COMMAND_REDIRECT_CONFIRM_REGISTRATION = "Controller?command=confirmRegistration";	
 	
 	// redirect client
 	public static final String COMMAND_REDIRECT_CLIENT_REGISTRATION = "Controller?command=clientRegistration";	
@@ -63,6 +64,7 @@ public class Path {
 	public static final String COMMAND_REDIRECT_CLIENT_SELECT_CARS_BY_RENTAL_DATES_ASYNC = "Controller?command=selectCarsByRentalDates";
 	public static final String COMMAND_REDIRECT_CLIENT_CREATE_ORDER = "Controller?command=createOrder";
 	public static final String COMMAND_REDIRECT_CLIENT_PAY_ORDER = "Controller?command=payOrder";
+	public static final String COMMAND_REDIRECT_CLIENT_PAY_REPAIR = "Controller?command=payRepair";
 	public static final String COMMAND_REDIRECT_CLIENT_DELETE_ORDER = "Controller?command=deleteOrder";	
 	public static final String COMMAND_REDIRECT_CLIENT_NOT_CLOSED_ORDERS = "Controller?command=clientNotClosedOrders";	
 	public static final String COMMAND_REDIRECT_CLIENT_OPEN_ORDER = "Controller?command=openClientOrder";

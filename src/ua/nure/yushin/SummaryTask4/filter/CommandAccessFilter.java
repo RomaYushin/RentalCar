@@ -87,7 +87,7 @@ public class CommandAccessFilter implements Filter {
 	
 	private boolean accessAllowed (ServletRequest request) {
 		
-		HttpServletRequest httpRequest = (HttpServletRequest) request;
+		HttpServletRequest httpServletRequest = (HttpServletRequest) request;
 		
 		String commandName = request.getParameter("command");
 		if (commandName == null || commandName.isEmpty()) {
@@ -99,26 +99,25 @@ public class CommandAccessFilter implements Filter {
 			return true;
 		}
 		
-		HttpSession session = httpRequest.getSession(false);		
+		HttpSession session = httpServletRequest.getSession(false);		
 		if (session == null) {
 			return false;
 		}
 		
-		UserRole userRole = (UserRole) session.getAttribute("userRole");
-		if (accessMap.get(userRole).contains(commandName) || common.contains(commandName)) {
-			LOG.info("true");
-			return true;
-		}		
+		LOG.error("accessMap" + accessMap);
+		LOG.error("common" + common);
+		LOG.error("commandName" + commandName);
 		
+		
+		UserRole userRole = (UserRole) session.getAttribute("userRole");
+		LOG.error("userRole " + userRole);
 		if (userRole == null) {
 			return false;
 		}
-		
-				
+		if (accessMap.get(userRole).contains(commandName) || common.contains(commandName)) {
+			LOG.info("true");
+			return true;
+		}				
 		return false;		
 	}
-	
-	
-	
-
 }

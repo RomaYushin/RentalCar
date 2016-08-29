@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -20,6 +21,7 @@ import ua.nure.yushin.SummaryTask4.exception.AsyncResponseException;
 import ua.nure.yushin.SummaryTask4.exception.DBException;
 import ua.nure.yushin.SummaryTask4.exception.ExceptionMessages;
 import ua.nure.yushin.SummaryTask4.exception.ValidationException;
+import ua.nure.yushin.SummaryTask4.util.LocaleUtil;
 import ua.nure.yushin.SummaryTask4.validators.ValidatorOfInputParameters;
 
 public class RegisterNewCarCommand extends AbstractCommand {
@@ -32,7 +34,8 @@ public class RegisterNewCarCommand extends AbstractCommand {
 	private static final Logger LOG = Logger.getLogger(RegisterNewCarCommand.class);
 
 	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType) throws DBException, AsyncResponseException {
+	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType) 
+			throws DBException, AsyncResponseException, ValidationException {
 
 		LOG.info ("Start executing RegisterNewCarCommand.execute");
 		String result = null;
@@ -47,11 +50,16 @@ public class RegisterNewCarCommand extends AbstractCommand {
 	}
 
 	private static String doGet (HttpServletRequest request, HttpServletResponse response) throws DBException {
-		request.setAttribute("successfullAddCar", "Add new car was successfull!");		
-		return Path.PAGE_FORWARD_ADMIN_ADD_CAR_RESPONSE;
+		
+		HttpSession session = request.getSession(false);
+		String responseMessage = (String) session.getAttribute("responseMessage");
+		session.removeAttribute("responseMessage");
+		
+		request.setAttribute("responseMessage", responseMessage);		
+		return Path.PAGE_FORWARD_ADMIN_PERSONAL_AREA;
 	}
 
-	private static String doPost (HttpServletRequest request, HttpServletResponse response) throws DBException, AsyncResponseException {
+	private static String doPost (HttpServletRequest request, HttpServletResponse response) throws DBException, AsyncResponseException, ValidationException {
 		
 		LOG.info ("Start executing RegisterNewCarCommand.doPost");
 		
@@ -60,6 +68,8 @@ public class RegisterNewCarCommand extends AbstractCommand {
 		Date carYearOfIssue = null;
 		String carQualityClass = null;
 		int carRentalCost = 0;
+		HttpSession session = request.getSession(false);
+		String responseMessage = LocaleUtil.getValueByKey("adminPerArea.jsp.editCarRespMessage", session);
 		
 		try {
 			carBrend = request.getParameter("carBrend");
@@ -79,20 +89,13 @@ public class RegisterNewCarCommand extends AbstractCommand {
 			throw new AsyncResponseException (ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR, e);
 		}
 		
-		/*
-		Date carYearOfIssue = Date.valueOf(carYearOfIssue_s);
-		int carRentalCost = Integer.valueOf(carRentalCost_s);
-		*/
-		
-		try {
-			ValidatorOfInputParameters.validateCarBrend(carBrend);
-			ValidatorOfInputParameters.validateCarModel(carModel);
-			ValidatorOfInputParameters.validateCarYearOfIssue(carYearOfIssue);
-			ValidatorOfInputParameters.validateQualityCarClass(carQualityClass);
-			ValidatorOfInputParameters.validateCarRentalCost(carRentalCost);
-		} catch (ValidationException vExcep) {
-			throw new AsyncResponseException(vExcep.getMessage());
-		}
+
+		ValidatorOfInputParameters.validateCarBrend(carBrend);
+		ValidatorOfInputParameters.validateCarModel(carModel);
+		ValidatorOfInputParameters.validateCarYearOfIssue(carYearOfIssue);
+		ValidatorOfInputParameters.validateQualityCarClass(carQualityClass);
+		ValidatorOfInputParameters.validateCarRentalCost(carRentalCost);
+
 		
 		Car newCar = new Car (carBrend, carModel, CarQualityClass.valueOf(carQualityClass),
 				carRentalCost, CarStatus.FREE, carYearOfIssue);
@@ -105,6 +108,7 @@ public class RegisterNewCarCommand extends AbstractCommand {
 			throw new AsyncResponseException(ExceptionMessages.EXCEPTION_CAN_NOT_INSERT_NEW_CAR, e);
 		}		
 		
+		session.setAttribute("responseMessage", responseMessage);
 		return Path.COMMAND_REDIRECT_ADMIN_REGISTER_NEW_CAR;
 	}
 }

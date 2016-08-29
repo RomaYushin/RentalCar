@@ -62,7 +62,7 @@
 		</init-param>
 		<init-param>
 			<param-name>client</param-name>
-			<param-value>availableCarsAsync calculateTotalPriceAsync clientCarsReview clientNotClosedOrders clientOrdersArchive clientPersonalArea createOrder deleteOrder openClientOrder orderCarButton payOrder selectCarsByRentalDates</param-value>
+			<param-value>availableCarsAsync calculateTotalPriceAsync clientCarsReview clientNotClosedOrders clientOrdersArchive clientPersonalArea createOrder deleteOrder openClientOrder orderCarButton payOrder payRepair selectCarsByRentalDates</param-value>
 		</init-param>
 		<init-param>
 			<param-name>common</param-name>

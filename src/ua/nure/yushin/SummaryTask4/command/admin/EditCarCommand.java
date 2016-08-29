@@ -4,6 +4,7 @@ import java.sql.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 
@@ -21,6 +22,7 @@ import ua.nure.yushin.SummaryTask4.exception.AsyncResponseException;
 import ua.nure.yushin.SummaryTask4.exception.DBException;
 import ua.nure.yushin.SummaryTask4.exception.ExceptionMessages;
 import ua.nure.yushin.SummaryTask4.exception.ValidationException;
+import ua.nure.yushin.SummaryTask4.util.LocaleUtil;
 import ua.nure.yushin.SummaryTask4.validators.ValidatorOfInputParameters;
 
 public class EditCarCommand extends AbstractCommand {
@@ -50,12 +52,17 @@ public class EditCarCommand extends AbstractCommand {
 	
 	private static String doGet (HttpServletRequest request, HttpServletResponse response)
 			throws DBException {
-		request.setAttribute("responseMessage", "Car parametrs was successfully edit!");			
-		return Path.PAGE_FORWARD_ADMIN_EDIT_CAR_RESPONSE;
+		
+		HttpSession session = request.getSession(false);
+		String responseMessage = (String) session.getAttribute("responseMessage");
+		session.removeAttribute("responseMessage");
+		
+		request.setAttribute("responseMessage", responseMessage);		
+		return Path.PAGE_FORWARD_ADMIN_PERSONAL_AREA;
 	}
 	
 	private static String doPost (HttpServletRequest request, HttpServletResponse response)
-			throws AsyncResponseException {
+			throws AsyncResponseException, ValidationException {
 
 		LOG.info ("Start executing EditCarCommand.doPost");
 		
@@ -66,6 +73,8 @@ public class EditCarCommand extends AbstractCommand {
 		String newCarQualityClass_s = null;
 		int newCarRentalCost = 0; 
 		String newCarStatus_s = null;
+		HttpSession session = request.getSession(false);
+		String responseMessage = LocaleUtil.getValueByKey("adminPerArea.jsp.editCarRespMessage", session);
 		
 		try {
 			
@@ -89,17 +98,15 @@ public class EditCarCommand extends AbstractCommand {
 			throw new AsyncResponseException (ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR, e);
 		}
 		
-		try {
-			ValidatorOfInputParameters.validateId(carId);
-			ValidatorOfInputParameters.validateCarBrend(newCarBrend);
-			ValidatorOfInputParameters.validateCarModel(newCarModel);
-			ValidatorOfInputParameters.validateCarYearOfIssue(newCarYearOfIssue);
-			ValidatorOfInputParameters.validateQualityCarClass(newCarQualityClass_s);
-			ValidatorOfInputParameters.validateCarRentalCost(newCarRentalCost);
-			ValidatorOfInputParameters.validateCarStatus(newCarStatus_s);
-		} catch (ValidationException vExcep) {
-			throw new AsyncResponseException(vExcep.getMessage());
-		}
+
+		ValidatorOfInputParameters.validateId(carId);
+		ValidatorOfInputParameters.validateCarBrend(newCarBrend);
+		ValidatorOfInputParameters.validateCarModel(newCarModel);
+		ValidatorOfInputParameters.validateCarYearOfIssue(newCarYearOfIssue);
+		ValidatorOfInputParameters.validateQualityCarClass(newCarQualityClass_s);
+		ValidatorOfInputParameters.validateCarRentalCost(newCarRentalCost);
+		ValidatorOfInputParameters.validateCarStatus(newCarStatus_s);
+
 		
 		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
 		ICarDAO iCarDAO = daoFactory.getCarDAO();
@@ -126,10 +133,8 @@ public class EditCarCommand extends AbstractCommand {
 		} catch (DBException dbExcep) {
 			throw new AsyncResponseException(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_ALL_CAR_PARAMETRS, dbExcep);
 		}
+		
+		session.setAttribute("responseMessage", responseMessage);
 		return Path.COMMAND_REDIRECT_ADMIN_EDIT_CAR;
 	}
-	
-	
-	
-
 }

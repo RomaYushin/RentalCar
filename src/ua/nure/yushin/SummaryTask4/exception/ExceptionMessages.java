@@ -63,7 +63,9 @@ public class ExceptionMessages {
 	public static final String EXCEPTION_VALIDATION_INVALID_REJECTION_REASON = "Invalid rejection reason!";
 	public static final String EXCEPTION_VALIDATION_INVALID_ORDER_DATE = "Invalid order date!";
 	public static final String EXCEPTION_VALIDATION_INVALID_PRICE = "Invalid price!";
-
+	public static final String EXCEPTION_VALIDATION_NOT_ENOUGH_MANY_FOR_RENT = " Not enough many for rent!";
+	public static final String EXCEPTION_VALIDATION_NOT_ENOUGH_MANY_FOR_REPAIR = " Not enough many for repair!";
+	
 	// App
 	public static final String EXCEPTION_BLOCKED_USER = "User is blocked!";
 	public static final String EXCEPTION_UNCONFIRMED_USER = "User is unconfirmed!";

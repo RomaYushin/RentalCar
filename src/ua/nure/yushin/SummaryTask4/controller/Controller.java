@@ -82,7 +82,7 @@ public class Controller extends HttpServlet {
 		} catch (AppException appException) {
 			session.setAttribute("errorMessage", appException.getMessage());
 			LOG.error(appException.getMessage());
-			request.getRequestDispatcher(Path.COMMAND_NO_COMMAND).forward(request, response);
+			request.getRequestDispatcher(Path.PAGE_FORWARD_ERROR).forward(request, response);
 		}						
 	}
 }

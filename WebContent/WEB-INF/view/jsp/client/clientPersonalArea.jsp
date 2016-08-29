@@ -63,6 +63,7 @@
 							<div class = "createOrderSuccess_buttons">
 								<form action = "Controller" method = "POST">
 									<input type = "hidden" name = "command" value = "payOrder"/>
+									<input type = "hidden" name = "rentPayment" value = "${newOrder.getOrderAccount().getAccountForRent()}"/>	
 									<input type = "hidden" name = "orderId" value = "${newOrder.getId()}"/>
 									<input type = "submit" value = " <fmt:message key="cliPerArea.jsp.payOrder" />" />
 								</form>

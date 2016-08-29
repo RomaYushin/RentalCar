@@ -18,6 +18,8 @@ public interface IAccountDAO {
 	
 	void updateAccountForRentByOrderId(int orderId, boolean value) throws DBException;
 	
+	void updateAccountForRepairByOrderId(int orderId, boolean value) throws DBException;
+	
 	void updateAccountForRepairAndRepairPaidByOrderId (int orderId, 
 			int priceForRepair, boolean repairPaid) throws DBException;
 	

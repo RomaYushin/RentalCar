@@ -43,7 +43,8 @@ public class DeleteOrderCommand extends AbstractCommand {
 		int orderId = 0;
 		
 		try {
-			orderId = (int) Integer.valueOf(request.getParameter("orderId"));
+			LOG.info("orderId: " + orderId);
+			orderId = Integer.valueOf(request.getParameter("orderId"));
 		} catch (Exception e) {
 			throw new AppException(ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR);
 		}

@@ -87,6 +87,8 @@ public class CreateOrderCommand extends AbstractCommand {
 		ValidatorOfInputParameters.validateOrderDate(orderStartDate, orderEndDate);
 		ValidatorOfInputParameters.validateCarRentalCost((int)totalPrice);
 		
+		// еще раз проверить, не занят ли авто
+		
 		//
 		Account newAccount = new Account((int) totalPrice);
 

@@ -18,18 +18,20 @@ import ua.nure.yushin.SummaryTask4.exception.AppException;
 import ua.nure.yushin.SummaryTask4.exception.ExceptionMessages;
 import ua.nure.yushin.SummaryTask4.validators.ValidatorOfInputParameters;
 
-public class PayOrderCommand extends AbstractCommand {
+public class PayRepairCommand extends AbstractCommand {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -3064099726128875019L;
-
-	private static final Logger LOG = Logger.getLogger(PayOrderCommand.class);
+	private static final long serialVersionUID = -2818733379152313836L;
+	
+	private static final Logger LOG = Logger.getLogger(PayRepairCommand.class);
 
 	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType) throws AppException {
-		LOG.info("Start executing PayOrderCommand.execute");
+	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType)
+			throws AppException {
+		
+		LOG.info("Start executing PayRepairCommand.execute");
 		String result = null;
 
 		if (requestMethodType.equals(ActionType.GET)) {
@@ -40,15 +42,13 @@ public class PayOrderCommand extends AbstractCommand {
 		LOG.info("End executing PayOrderCommand.execute");
 		return result;
 	}
-
+	
+	
 	private String doPost(HttpServletRequest request, HttpServletResponse response) throws AppException {
-		
-		// получение счета по id заказа и изменение его переменной на оплачено
-		// вернуть сообщение об успешной оплате
-		LOG.info("PayOrderCommand.doPost start");
+		LOG.info("PayRepairCommand.doPost start");
 		
 		Order order = null;
-		int rentPayment = 0;
+		int repairPayment = 0;
 		int orderId = 0;		
 		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
 		IAccountDAO iAccountDAO = daoFactory.getAccountDAO();
@@ -56,33 +56,32 @@ public class PayOrderCommand extends AbstractCommand {
 		HttpSession session = request.getSession(false);
 		
 		try {
-			LOG.info("rentPayment: " + request.getParameter("rentPayment"));
+			LOG.info("repairPayment: " + request.getParameter("repairPayment"));
 			LOG.info("orderId: " + request.getParameter("orderId"));
 			
-			rentPayment = Integer.valueOf(request.getParameter("rentPayment"));
+			repairPayment = Integer.valueOf(request.getParameter("repairPayment"));
 			orderId = Integer.valueOf(request.getParameter("orderId"));	
 		} catch (Exception e) {
 			throw new AppException(ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR);
-		}		
+		}
+		
 		order = iOrderDAO.getOrderById(orderId);
-		// достаточно ли денег пришло
-		ValidatorOfInputParameters.validateEnoughManyForRent(order.getOrderAccount().getAccountForRent(), rentPayment);
+		ValidatorOfInputParameters.validateEnoughManyForRent(order.getOrderAccount().getAccountForRepair(), repairPayment);
 		
-		iAccountDAO.updateAccountForRentByOrderId(orderId, true);		
-		
+		iAccountDAO.updateAccountForRepairByOrderId(orderId, true);
 		session.setAttribute("payment", true);
 		
-		return Path.COMMAND_REDIRECT_CLIENT_PAY_ORDER;
+		return Path.COMMAND_REDIRECT_CLIENT_PAY_REPAIR;
 	}
-
-	private String doGet(HttpServletRequest request, HttpServletResponse response) {
+	
+	private String doGet(HttpServletRequest request, HttpServletResponse response) throws AppException {
 		
-		LOG.info("PayOrderCommand.doGet start");		
+		LOG.info("PayRepairCommand.doGet start");		
 		HttpSession session = request.getSession(false);
 		
 		if (session.getAttribute("payment") == null ) {
-			LOG.error("invalid doGet request");
-			return Path.PAGE_FORWARD_CLIENT_PERSONAL_AREA;
+			LOG.error(ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR);
+			throw new AppException(ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR);
 		}
 		
 		boolean payment = (boolean)(session.getAttribute("payment"));

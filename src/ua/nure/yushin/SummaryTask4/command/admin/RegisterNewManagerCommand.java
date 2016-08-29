@@ -4,7 +4,9 @@ import java.sql.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
 
 import ua.nure.yushin.SummaryTask4.command.AbstractCommand;
@@ -22,6 +24,7 @@ import ua.nure.yushin.SummaryTask4.exception.AsyncResponseException;
 import ua.nure.yushin.SummaryTask4.exception.DBException;
 import ua.nure.yushin.SummaryTask4.exception.ExceptionMessages;
 import ua.nure.yushin.SummaryTask4.exception.ValidationException;
+import ua.nure.yushin.SummaryTask4.util.LocaleUtil;
 import ua.nure.yushin.SummaryTask4.validators.ValidatorOfInputParameters;
 
 public class RegisterNewManagerCommand extends AbstractCommand {
@@ -52,14 +55,20 @@ public class RegisterNewManagerCommand extends AbstractCommand {
 	private static String doGet (HttpServletRequest request, HttpServletResponse response) 
 			throws DBException {
 		
-		request.setAttribute("asyncResponse", "Add new manager was successfull!");		
-		return Path.PAGE_FORWARD_ADMIN_ASYNC_RESPONSE;
+		HttpSession session = request.getSession(false);
+		String responseMessage = (String) session.getAttribute("responseMessage");
+		session.removeAttribute("responseMessage");
+		
+		request.setAttribute("responseMessage", responseMessage);		
+		return Path.PAGE_FORWARD_ADMIN_PERSONAL_AREA;
 	}
 	
 	private static String doPost (HttpServletRequest request, HttpServletResponse response) 
-			throws DBException, AsyncResponseException {
+			throws DBException, AsyncResponseException, ValidationException {
 		
 		LOG.info ("Start executing RegisterNewManagerCommand.doPost");
+		HttpSession session = request.getSession(false);
+		String responseMessage = LocaleUtil.getValueByKey("adminPerArea.jsp.addNewManagerRespMessage", session);
 		
 		String userPassSeries = null;		
 		int userPassNumber = 0;	
@@ -70,7 +79,11 @@ public class RegisterNewManagerCommand extends AbstractCommand {
 		Sex userSex = null;
 		String userEmail = null;
 		String userPassword = null;
+		
+		boolean userBlocking = false;
+		UserRole userRole = UserRole.MANAGER;
 		String userLanguage = null;
+		boolean userConfirmation = false;
 		
 		try {
 			
@@ -81,8 +94,8 @@ public class RegisterNewManagerCommand extends AbstractCommand {
 			userPassPatronomic = request.getParameter(FieldsInJSPPages.USER_PASS_PATRONOMIC);			
 			userPassDateOfBirth =  Date.valueOf(request.getParameter(FieldsInJSPPages.USER_PASS_DATE_OF_BIRTH));
 			userSex = Sex.getByName(request.getParameter(FieldsInJSPPages.USER_PASS_SEX));
-			userEmail = request.getParameter(FieldsInJSPPages.USER_EMAIL);
-			userPassword = request.getParameter(FieldsInJSPPages.USER_PASSWORD);
+			userEmail = request.getParameter(FieldsInJSPPages.USER_EMAIL);			
+			userPassword = DigestUtils.md5Hex(request.getParameter(FieldsInJSPPages.USER_PASSWORD));
 			userLanguage = request.getParameter(FieldsInJSPPages.USER_LANGUAGE);
 			
 			LOG.info("userPassSeries: " + userPassSeries);		
@@ -90,7 +103,7 @@ public class RegisterNewManagerCommand extends AbstractCommand {
 			LOG.info("userPassSurname: " + userPassSurname);
 			LOG.info("userPassName: " + userPassName);
 			LOG.info("userPassPatronomic: " + userPassPatronomic);
-			LOG.info("userPassDateOfBirth_s: " + userPassDateOfBirth);
+			LOG.info("userPassDateOfBirth: " + userPassDateOfBirth);
 			LOG.info("userSex_s: " + userSex);
 			LOG.info("userEmail: " + userEmail);
 			LOG.info("userPassword: " + userPassword);
@@ -99,44 +112,28 @@ public class RegisterNewManagerCommand extends AbstractCommand {
 		} catch (Exception e) {
 			throw new AsyncResponseException (ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR, e);
 		}
-		
-		try {
 			
-			ValidatorOfInputParameters.validateUserPassSeries(userPassSeries);
-			ValidatorOfInputParameters.validateUserPassNumber(userPassNumber);
-			ValidatorOfInputParameters.validateUserFIO(userPassName);
-			ValidatorOfInputParameters.validateUserFIO(userPassSurname);
-			ValidatorOfInputParameters.validateUserFIO(userPassPatronomic);
-			ValidatorOfInputParameters.validateUserPassDateOfBirth(userPassDateOfBirth);
-			ValidatorOfInputParameters.validateSex(userSex);
-			ValidatorOfInputParameters.validateUserEmail(userEmail);
-			ValidatorOfInputParameters.validateUserPassword(userPassword);			
-			
-		}  catch (ValidationException vExcep) {
-			LOG.error(ExceptionMessages.EXCEPTION_VALIDATION_INVALID_SEX, vExcep);
-			throw new AsyncResponseException(vExcep.getMessage());
-		}
-		
-		//int userPassNumber = Integer.valueOf(userPassNumber_s);
-		//Date userPassDateOfBirth = Date.valueOf(userPassDateOfBirth_s);
-		//Sex userSex = Sex.getByName(userSex_s);
-		boolean userBlocking = false;
-		UserRole userRole = UserRole.MANAGER;
+		ValidatorOfInputParameters.validateUserPassSeries(userPassSeries);
+		ValidatorOfInputParameters.validateUserPassNumber(userPassNumber);
+		ValidatorOfInputParameters.validateUserFIO(userPassName);
+		ValidatorOfInputParameters.validateUserFIO(userPassSurname);
+		ValidatorOfInputParameters.validateUserFIO(userPassPatronomic);
+		ValidatorOfInputParameters.validateUserPassDateOfBirth(userPassDateOfBirth);
+		ValidatorOfInputParameters.validateSex(userSex);
+		ValidatorOfInputParameters.validateUserEmail(userEmail);
+		ValidatorOfInputParameters.validateUserPassword(userPassword);			
 		
 		User newUser = new User(userPassSeries, userPassNumber, userPassSurname, userPassName, userPassPatronomic,
 				userPassDateOfBirth, userSex, userEmail, userPassword, userBlocking, userRole, userLanguage);
 		
 		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);		
 		IUserDAO iUserDAO = daoFactory.getUserDAO();
-		
-		try {
-			iUserDAO.insertNewUser(newUser);
-		} catch (DBException e) {
-			throw new AsyncResponseException(ExceptionMessages.EXCEPTION_CAN_NOT_INSERT_NEW_USER, e);
-		}		
-		
+		iUserDAO.checkIsUserAlreadyInDBByEmail(newUser.getUserEmail());		
+
+		iUserDAO.insertNewUser(newUser);		
 		LOG.info ("END executing RegisterNewManagerCommand.doPost");
 		
+		session.setAttribute("responseMessage", responseMessage);
 		return Path.COMMAND_REDIRECT_ADMIN_REGISTER_NEW_MANAGER;	
 	}
 

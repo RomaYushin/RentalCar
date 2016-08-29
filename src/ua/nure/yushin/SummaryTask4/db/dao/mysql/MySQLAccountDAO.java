@@ -69,6 +69,25 @@ public class MySQLAccountDAO implements IAccountDAO {
 		}		
 
 	}
+	
+	@Override
+	public void updateAccountForRepairByOrderId(int orderId, boolean value) throws DBException {
+		
+		String query = "UPDATE `account` SET `accountRepairPaid`= ? WHERE `id` = "
+				+ "(SELECT `order`.`account_id` FROM `order` WHERE id = ?);";
+
+		try (Connection connection = DAOFactory.getConnection();
+				PreparedStatement ps = connection.prepareStatement(query)) {
+			
+			ps.setString(1, String.valueOf(value));
+			ps.setInt(2, orderId);
+			ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_ACCOUNT);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_ACCOUNT);		
+		}
+	}
 
 	@Override
 	public void deleteAccountById (int account_id) throws DBException {
@@ -199,7 +218,9 @@ public class MySQLAccountDAO implements IAccountDAO {
 			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_ACCOUNT_FOR_REPAIR_AND_REPAIR_PAID_BY_ORDER_ID, e);
 			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_ACCOUNT_FOR_REPAIR_AND_REPAIR_PAID_BY_ORDER_ID, e);
 		}		
-	}	
+	}
+
+		
 }
 
 

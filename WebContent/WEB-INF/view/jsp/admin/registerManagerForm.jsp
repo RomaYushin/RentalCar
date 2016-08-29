@@ -4,7 +4,7 @@
 
 <fmt:message key="clientRegistration.jsp.mainBlockName" />
 <form id="registerManagerForm" action="Controller" method="POST" onsubmit="registerNewManagerForm()">
-	<input type = "hidden" name = "userLanguage" value = "${setLanguage}">
+	<input type = "hidden" name = "userLanguage" value = "${language}">
 					
 	<div class="registrationForm_left">
 		<div class="field">

@@ -32,20 +32,12 @@ function sendCommandAsync (command) {
 }
 
 function removeCar(carId) {	
+	
 	var answer = confirm("Are you sure to delete this car?");
+	
 	if (answer) {
-		$.ajax({
-			type : "POST",
-			url : "Controller?command=removeCar",
-			data : {
-				removeCarId : carId,
-			}, 
-			success : function(responseText) {
-				$(".mainWindow").html(responseText);
-			},
-			error : function() {
-				alert("error");
-			}
+		$(this).submit(function () {
+			$(this).serialize;
 		});
 	}	
 }
@@ -65,7 +57,7 @@ function showEditCarForm (carId) {
 		}
 	});
 }
-
+/*
 function saveNewCarParametrs() {
 	
 	var carId = $('#carId').val();
@@ -75,7 +67,7 @@ function saveNewCarParametrs() {
 	var newCarQualityClass = $('#newCarQualityClass').val();
 	var newCarRentalCost = $('.field > input[name=newCarRentalCost]').val();
 	var newCarStatus = $('#newCarStatus').val();
-	/*
+	
 	alert ("carId:" + carId);
 	alert ("newCarBrend:" + newCarBrend);
 	alert ("newCarModel:" + newCarModel);
@@ -83,7 +75,7 @@ function saveNewCarParametrs() {
 	alert ("newCarQualityClass:" + newCarQualityClass);
 	alert ("newCarRentalCost:" + newCarRentalCost);
 	alert ("newCarStatus:" + newCarStatus);
-	*/
+	
 	
 	$.ajax({
 		type : "POST",
@@ -106,7 +98,7 @@ function saveNewCarParametrs() {
 	});
 	
 }
-
+*/
 function updateBlocking (userId, isUserBlocking) {
 	alert ("userId: " + userId + ", isUserBlocking: " + isUserBlocking);
 	

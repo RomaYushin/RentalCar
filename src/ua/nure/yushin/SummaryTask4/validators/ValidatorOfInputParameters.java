@@ -13,6 +13,7 @@ import ua.nure.yushin.SummaryTask4.entity.CarQualityClass;
 import ua.nure.yushin.SummaryTask4.entity.CarStatus;
 import ua.nure.yushin.SummaryTask4.entity.Sex;
 import ua.nure.yushin.SummaryTask4.entity.UserRole;
+import ua.nure.yushin.SummaryTask4.exception.AppException;
 import ua.nure.yushin.SummaryTask4.exception.ExceptionMessages;
 import ua.nure.yushin.SummaryTask4.exception.ValidationException;
 
@@ -197,6 +198,12 @@ public class ValidatorOfInputParameters {
 	public static void validatePrice (int price) throws ValidationException {
 		if (price <= 0) {
 			throw new ValidationException(ExceptionMessages.EXCEPTION_VALIDATION_INVALID_PRICE);
+		}
+	}
+	
+	public static void validateEnoughManyForRent (int need, int come) throws ValidationException {
+		if (need > come ) {
+			throw new ValidationException(ExceptionMessages.EXCEPTION_VALIDATION_NOT_ENOUGH_MANY_FOR_RENT);
 		}
 	}
 
