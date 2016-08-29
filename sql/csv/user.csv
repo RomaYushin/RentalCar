@@ -1,6 +1,8 @@
-id,passSeries,passNumber,passSurname,passName,passPatronomic,passDateOfBirth,sex,userBlocking,password,email,role,language
-1,МН,831327,Юшин,Роман,Владимирович,1990-02-01,MALE,false,qwerty,yushin.khpi@gmail.com,ADMIN,ru
-2,МК,111111,Юшина,Эмилия,Богдановна,1990-08-09,FEMALE,true,qwerty,etik@gmail.com,MANAGER,ru
-3,RR,222222,Horev,Alex,Sergeevish,1991-01-01,MALE,false,qwerty,horev@rambler.ru,CLIENT,en
-4,FF,123,Yakimenko,Igor,Anatolievich,1991-02-10,MALE,true,yyyy,yak@gmail.com,CLIENT,ru
-7,hh,12,q,q,q,2016-08-08,MALE,false,rrrr,rr@rambler.ru,MANAGER,ru
+id,passSeries,passNumber,passSurname,passName,passPatronomic,passDateOfBirth,sex,userBlocking,password,email,role,language,confirmation
+2,МК,111111,Юшина,Эмилия,Богдановна,1990-08-09,FEMALE,false,d8578edf8458ce06fbc5bb76a58c5ca4,etik@gmail.com,MANAGER,ru,true
+3,RR,222222,Horev,Alex,Sergeevish,1991-01-01,MALE,false,d8578edf8458ce06fbc5bb76a58c5ca4,horev@rambler.ru,CLIENT,en,true
+4,FF,123,Yakimenko,Igor,Anatolievich,1991-02-10,MALE,false,71ca9079d08bfa85e1e803427d25205a,yak@gmail.com,CLIENT,ru,true
+13,MM,123456,Юшин,Роман,Владимирович,1990-01-02,MALE,false,d8578edf8458ce06fbc5bb76a58c5ca4,yushin.khpi@gmail.com,ADMIN,ru,true
+15,НН,654321,Лактионов,Артем,Иванович,1990-10-10,MALE,false,562b530cff1f5bca3b1a4c1ad4ad9962,yushin.khpi@rambler.ru,MANAGER,ru,false
+16,CV,123456,sdsdsd,sdssd,sdsdsd,1992-06-24,MALE,false,81dc9bdb52d04dc20036dbd8313ed055,vbv.hjk.ghj.jhh@fhgh.com,CLIENT,ru,false
+17,CV,123456,Артур,Бузов,Валериевич,1990-02-02,MALE,false,81dc9bdb52d04dc20036dbd8313ed055,buzov.artur@gmail.com,CLIENT,ru,true

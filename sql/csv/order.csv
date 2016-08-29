@@ -1,28 +1,14 @@
 id,car_id,client_id,presenceOfTheDriver,startDate,endDate,account_id,orderStatus,rejectionReason,createOrderDate,managerNameWhoClosedOrder
-17,13,3,true,2016-08-19,2016-08-21,23,UNTREATED,"no rejection reason",2016-08-18,NULL
-18,15,3,true,2016-08-22,2016-08-26,24,UNTREATED,"no rejection reason",2016-08-19,NULL
-19,14,3,false,2016-08-20,2016-09-02,25,UNTREATED,"no rejection reason",2016-08-19,NULL
-20,10,3,false,2016-08-20,2016-08-26,26,UNTREATED,"no rejection reason",2016-08-19,NULL
-21,20,3,false,2016-08-23,2016-08-27,27,UNTREATED,"no rejection reason",2016-08-19,NULL
-22,20,3,false,2016-08-20,2016-08-21,28,UNTREATED,"no rejection reason",2016-08-19,NULL
-23,17,3,false,2016-08-20,2016-08-21,29,UNTREATED,"no rejection reason",2016-08-19,NULL
-24,8,3,false,2016-08-20,2016-08-21,30,UNTREATED,"no rejection reason",2016-08-19,NULL
-25,19,3,false,2016-08-22,2016-08-26,31,UNTREATED,"no rejection reason",2016-08-19,NULL
-26,6,3,false,2016-08-20,2016-08-26,32,UNTREATED,"no rejection reason",2016-08-19,NULL
-27,9,3,false,2016-08-25,2016-08-27,33,UNTREATED,"no rejection reason",2016-08-19,NULL
-28,18,3,false,2016-08-20,2016-08-27,34,UNTREATED,"no rejection reason",2016-08-19,NULL
-29,19,3,false,2016-08-27,2016-08-28,35,UNTREATED,"no rejection reason",2016-08-19,NULL
-30,5,3,false,2016-08-22,2016-08-28,36,UNTREATED,"no rejection reason",2016-08-19,NULL
-31,16,3,false,2016-08-20,2016-08-25,37,UNTREATED,"no rejection reason",2016-08-19,NULL
-32,17,3,false,2016-08-23,2016-08-27,38,UNTREATED,"no rejection reason",2016-08-19,NULL
-35,13,3,false,2016-08-23,2016-08-28,41,UNTREATED,"no rejection reason",2016-08-19,NULL
-38,8,3,false,2016-08-25,2016-08-27,44,UNTREATED,"no rejection reason",2016-08-19,NULL
-39,2,3,false,2016-08-25,2016-08-27,45,UNTREATED,"no rejection reason",2016-08-19,NULL
-41,4,3,false,2016-08-24,2016-08-31,47,UNTREATED,"no rejection reason",2016-08-19,NULL
-42,20,3,false,2016-08-29,2016-09-02,48,UNTREATED,"no rejection reason",2016-08-19,NULL
-43,16,3,false,2016-08-30,2016-08-31,49,UNTREATED,"no rejection reason",2016-08-19,NULL
-44,18,3,true,2016-08-30,2016-08-31,50,UNTREATED,"no rejection reason",2016-08-19,NULL
-45,17,3,true,2016-08-30,2016-08-31,51,UNTREATED,"no rejection reason",2016-08-19,NULL
-46,19,3,true,2016-08-30,2016-08-31,52,UNTREATED,"no rejection reason",2016-08-19,NULL
-47,15,3,true,2016-08-30,2016-08-31,53,UNTREATED,"no rejection reason",2016-08-19,NULL
-49,34,3,false,2016-08-21,2016-08-27,55,UNTREATED,"no rejection reason",2016-08-20,NULL
+80,13,4,false,2016-08-29,2016-08-30,93,CLOSE,"no rejection reason",2016-08-28,"Юшина Эмилия"
+81,9,4,true,2016-09-01,2016-09-02,94,CLOSE,"Не оплачено.",2016-08-28,"Юшина Эмилия"
+82,44,4,false,2016-08-30,2016-08-31,95,CLOSE,"no rejection reason",2016-08-28,"Юшина Эмилия"
+85,46,4,false,2016-08-29,2016-08-30,98,REJECTED,"Не оплачено вовремя.",2016-08-28,NULL
+86,5,4,false,2016-08-29,2016-08-31,99,ACTIVE,"no rejection reason",2016-08-28,NULL
+87,13,4,false,2016-09-01,2016-10-02,100,CLOSE,"no rejection reason",2016-08-28,"Юшина Эмилия"
+88,6,4,false,2016-08-30,2016-09-04,101,ACTIVE,"no rejection reason",2016-08-29,NULL
+89,9,17,true,2016-08-30,2016-08-31,102,CLOSE,"no rejection reason",2016-08-29,"Юшина Эмилия"
+90,16,17,true,2016-08-30,2016-08-31,103,REJECTED,неадекватный,2016-08-29,NULL
+91,10,17,false,2016-08-30,2016-08-31,104,CLOSE,"no rejection reason",2016-08-29,"Юшина Эмилия"
+92,9,3,true,2016-08-30,2016-08-31,105,UNTREATED,"no rejection reason",2016-08-29,NULL
+93,9,17,true,2016-08-30,2016-08-31,106,UNTREATED,"no rejection reason",2016-08-29,NULL
+94,10,17,true,2016-08-30,2016-08-31,107,UNTREATED,"no rejection reason",2016-08-29,NULL
