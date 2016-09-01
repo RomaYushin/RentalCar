@@ -41,7 +41,8 @@ public class ExceptionMessages {
 	public static final String EXCEPTION_CAN_NOT_GET_ALL_ACCOUNTS_WITH_UNPAID_REPAIRS = "Can not get all accounts with unpaid repairs!";
 	public static final String EXCEPTION_CAN_NOT_UPDATE_MANAGER_NAME_WHO_CLOSED_ORDER = "Can not update manager name who closed order!";
 	public static final String EXCEPTION_CAN_NOT_UPDATE_ACCOUNT_FOR_REPAIR_AND_REPAIR_PAID_BY_ORDER_ID = "Can not update account for repair and repair paid by order id!";
-
+	public static final String EXCEPTION_CAN_NOT_FIND_ALL_FREE_CARS_BY_BUSY_DATES = "Can not find all free cars by busy dates!";
+	
 	// exceptions validation add new car
 	public static final String EXCEPTION_VALIDATION_INVALID_CAR_BREND = "Invalid car brend. Name contains wrong character (for example: @#)!";
 	public static final String EXCEPTION_VALIDATION_INVALID_CAR_MODEL = "Invalid car model. Name contains wrong character (for example: @#)!";
@@ -60,7 +61,7 @@ public class ExceptionMessages {
 	public static final String EXCEPTION_VALIDATION_INVALID_DATE_OF_BIRTH = "You are to young to use this application. You must be older than 14! (Invalid date of Birth)";
 	public static final String EXCEPTION_VALIDATION_INVALID_NOT_THE_SAME_PASSWORD = "Not the same password!";
 	public static final String EXCEPTION_VALIDATION_INVALID_ORDER_ID = "Invalid order id!";
-	public static final String EXCEPTION_VALIDATION_INVALID_REJECTION_REASON = "Invalid rejection reason!";
+	public static final String EXCEPTION_VALIDATION_INVALID_REJECTION_REASON = "Invalid rejection reason. There are to much or to less characters in rejection reason. Must be more than 2 and less than 500!";
 	public static final String EXCEPTION_VALIDATION_INVALID_ORDER_DATE = "Invalid order date!";
 	public static final String EXCEPTION_VALIDATION_INVALID_PRICE = "Invalid price!";
 	public static final String EXCEPTION_VALIDATION_NOT_ENOUGH_MANY_FOR_RENT = " Not enough many for rent!";

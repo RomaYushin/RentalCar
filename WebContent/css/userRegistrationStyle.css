@@ -1,7 +1,17 @@
 @import url(reset.css);
 
+@font-face {
+    font-family: "MyriadProRegular";
+    src: url("../fonts/MyriadProRegular/MyriadProRegular.eot");
+    src: url("../fonts/MyriadProRegular/MyriadProRegular.eot?#iefix")format("embedded-opentype"),
+    url("../fonts/MyriadProRegular/MyriadProRegular.woff") format("woff"),
+    url("../fonts/MyriadProRegular/MyriadProRegular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
 body {
-	font:25px "Arial Black", Gadget, sans-serif;
+	font:25px "MyriadProRegular", "Arial Black", Gadget, sans-serif;
 	color:  #1B1D23;
 	background: url(../images/8_1593_1186.jpg) 0px 0px no-repeat;
 	background-size: cover;
@@ -9,7 +19,7 @@ body {
 }
 
 .wrapper {
-	width: 1200px;
+	width: 1000px;
 	margin: 0 auto;
 }
 
@@ -30,7 +40,6 @@ body {
 
 .headerNameCompany {
 	text-align: center;
-	height: 60px;
 	font-size: 40px;
 }
 
@@ -41,8 +50,9 @@ body {
 }
 
 select{
-	font:14px "Arial Black", Gadget, sans-serif;
+	font:18px "MyriadProRegular", "Arial Black", Gadget, sans-serif;
 	opacity: 0.8;
+	width: 145px;
 }
 
 .mainContent {
@@ -50,27 +60,30 @@ select{
 	-webkit-border-radius: 8px;
 	-moz-border-radius: 8px;
 	border-radius: 8px;
-	
+	padding-bottom: 20px;
 	margin-top: 50px;
 	text-align: center;
-	height: 350px;	
 	background: #A4C0C6;
+}
+.mainBlockName {
+	font-size: 30px;
+	margin-top: 20px;
+	margin-bottom: 20px;
 }
 
 #registrationForm {
 	height: 250px;
-	font:20px "Arial Black", Gadget, sans-serif;
+	font:20px "MyriadProRegular", "Arial Black", Gadget, sans-serif;
 }
 
 .registrationForm_left {	
-	float: left;
-	width: 500px;	
-	margin-left: 130px;
+	width: 420px;
+	display: inline-block;
 }
 
 .registrationForm_right {
-	width: 500px;	
-	margin-left: 650px;
+	width: 420px;
+    display: inline-block;
 }
 
 .field {
@@ -85,18 +98,21 @@ label {
 }
 
 input {
-	font:12px "Arial Black", Gadget, sans-serif;
+	font:12px "MyriadProRegular", "Arial Black", Gadget, sans-serif;
+	width: 133px;
+	padding-left: 8px;
+    box-sizing: content-box;
 }
 
 #signUp {
 	margin: 40px 300px 10px 300px;
-	font:20px "Arial Black", Gadget, sans-serif;
+	font:20px "MyriadProRegular", "Arial Black", Gadget, sans-serif;
 	opacity: 0.8;
 }
 
 #exit {
 	margin: 10px 300px 10px 300px;
-	font:20px "Arial Black", Gadget, sans-serif;
+	font:20px "MyriadProRegular", "Arial Black", Gadget, sans-serif;
 	opacity: 0.8;
 }
 
@@ -108,7 +124,7 @@ input {
 	background: #A4C0C6;
 	
 	margin-top: 30px;
-	font:14px "Arial Black", Gadget, sans-serif;
+	font:14px "MyriadProRegular", "Arial Black", Gadget, sans-serif;
 	color: black;
 	text-align: center;
 	opacity:0.8;

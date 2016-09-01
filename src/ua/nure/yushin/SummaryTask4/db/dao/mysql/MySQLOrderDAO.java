@@ -31,7 +31,6 @@ public class MySQLOrderDAO implements IOrderDAO {
 	private static final Logger LOG = Logger.getLogger(MySQLOrderDAO.class);
 	
 	
-	
 	/*
 	@Override
 	public void insertNewOrder(Order newOrder) {
@@ -87,7 +86,6 @@ public class MySQLOrderDAO implements IOrderDAO {
 		}		
 	}
 	*/
-	
 	
 	
 	
@@ -212,7 +210,7 @@ public class MySQLOrderDAO implements IOrderDAO {
 			}
 			
 			//newOrder.setId(current_id);
-			connection.commit();	
+			connection.commit();
 		} catch (SQLException e) {
 			try {
 				connection.rollback();

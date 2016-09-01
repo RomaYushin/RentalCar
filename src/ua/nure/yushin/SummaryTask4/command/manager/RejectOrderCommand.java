@@ -66,12 +66,9 @@ public class RejectOrderCommand extends AbstractCommand {
 			throw new AppException(ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR);
 		}
 		
-		try {
-			ValidatorOfInputParameters.validateId(orderId);
-			ValidatorOfInputParameters.validateRejectionReason (rejectionReason);
-		} catch (ValidationException v) {
-			throw new AsyncResponseException(ExceptionMessages.EXCEPTION_VALIDATION_INVALID_ORDER_ID);
-		}
+		
+		ValidatorOfInputParameters.validateId(orderId);
+		ValidatorOfInputParameters.validateRejectionReason (rejectionReason);
 		
 		try {
 			OrderStatus os = OrderStatus.REJECTED;
@@ -91,7 +88,7 @@ public class RejectOrderCommand extends AbstractCommand {
 		String sortingType = (String) session.getAttribute("sortingType");
 		
 		// ответ
-		request.setAttribute("respMessage", "Order was successfully rejected");
+		request.setAttribute("respMessage", "showSpecifiedOrder.jsp.succesfullReject");
 		request.setAttribute("type", "reject");
 		request.setAttribute("sortingType", sortingType);
 		

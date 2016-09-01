@@ -134,9 +134,10 @@
 						<c:when test="${fn:contains (order.getOrderStatus().toString(), 'UNTREATED')}">
 							<c:if test="${order.getOrderAccount().isAccountRentPaid()}"> 
 								<button onclick = "approveOrder()" ><fmt:message key="showSpecifiedOrder.jsp.approve_btn" /></button>	
-							</c:if>								
+							</c:if>										
 							<button onclick = "showTextArea()" ><fmt:message key="showSpecifiedOrder.jsp.rejectReason_btn" /></button>			
 							<button onclick = "closeOrder()" ><fmt:message key="showSpecifiedOrder.jsp.close_btn" /> </button>
+								
 						</c:when>
 						<c:when test="${fn:contains (order.getOrderStatus().toString(), 'ACTIVE')}">	
 							<button onclick = "showAreaForRepairPrice()" > <fmt:message key="showSpecifiedOrder.jsp.billForRepair" /> </button>			
@@ -173,22 +174,23 @@
 </c:if>
 
 <c:if test="${not empty respMessage }">
-	<c:out value="${ respMessage }"></c:out><br>
+	<fmt:message key="${ respMessage }" />
+	<br>
 	<c:choose>
 			<c:when test="${fn:contains (sortingType, 'showUntreatedOrders')}">
-				<button onclick="showUntreatedOrders()" > Ok! </button>
+				<button onclick="showUntreatedOrders()" > Ok </button>
 			</c:when>
 			<c:when test="${fn:contains (sortingType, 'showActiveOrders')}">
-				<button onclick="showActiveOrders()" > Ok! </button>
+				<button onclick="showActiveOrders()" > Ok </button>
 			</c:when>
 			<c:when test="${fn:contains (sortingType, 'showClosedOrders')}">
-				<button onclick="showClosedOrders()" > Ok! </button>
+				<button onclick="showClosedOrders()" > Ok </button>
 			</c:when>
 			<c:when test="${fn:contains (sortingType, 'showRejectedOrders')}">
-				<button onclick="showRejectedOrders()" > Ok! </button>
+				<button onclick="showRejectedOrders()" > Ok </button>
 			</c:when>
 			<c:when test="${fn:contains (sortingType, 'showAllOrders')}">
-				<button onclick="showAllOrders()" > Ok! </button>
+				<button onclick="showAllOrders()" > Ok </button>
 			</c:when>
 		</c:choose>
 </c:if>

@@ -40,6 +40,7 @@ public class PrintAvailableCars extends TagSupport {
 	}
 */
 	
+	
 	private Map <String , List<Car>> availableCars_map;
 	
 	public Map<String, List<Car>> getAvailableCars_map() {
@@ -50,7 +51,6 @@ public class PrintAvailableCars extends TagSupport {
 		this.availableCars_map = availableCars_map;
 	}
 
-	
 	@Override
 	public int doStartTag() throws JspException {
 		
@@ -79,7 +79,7 @@ public class PrintAvailableCars extends TagSupport {
 			LOG.info("availableCars in doTag:" + availableCars_map);
 			try {
 				JspWriter jspOut = pageContext.getOut();
-				jspOut.println("2." +  selectOrderCar + ":");
+				//jspOut.println("2." +  selectOrderCar + ":");
 				jspOut.println("<div class = \"sortButtons\">");
 				
 				jspOut.println("<button id = \"sortByPriceASC\" onclick =\"sortByPriceASC()\" >" + sortCheapToExp_btn  + "</button>");
@@ -108,8 +108,11 @@ public class PrintAvailableCars extends TagSupport {
 				jspOut.println("</select>");			
 				jspOut.println("</div>"); // end sortButtons
 				
-				
 				jspOut.println("<div class = \"cars\"> ");
+				jspOut.println("<div class = \"selectOrderCarBlockName\"> ");
+				jspOut.println("2." +  selectOrderCar + ":");
+				jspOut.println("</div> ");
+				
 				for (Car car : availableCars_map.get("availableCarsAfterSelect")) {
 					GregorianCalendar gc = new GregorianCalendar();
 					gc.setTime(car.getCarYearOfIssue());
@@ -121,11 +124,14 @@ public class PrintAvailableCars extends TagSupport {
 							+ "value = \"" + s + "\" />");
 					jspOut.print(car.getCarBrend() + " " + car.getCarModel() + " " + gc.get(Calendar.YEAR));
 					
-					jspOut.println("; "+ qualClass + ": " );
-					jspOut.println(car.getCarQualityClass().toString().toLowerCase());
+					//jspOut.println("<br>" );
+					//jspOut.println(qualClass + ": " );
+					jspOut.println("  (" + car.getCarQualityClass().toString().toLowerCase() + ") ");
 					
-					jspOut.println("; "+ rentalCost + ": ");
+					//jspOut.println("<br>" );
+					jspOut.println(rentalCost + ": ");
 					jspOut.println(car.getCarRentalCost() + "$");
+					//jspOut.println("<br>" );
 					
 					jspOut.println("</div>"); // end div car
 				}

@@ -81,7 +81,7 @@ public class PrintAllUsers extends TagSupport {
 				jspOut.println("<td>" + ++number + "</td>");
 				jspOut.println("<td>" + user.getId() + "</td>");
 				jspOut.println("<td>" + user.getUserPassSurname() + "</td>");
-				jspOut.println("<td>" + user.getUserPassName() + "</td>");
+				jspOut.println("<td>" + user.getUserPassName()  + "</td>");
 				jspOut.println("<td>" + user.getUserPassPatronomic() + "</td>");
 				jspOut.println("<td>" + user.getUserEmail() + "</td>");
 				jspOut.println("<td>" + user.getUserRole() + "</td>");

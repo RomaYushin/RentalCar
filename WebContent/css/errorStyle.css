@@ -1,0 +1,38 @@
+@import url(reset.css);
+
+@font-face {
+    font-family: "MyriadProRegular";
+    src: url("../fonts/MyriadProRegular/MyriadProRegular.eot");
+    src: url("../fonts/MyriadProRegular/MyriadProRegular.eot?#iefix")format("embedded-opentype"),
+    url("../fonts/MyriadProRegular/MyriadProRegular.woff") format("woff"),
+    url("../fonts/MyriadProRegular/MyriadProRegular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+
+body {
+	font:25px "MyriadProRegular", "Arial Black", Gadget, sans-serif;
+	color:  #1B1D23;
+	background: url(../images/11.jpg) 0px 0px no-repeat;
+	background-size: cover;
+	opacity: 0.8;	
+	position: relative;
+}
+
+
+.wrapper {
+	width: 1000px;
+	margin: 0 auto;
+	padding-top: 20px;
+}
+
+.mainContentName {
+	font-size: 50px;
+	
+}
+
+.message {
+	font-size: 30px;
+	text-decoration: underline;
+}

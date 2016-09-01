@@ -48,6 +48,7 @@ public class PrintAllCarsFromDB extends TagSupport {
 		String carModel_clmn = LocaleUtil.getValueByKey("adminPerArea.jsp.carModel_clmn", session);
 		String carYearOfIssue_clmn = LocaleUtil.getValueByKey("adminPerArea.jsp.carYearOfIssue_clmn", session);
 		String carQualityClass_clmn = LocaleUtil.getValueByKey("adminPerArea.jsp.carQualityClass_clmn", session);
+		String carStatus_clmn = LocaleUtil.getValueByKey("adminPerArea.jsp.carStatus_clmn", session);
 		String carRentalCost_clmn = LocaleUtil.getValueByKey("adminPerArea.jsp.carRentalCost_clmn", session);
 		String editCar_clmn = LocaleUtil.getValueByKey("adminPerArea.jsp.editCar_clmn", session);
 		String removeCar_clmn = LocaleUtil.getValueByKey("adminPerArea.jsp.removeCar_clmn", session);
@@ -66,11 +67,12 @@ public class PrintAllCarsFromDB extends TagSupport {
 			jspOut.println("<th>" + carId_clmn + "</th>");
 			jspOut.println("<th>" + carBrend_clmn + "</th>");
 			jspOut.println("<th>" + carModel_clmn + "</th>");
-			jspOut.println("<th>"+ carYearOfIssue_clmn +"</th>");
-			jspOut.println("<th>"+ carQualityClass_clmn +"</th>");
-			jspOut.println("<th>"+ carRentalCost_clmn +"</th>");
-			jspOut.println("<th>"+ editCar_clmn +"</th>");
-			jspOut.println("<th>"+ removeCar_clmn +"</th>");		
+			jspOut.println("<th>" + carYearOfIssue_clmn +"</th>");
+			jspOut.println("<th>" + carQualityClass_clmn +"</th>");
+			jspOut.println("<th>" + carStatus_clmn +"</th>");
+			jspOut.println("<th>" + carRentalCost_clmn +"</th>");
+			jspOut.println("<th>" + editCar_clmn +"</th>");
+			jspOut.println("<th>" + removeCar_clmn +"</th>");		
 			jspOut.println("</tr>");
 			
 			for (Car car : allCarsFromDB_map.get("allCarsFromDB")) {
@@ -84,6 +86,7 @@ public class PrintAllCarsFromDB extends TagSupport {
 				jspOut.println("<td>" + car.getCarModel() + "</td>");			
 				jspOut.println("<td>" + gc.get(Calendar.YEAR) + "</td>");
 				jspOut.println("<td>" + car.getCarQualityClass() + "</td>");
+				jspOut.println("<td>" + car.getCarStatus() + "</td>");
 				jspOut.println("<td>" + car.getCarRentalCost() + "</td>");
 				jspOut.println("<td> <button onclick =\"showEditCarForm("+ car.getId() +")\" > "
 						+ editCar_btn + "</button></td>");

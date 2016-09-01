@@ -16,8 +16,9 @@
 		
 	
 		<form action="Controller" method="GET">
-			<input type="hidden" name="command" value="editLanguage"> 
-			<input type="hidden" name = "currentCommand" value="${param.command}"></input>
+			<input type="hidden" name="command" value="editLanguage" /> 
+			<input type="hidden" name = "currentCommand" value="${param.command}" />
+			<input type = "hidden" id = "language" value ="${language}">
 			
 			<select	id="selectLanguage" name="language" onchange="this.form.submit()">
 				<option ><fmt:message key="header.jspf.chooseLanguge" /></option>
@@ -39,7 +40,9 @@
 		<c:if test="${not empty sessionScope.user }" > 
 			<form action="Controller" method = "POST">
 				<input type = "hidden" name = "command" value = "logout">				
-				<input type = "submit" value = "<fmt:message key="header.jspf.logout" />" >
+				<div class="logoutBtn">
+					<input type = "submit" value = "<fmt:message key="header.jspf.logout" />" >
+				</div>
 			</form>
 		</c:if>
 		

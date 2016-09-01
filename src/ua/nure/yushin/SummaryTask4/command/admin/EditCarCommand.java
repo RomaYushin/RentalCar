@@ -70,9 +70,9 @@ public class EditCarCommand extends AbstractCommand {
 		String newCarBrend = null; 
 		String newCarModel = null;
 		Date newCarYearOfIssue = null;
-		String newCarQualityClass_s = null;
+		CarQualityClass newCarQualityClass = null;
 		int newCarRentalCost = 0; 
-		String newCarStatus_s = null;
+		CarStatus newCarStatus = null;
 		HttpSession session = request.getSession(false);
 		String responseMessage = LocaleUtil.getValueByKey("adminPerArea.jsp.editCarRespMessage", session);
 		
@@ -82,17 +82,17 @@ public class EditCarCommand extends AbstractCommand {
 			newCarBrend = request.getParameter("newCarBrend");
 			newCarModel = request.getParameter("newCarModel");
 			newCarYearOfIssue = Date.valueOf(request.getParameter("newCarYearOfIssue"));
-			newCarQualityClass_s = request.getParameter("newCarQualityClass");
+			newCarQualityClass = CarQualityClass.getByName(request.getParameter("newCarQualityClass"));
 			newCarRentalCost = Integer.valueOf(request.getParameter("newCarRentalCost"));
-			newCarStatus_s = request.getParameter("newCarStatus");
+			newCarStatus = CarStatus.getByName(request.getParameter("newCarStatus"));
 			
 			LOG.info("carId: " + carId);
 			LOG.info("newCarBrend: " + newCarBrend);
 			LOG.info("newCarModel: " + newCarModel);
 			LOG.info("newCarYearOfIssue: " + newCarYearOfIssue);
-			LOG.info("newCarQualityClass_s: " + newCarQualityClass_s);
+			LOG.info("newCarQualityClass_s: " + newCarQualityClass);
 			LOG.info("newCarRentalCost: " + newCarRentalCost);
-			LOG.info("newCarStatus_s: " + newCarStatus_s);
+			LOG.info("newCarStatus_s: " + newCarStatus);
 			
 		} catch (Exception e) {
 			throw new AsyncResponseException (ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR, e);
@@ -103,9 +103,9 @@ public class EditCarCommand extends AbstractCommand {
 		ValidatorOfInputParameters.validateCarBrend(newCarBrend);
 		ValidatorOfInputParameters.validateCarModel(newCarModel);
 		ValidatorOfInputParameters.validateCarYearOfIssue(newCarYearOfIssue);
-		ValidatorOfInputParameters.validateQualityCarClass(newCarQualityClass_s);
+		ValidatorOfInputParameters.validateQualityCarClass(newCarQualityClass);
 		ValidatorOfInputParameters.validateCarRentalCost(newCarRentalCost);
-		ValidatorOfInputParameters.validateCarStatus(newCarStatus_s);
+		ValidatorOfInputParameters.validateCarStatus(newCarStatus);
 
 		
 		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
@@ -116,9 +116,9 @@ public class EditCarCommand extends AbstractCommand {
 			updateCar.setCarBrend(newCarBrend);
 			updateCar.setCarModel(newCarModel);
 			updateCar.setCarYearOfIssue(newCarYearOfIssue);
-			updateCar.setCarQualityClass(CarQualityClass.getByName(newCarQualityClass_s));
+			updateCar.setCarQualityClass(newCarQualityClass);
 			updateCar.setCarRentalCost(newCarRentalCost);
-			updateCar.setCarStatus(CarStatus.getByName(newCarStatus_s));
+			updateCar.setCarStatus(newCarStatus);
 			
 			iCarDAO.updateCar(updateCar);
 			/*

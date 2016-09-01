@@ -2,6 +2,7 @@ package ua.nure.yushin.SummaryTask4.command.outOfControl;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.log4j.Logger;
@@ -51,28 +52,38 @@ public class ConfirmRegistrationCommand extends AbstractCommand {
 		String userEmail = null;
 		String userPassword = null;
 
-		try {
+		try {			
 			userEmail = request.getParameter("userEmail");
-			userPassword = DigestUtils.md5Hex(request.getParameter("userPassword"));
+			userPassword = request.getParameter("userPassword");
 
 		} catch (Exception e) {
 			throw new AppException(ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR);
 		}
 
-		// валидация данных
+		// валидация входных данных
 		ValidatorOfInputParameters.validateUserEmail(userEmail);
 		ValidatorOfInputParameters.validateUserPassword(userPassword);
-
-		// вытягиваем по email пользователя
+		
+		//шифруем пароль
+		userPassword = DigestUtils.md5Hex(request.getParameter("userPassword"));
+		
+		// проверка совпадает ли пароль		
 		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
+		IUserDAO iUserDAO = daoFactory.getUserDAO();
+		User user = iUserDAO.getUserByEmail(userEmail);
+		ValidatorOfInputParameters.validate2Passwords(userPassword, user.getUserPassword());		
+		
+		// вытягиваем по email пользователя
 		IUserDAO userDAO = daoFactory.getUserDAO();
-		User user = userDAO.getUserByEmailAndPassword(userEmail, userPassword);
+		user = userDAO.getUserByEmailAndPassword(userEmail, userPassword);
 		
 		// поменять состояние поля подтверждения
 		user.setUserConfirmation(true);
 		userDAO.updateUserById (user);
 		
 		// сообщить, что регистрация прошла успешно
+		HttpSession session = request.getSession(false);
+		session.setAttribute("responseMessage", "welcomeAuthorization.jsp.successfullConfirm");
 		
 
 		return Path.COMMAND_REDIRECT_CONFIRM_REGISTRATION;
@@ -81,10 +92,12 @@ public class ConfirmRegistrationCommand extends AbstractCommand {
 	private String doGet(HttpServletRequest request, HttpServletResponse response) {
 
 		LOG.debug("Start executing ConfirmRegistrationCommand.doGet");
-
-		// String decodedMessage = new String ()
+		
+		HttpSession session = request.getSession(false);
+		String responseMessage = (String) session.getAttribute("responseMessage");
+		session.removeAttribute("responseMessage");		
+		request.setAttribute("responseMessage", responseMessage);
+	
 		return Path.PAGE_WELCOME_AUTHORIZATION;
-
 	}
-
 }

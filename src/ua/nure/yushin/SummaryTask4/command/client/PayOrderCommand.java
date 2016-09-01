@@ -68,7 +68,7 @@ public class PayOrderCommand extends AbstractCommand {
 		// достаточно ли денег пришло
 		ValidatorOfInputParameters.validateEnoughManyForRent(order.getOrderAccount().getAccountForRent(), rentPayment);
 		
-		iAccountDAO.updateAccountForRentByOrderId(orderId, true);		
+		iAccountDAO.updateAccountForRentByOrderId(orderId, true);
 		
 		session.setAttribute("payment", true);
 		
@@ -85,11 +85,12 @@ public class PayOrderCommand extends AbstractCommand {
 			return Path.PAGE_FORWARD_CLIENT_PERSONAL_AREA;
 		}
 		
-		boolean payment = (boolean)(session.getAttribute("payment"));
+		//boolean payment = (boolean)(session.getAttribute("payment"));
 		session.removeAttribute("payment");
 
-		LOG.info("payment: " + payment);
-		request.setAttribute("payment", payment);
+		//LOG.info("payment: " + payment);
+		//request.setAttribute("payment", payment);
+		request.setAttribute("responseMessage", "cliPerArea.jsp.succesfullRentPayment");
 		
 		return Path.PAGE_FORWARD_CLIENT_PERSONAL_AREA;
 	}

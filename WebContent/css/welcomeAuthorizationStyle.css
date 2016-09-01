@@ -1,14 +1,25 @@
 @import url(reset.css);
 
+@font-face {
+    font-family: "MyriadProRegular";
+    src: url("../fonts/MyriadProRegular/MyriadProRegular.eot");
+    src: url("../fonts/MyriadProRegular/MyriadProRegular.eot?#iefix")format("embedded-opentype"),
+    url("../fonts/MyriadProRegular/MyriadProRegular.woff") format("woff"),
+    url("../fonts/MyriadProRegular/MyriadProRegular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
 body {
-	font:25px "Arial Black", Gadget, sans-serif;
+	font:25px "MyriadProRegular", "Arial Black", Gadget, sans-serif;
 	color:  #1B1D23;
 	background: url(../images/1_1180_624.jpg) 0px 0px no-repeat;
 	background-size: cover;	
+	
 }
 
 .wrapper {
-	width: 1200px;
+	width: 1000px;
 	margin: 0 auto;
 }
 
@@ -29,7 +40,6 @@ body {
 
 .headerNameCompany {
 	text-align: center;
-	height: 60px;
 	font-size: 40px;
 }
 
@@ -40,12 +50,12 @@ body {
 }
 
 select {
-	font:18px "Arial Black", Gadget, sans-serif;
+	font:18px "MyriadProRegular", "Arial Black", Gadget, sans-serif;
 	opacity: 0.8;
 }
 
 span {
-	font:14px "Arial Black", Gadget, sans-serif;
+	font:14px "MyriadProRegular", "Arial Black", Gadget, sans-serif;
 }
 
 .mainContent {
@@ -53,35 +63,64 @@ span {
 	-webkit-border-radius: 8px;
 	-moz-border-radius: 8px;
 	border-radius: 8px;
-	
+	padding-bottom: 20px;
 	margin-top: 50px;
 	text-align: center;
-	height: 250px;
+	height: 240px;
 	opacity: 0.8;	
 	background: #E4E0BE;
 }
-
+.mainBlockName {
+	font-size: 30px;
+	margin-top: 20px;
+}
+.mainContent label {
+	display: inline-block;
+    width: 130px;
+    padding-left: 190px;
+}
 #authorizationForm, #registerForm {
 	text-align: left;
-	padding-left: 300px;
 	margin-top: 15px;
 }
 
 #login, #password {
 	font-size: 20px;
+	margin-bottom: 8px;
+	padding-left: 8px;
 }
-
+.signInBlock {
+	margin-left: 325px;
+}
 #signIn {
-	
-	margin-left: 255px;
+	width: 150px;
 	margin-top: 15px;
-	font:18px "Arial Black", Gadget, sans-serif;
+	font:18px "MyriadProRegular",  "Arial Black", Gadget, sans-serif;
 	opacity: 0.8;
 }
 
+.registerForm {
+	text-align: left;
+}
 #register {
 	margin-top: 15px;
-	font:18px "Arial Black", Gadget, sans-serif;
+	font:18px "MyriadProRegular", "Arial Black", Gadget, sans-serif;
+	opacity: 0.8;
+	margin-left: 325px;
+	width: 150px;
+}
+
+.responseMessageBlock {
+	border: solid #443F31 4px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	background: #E4E0BE;
+	
+	margin-top: 30px;
+	text-align: center;
+	color:  #000000;
+	/*font-weight: 900;*/
 	opacity: 0.8;
 }
 
@@ -93,7 +132,13 @@ span {
 	background: #E4E0BE;
 	
 	margin-top: 140px;
-	font:14px "Arial Black", Gadget, sans-serif;
+	font:14px "MyriadProRegular", "Arial Black", Gadget, sans-serif;
 	text-align: center;
 	opacity: 0.8;
 }
+
+/*
+*************************************************************************
+******************** clientRegistrationStyles ***************************
+*************************************************************************
+*/

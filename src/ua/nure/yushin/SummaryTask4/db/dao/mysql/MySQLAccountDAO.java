@@ -3,15 +3,22 @@ package ua.nure.yushin.SummaryTask4.db.dao.mysql;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLClientInfoException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 
+import com.mysql.jdbc.SQLError;
+
 import ua.nure.yushin.SummaryTask4.db.dao.DAOFactory;
+import ua.nure.yushin.SummaryTask4.db.dao.DatabaseTypes;
 import ua.nure.yushin.SummaryTask4.db.dao.IAccountDAO;
+import ua.nure.yushin.SummaryTask4.db.dao.ICarDAO;
+import ua.nure.yushin.SummaryTask4.db.dao.IOrderDAO;
 import ua.nure.yushin.SummaryTask4.entity.Account;
+import ua.nure.yushin.SummaryTask4.entity.OrderStatus;
 import ua.nure.yushin.SummaryTask4.exception.DBException;
 import ua.nure.yushin.SummaryTask4.exception.ExceptionMessages;
 
@@ -31,15 +38,14 @@ public class MySQLAccountDAO implements IAccountDAO {
 		try (Connection connection = DAOFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS)) {
 			
-			
-			
 			ps.setInt(1, newAccount.getAccountForRent());
 			ps.setInt(2, newAccount.getAccountForRepair());
 			ps.setString(3, String.valueOf(newAccount.isAccountRentPaid()));
 			ps.setString(4, String.valueOf(newAccount.isAccountRepairPaid()));
 			ps.executeUpdate();
-			
-			ResultSet rs = ps.executeQuery("SELECT LAST_INSERT_ID()");
+
+			//ResultSet rs = ps.executeQuery("SELECT LAST_INSERT_ID()");
+			ResultSet rs = ps.getGeneratedKeys();
 			while (rs.next()) {
 				current_id = rs.getInt(1);
 			}			
@@ -53,21 +59,58 @@ public class MySQLAccountDAO implements IAccountDAO {
 	@Override
 	public void updateAccountForRentByOrderId (int orderId, boolean value) throws DBException {
 		
+		LOG.info("updateAccountForRentByOrderId start");
+		LOG.info("orderId: " + orderId);
+		LOG.info("value: " + value);
+		
 		String query = "UPDATE `account` SET `accountRentPaid`= ? WHERE `id` = "
-				+ "(SELECT `order`.`account_id` FROM `order` WHERE id = ?);";
+				+ "(SELECT `order`.`account_id` FROM `order` WHERE `order`.`id` = ?);";
+		
+		String query2 = "UPDATE `order` SET `orderStatus`= ? WHERE `id`= ?;";
 
+		String query3 = "UPDATE `order` SET `rejectionReason`= ? WHERE `id`= ?;";
+		
+		/*
 		try (Connection connection = DAOFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(query)) {
+		*/
+		Connection connection = null;
+		PreparedStatement ps = null;
+		
+		try {
+			connection = DAOFactory.getConnection();
+			ps = connection.prepareStatement(query);
+			connection.setAutoCommit(false);
 			
 			ps.setString(1, String.valueOf(value));
 			ps.setInt(2, orderId);
 			ps.executeUpdate();
 			
+			if (value) {
+				ps = connection.prepareStatement(query2);
+				ps.setString (1, OrderStatus.UNTREATED.toString());
+				ps.setInt(2, orderId);
+				ps.executeUpdate();		
+				
+				ps = connection.prepareStatement(query3);				
+				ps.setString(1, "-");
+				ps.setInt(2, orderId);
+				ps.executeUpdate();	
+			}
+			
+			connection.commit();
 		} catch (SQLException e) {
+			try {
+				connection.rollback();
+			} catch (Exception ee) {
+				LOG.error(ee);
+			}
 			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_ACCOUNT);
 			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_ACCOUNT);		
-		}		
-
+		} finally {
+			try {connection.close();} catch (Exception e) {	LOG.error(e);}
+			try {ps.close();} catch (Exception e) {	LOG.error(e);}
+		}	
 	}
 	
 	@Override
@@ -75,17 +118,51 @@ public class MySQLAccountDAO implements IAccountDAO {
 		
 		String query = "UPDATE `account` SET `accountRepairPaid`= ? WHERE `id` = "
 				+ "(SELECT `order`.`account_id` FROM `order` WHERE id = ?);";
+		
+		String query2 = "UPDATE `order` SET `orderStatus`= ? WHERE `id`= ?;";
 
+		String query3 = "UPDATE `order` SET `rejectionReason`= ? WHERE `id`= ?;";
+		
+		Connection connection = null;
+		PreparedStatement ps = null;
+
+		/*
 		try (Connection connection = DAOFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(query)) {
+		*/
+		try {
+			connection = DAOFactory.getConnection();
+			ps = connection.prepareStatement(query);
+			connection.setAutoCommit(false);
 			
 			ps.setString(1, String.valueOf(value));
 			ps.setInt(2, orderId);
 			ps.executeUpdate();
 			
+			if (value) {
+				ps = connection.prepareStatement(query2);
+				ps.setString (1, OrderStatus.UNTREATED.toString());
+				ps.setInt(2, orderId);
+				ps.executeUpdate();		
+				
+				ps = connection.prepareStatement(query3);				
+				ps.setString(1, "-");
+				ps.setInt(2, orderId);
+				ps.executeUpdate();	
+			}
+			
+			connection.commit();
 		} catch (SQLException e) {
+			try {
+				connection.rollback();
+			} catch (Exception ee) {
+				LOG.error(ee);
+			}
 			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_ACCOUNT);
 			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_ACCOUNT);		
+		} finally {
+			try {connection.close();} catch (Exception e) {	LOG.error(e);}
+			try {ps.close();} catch (Exception e) {	LOG.error(e);}
 		}
 	}
 

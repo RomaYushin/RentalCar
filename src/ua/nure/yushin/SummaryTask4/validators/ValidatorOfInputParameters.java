@@ -70,7 +70,6 @@ public class ValidatorOfInputParameters {
 	public static void validateSex(Sex userSex) throws ValidationException {
 		for (Sex sex : Sex.values()) {
 			if (userSex.toString().equals(sex.name())) {
-
 				return;
 			}
 		}
@@ -98,7 +97,7 @@ public class ValidatorOfInputParameters {
 	}
 
 	public static void validateUserPassword(String userPassword) throws ValidationException {
-		if (userPassword.length() < 30) {
+		if (userPassword.length() < 4 || userPassword.length() > 10) {
 			throw new ValidationException(ExceptionMessages.EXCEPTION_VALIDATION_INVALID_PASSWORD);
 		}
 	}
@@ -110,7 +109,7 @@ public class ValidatorOfInputParameters {
 	}
 
 	public static void validateRejectionReason(String rejectionReason) throws ValidationException {
-		if (rejectionReason.length() < 2) {
+		if (rejectionReason.length() < 2  || rejectionReason.length() > 500) {
 			throw new ValidationException(ExceptionMessages.EXCEPTION_VALIDATION_INVALID_REJECTION_REASON);
 		}
 	}
@@ -144,21 +143,21 @@ public class ValidatorOfInputParameters {
 		}
 	}
 
-	public static void validateQualityCarClass(String carQualityClass) throws ValidationException {
+	public static void validateQualityCarClass(CarQualityClass carQualityClass) throws ValidationException {
 
 		for (CarQualityClass c : CarQualityClass.values()) {
-			if (carQualityClass.equals(c.name())) {
+			if (carQualityClass.equals(c)) {
 				return;
 			}
 		}
 		LOG.error(ExceptionMessages.EXCEPTION_VALIDATION_INVALID_CAR_QUALITY_CLASS);
 		throw new ValidationException(ExceptionMessages.EXCEPTION_VALIDATION_INVALID_CAR_QUALITY_CLASS);
 	}
-
-	public static void validateCarStatus(String carStatus) throws ValidationException {
+	
+	public static void validateCarStatus(CarStatus carStatus) throws ValidationException {
 
 		for (CarStatus s : CarStatus.values()) {
-			if (carStatus.equals(s.name())) {
+			if (carStatus.equals(s)) {
 				return;
 			}
 		}
@@ -189,7 +188,7 @@ public class ValidatorOfInputParameters {
 		}
 
 		// проверка, если дата старта позже даты начала
-		if (start.getTime() >= end.getTime()) {
+		if (start.getTime() > end.getTime()) {
 			LOG.error("Invalid input dates, early that today:" + start + " " + end);
 			throw new ValidationException(ExceptionMessages.EXCEPTION_VALIDATION_INVALID_ORDER_DATE);
 		}

@@ -11,9 +11,6 @@ import ua.nure.yushin.SummaryTask4.controller.Path;
 
 public class AdminPersonalAreaCommand extends AbstractCommand {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 2675712153083154954L;
 
 	private static final Logger LOG = Logger.getLogger(AdminPersonalAreaCommand.class);

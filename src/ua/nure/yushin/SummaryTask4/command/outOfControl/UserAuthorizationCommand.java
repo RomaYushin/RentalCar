@@ -37,7 +37,8 @@ public class UserAuthorizationCommand extends AbstractCommand {
 		if (requestMethodType.equals(ActionType.POST)) {
 			result = doPost (request, response);
 		} else {
-			result = doGet (request, response);		}
+			result = doGet (request, response);
+		}
 		
 		LOG.info("End executing UserAuthorizationCommand.execute");
 		return result;
@@ -47,19 +48,29 @@ public class UserAuthorizationCommand extends AbstractCommand {
 		
 		LOG.info("Start executing UserAuthorizationCommand");
 		
+		String userEmail = null;
+		String userPassword = null;
 		// получение email и  password
-		String userEmail = request.getParameter("userEmail");
-		String userPassword = DigestUtils.md5Hex(request.getParameter("userPassword"));
+		try {			
+			LOG.info("userEmail: " + request.getParameter("userEmail"));
+			LOG.info("userPassword: " + request.getParameter("userPassword"));
+			
+			userEmail = request.getParameter("userEmail");
+			userPassword = request.getParameter("userPassword");			
+		} catch (Exception e) {
+			LOG.error(ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR);
+			throw new AppException(ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR);
+		}
 		
-		LOG.info("userEmail: " + userEmail);
-		LOG.info("userPassword: " + userPassword);
-		
-		// валидация email и password
 		ValidatorOfInputParameters.validateUserEmail(userEmail);
 		ValidatorOfInputParameters.validateUserPassword(userPassword);
 		
+		// шифруем пароль
+		userPassword = DigestUtils.md5Hex(userPassword);			
+		
+		
 		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
-		IUserDAO userDAO = daoFactory.getUserDAO();
+		IUserDAO userDAO = daoFactory.getUserDAO();		
 		User userFromDB = userDAO.getUserByEmailAndPassword(userEmail, userPassword);
 		
 		// проверка на подтверждение почты

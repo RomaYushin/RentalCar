@@ -30,7 +30,7 @@ public class ShowConfirmViewCommand extends AbstractCommand {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType)
 			throws AppException {
-		
+	
 		LOG.info("Start executing ShowConfirmViewCommand");
 
 		String result = null;
@@ -46,16 +46,33 @@ public class ShowConfirmViewCommand extends AbstractCommand {
 		return result;
 	}
 	
-	private String doPost(HttpServletRequest request, HttpServletResponse response) throws AppException {		
-		return null;		
+	private String doPost(HttpServletRequest request, HttpServletResponse response) throws AppException {			
+		return Path.COMMAND_REDIRECT_CONFIRM_REGISTRATION;		
 	}
 	
-	private String doGet(HttpServletRequest request, HttpServletResponse response) {
+	private String doGet(HttpServletRequest request, HttpServletResponse response) throws AppException {
 		
 		LOG.debug("Start executing ShowConfirmViewCommand.doGet");
 		
-		String userEmail = request.getParameter("userEmail");
-		LOG.info("userEmail (from email):" + userEmail );
+		String userEmail = null;
+		String userPassword = null;
+		
+		try {
+			LOG.info("userEmail (from email):" + request.getParameter("userEmail") );
+			LOG.info("userPassword (from email):" + request.getParameter("userEmail") );
+			
+			userEmail = request.getParameter("userEmail");
+			userPassword = request.getParameter("userPassword");
+		} catch (Exception e) {
+			throw new AppException(ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR);
+		}
+		
+		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
+		IUserDAO iUserDAO = daoFactory.getUserDAO();
+		User user = iUserDAO.getUserByEmail(userEmail);
+		
+		ValidatorOfInputParameters.validateUserEmail(userEmail);
+		ValidatorOfInputParameters.validate2Passwords(userPassword, user.getUserPassword());
 		
 		request.setAttribute("userEmail", userEmail);
 		return Path.PAGE_FORWARD_CLIENT_CONFIRM_REGISTRATION;

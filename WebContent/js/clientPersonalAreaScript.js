@@ -227,7 +227,10 @@ function createNewOrder() {
 	var car =  $('.car > input[name=car]:checked').attr('value');
 	var carId = $('.car > input[name=car]:checked').attr('id');
 	var driver = $('.driver > input[name=driver]:checked').val();
-	var totalPrice = $('#totalPrice').attr('value');
+	var totalPrice = $('#totalPrice').attr('value');	
+	var lang = $('#language').val();
+	
+	var answer;
 
 	$('#ordFormStartDate_id').val(startDate);
 	$('#ordFormEndDate_id').val(endDate);
@@ -235,15 +238,27 @@ function createNewOrder() {
 	$('#ordFormDriver_id').val(driver);
 	$('#ordFormTotalPrice_id').val(totalPrice);
 	
-	var message = "Your order parametrs:" + 
+	var message_eng = "Your order parametrs:" + 
 			"\n  1. Start date: " + startDate +
 			"\n  2. End date: " + endDate +
 			"\n  3. Car: " + car + 
 			"\n  4. Presence of the driver: " + driver +
 			"\n  5. Total price: " + totalPrice + 
-			"\n\n If you want to create a new order , click Ok, otherwise click Cancel" ;
+			"\n\n If you want to create a new order , click \"Ok\", otherwise click \"Cancel\"";
 			
-	var answer = confirm(message);	
+	var message_ru = "Параметры вашего заказа следующие:" + 
+	"\n  1. Дата начала аренды: " + startDate +
+	"\n  2. Дата окончания аренды: " + endDate +
+	"\n  3. Автомобиль: " + car + 
+	"\n  4. Наличие водителя: " + driver +
+	"\n  5. Итоговая сумма: " + totalPrice + 
+	"\n\n Если Вы желаете сформировать заказ, нажмите \"Ок\", в противном случае нажмите \"Отмена\"." ;
+	
+	if (lang === 'ru') {
+		answer = confirm(message_ru);
+	} else if (lang === 'en') {
+		answer = confirm(message_eng);
+	}	
 	
 	if (answer) {
 		$('#createOrderForm').submit(); 

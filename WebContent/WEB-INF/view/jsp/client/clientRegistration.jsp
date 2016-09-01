@@ -6,14 +6,19 @@
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title>clientSignUp</title>
 		<link href = "css/userRegistrationStyle.css" type = "text/css" rel = "stylesheet" />
+		<script src = "js/jquery-3.1.0.js" type = "text/javascript"></script>
+		<script src = "js/userRegistrationScript.js" type = "text/javascript"></script>
+		<!--  <link href = "css/userRegistrationStyle.css" type = "text/css" rel = "stylesheet" /> -->
 		<!-- <script src="js/jquery.js" type="text/javascript"></script> -->
 		<!-- <script src="js/authorizationScripts.js" type="text/javascript"></script> -->
 	</head>
-	<body>
+	<body class="clientRegistrationBody">
 		<div class="wrapper">
 			<%@ include file = "/WEB-INF/view/jspf/header.jspf" %>
 			<div class="mainContent">
-				<fmt:message key="clientRegistration.jsp.mainBlockName" />
+				<div class="mainBlockName">
+					<fmt:message key="clientRegistration.jsp.mainBlockName" />
+				</div>
 				<form id="registrationForm" action="Controller" method="POST">
 					<input type = "hidden" name = "command" value = "clientRegistration" />
 					<input type = "hidden" name = "userLanguage" value = "${language}">
@@ -72,7 +77,7 @@
 						
 						<div class="field">
 							<label>10. <fmt:message key="clientRegistration.jsp.userPassword2" /> </label> 
-							<input type="password" name="userPassword" size=20 />
+							<input type="password" name="userPassword2" size=20 />
 						</div> 
 					</div>					
 					<input id = "signUp" type="submit" value="<fmt:message key="clientRegistration.jsp.signUp" />">					

@@ -29,7 +29,6 @@ public class ApproveOrderCommand extends AbstractCommand {
 	
 	private static final Logger LOG = Logger.getLogger(ApproveOrderCommand.class);
 
-
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response, ActionType requestMethodType)
 			throws AppException {
@@ -85,12 +84,10 @@ public class ApproveOrderCommand extends AbstractCommand {
 		
 		LOG.debug("sortingType :" + sortingType);
 		// ответ
-		request.setAttribute("respMessage", "Order was successfully approved");
+		request.setAttribute("respMessage", "showSpecifiedOrder.jsp.succesfullApproving");
 		request.setAttribute("type", "approve");
 		request.setAttribute("sortingType", sortingType);
 		
-		//return Path.COMMAND_REDIRECT_MANAGER_SHOW_ORDERS_COMMAND + "&sortingType="+sortingType;
-		//return Path.COMMAND_REDIRECT_MANAGER_SHOW_SPECIFIED_ORDER_COMMAND;
 		return Path.PAGE_FORWARD_MANAGER_SHOW_SPECIFIED_ORDER;
 	}
 	

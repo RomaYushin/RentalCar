@@ -3,8 +3,9 @@
 
 
 <fmt:message key="clientRegistration.jsp.mainBlockName" />
-<form id="registerManagerForm" action="Controller" method="POST" onsubmit="registerNewManagerForm()">
-	<input type = "hidden" name = "userLanguage" value = "${language}">
+<form id="registerManagerForm" action="Controller" method="POST" >
+	<input type = "hidden" name = "userLanguage" value = "${language}" />
+	<input type = "hidden" name = "command" value = "registerNewManager" /> 
 					
 	<div class="registrationForm_left">
 		<div class="field">

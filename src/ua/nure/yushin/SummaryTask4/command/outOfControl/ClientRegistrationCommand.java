@@ -51,7 +51,15 @@ public class ClientRegistrationCommand extends AbstractCommand {
 	}
 
 	private String doGet(HttpServletRequest request, HttpServletResponse response) {
-		LOG.debug("Start executing ClientRegistrationCommand.doGet");
+		LOG.info ("Start executing ClientRegistrationCommand.doGet");
+		
+		HttpSession session = request.getSession(false);
+		
+		if ( session.getAttribute("responseMessage") != null) {
+			request.setAttribute("responseMessage", (String) session.getAttribute("responseMessage"));
+			session.removeAttribute("responseMessage");
+			return Path.PAGE_WELCOME_AUTHORIZATION;
+		}		
 		return Path.PAGE_FORWARD_CLIENT_REGISTRATION;
 	}
 
@@ -84,8 +92,8 @@ public class ClientRegistrationCommand extends AbstractCommand {
 			userSex = Sex.getByName(request.getParameter(FieldsInJSPPages.USER_PASS_SEX));
 			userEmail = request.getParameter(FieldsInJSPPages.USER_EMAIL).trim().toLowerCase();
 			// сразу шифруем пароль для базы данных
-			userPassword = DigestUtils.md5Hex(request.getParameter(FieldsInJSPPages.USER_PASSWORD));
-			userPassword2 = DigestUtils.md5Hex(request.getParameter(FieldsInJSPPages.USER_PASSWORD));
+			userPassword = request.getParameter(FieldsInJSPPages.USER_PASSWORD);
+			userPassword2 = request.getParameter(FieldsInJSPPages.USER_PASSWORD_2);
 			
 			userBlocking = false;
 			userRole = UserRole.CLIENT;
@@ -103,7 +111,7 @@ public class ClientRegistrationCommand extends AbstractCommand {
 		LOG.info("userPassDateOfBirth: " + userPassDateOfBirth);
 		LOG.info("userSex: " + userSex);
 		LOG.info("userEmail: " + userEmail);
-		LOG.info("userPassword: " + userPassword);
+		//LOG.info("userPassword: " + userPassword);
 		LOG.info("userBlocking: " + userBlocking);
 		LOG.info("userRole: " + userRole);
 		LOG.info("userLanguage: " + userLanguage);
@@ -122,9 +130,14 @@ public class ClientRegistrationCommand extends AbstractCommand {
 		ValidatorOfInputParameters.validateUserRole(userRole);		
 		ValidatorOfInputParameters.validate2Passwords(userPassword, userPassword2);
 		
+		// шифруем пароли
+		userPassword = DigestUtils.md5Hex(request.getParameter(FieldsInJSPPages.USER_PASSWORD));
+		userPassword2 = DigestUtils.md5Hex(request.getParameter(FieldsInJSPPages.USER_PASSWORD_2));
+		
+		
 		//создание пользователя
 		User newUser = new User(userPassSeries, userPassNumber, userPassSurname, userPassName, userPassPatronomic,
-				userPassDateOfBirth, userSex, userEmail, userPassword, userBlocking, userRole, userLanguage);
+				userPassDateOfBirth, userSex, userEmail, userPassword, userBlocking, userRole, userLanguage, userConfirmation);
 		 
 		// проверка на наличие такого же пользователя в базе
 		// проверяем по email
@@ -134,20 +147,20 @@ public class ClientRegistrationCommand extends AbstractCommand {
 		
 		// добавление пользователя в базу
 		userDAO.insertNewUser(newUser);
-			
+		
 		// выслать подтверждение на почту
 		try {
 			MailSender.sendConfirmationMessage (newUser);
-		} catch ( Exception e) {
+		} catch (Exception e) {
 			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_SEND_EMAIL, e);
 			userDAO.removeParticularUser(newUser);
 			throw new AppException(ExceptionMessages.EXCEPTION_CAN_NOT_SEND_EMAIL, e);
 		}
 		
 		//вывести сообщение об успешной регистрации и просьбе подтвердить почту\
-		// ???
+		HttpSession session = request.getSession(false);
+		session.setAttribute("responseMessage", "welcomeAuthorization.jsp.successfullRegistration");
 		
-		return Path.PAGE_WELCOME_AUTHORIZATION;
-
+		return Path.COMMAND_REDIRECT_CLIENT_REGISTRATION; 
 	} 
 }

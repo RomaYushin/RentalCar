@@ -32,7 +32,6 @@ public abstract class DAOFactory {
 	private static DataSource getDataSource() {
 
 		try {
-
 			Context initContext = new InitialContext();
 			Context envContext = (Context) initContext.lookup("java:/comp/env");
 			dataSource = (DataSource) envContext.lookup("jdbc/SummaryTask4");
@@ -53,7 +52,7 @@ public abstract class DAOFactory {
 		return connection;
 	}
 
-	
+
 	public abstract ICarDAO getCarDAO ();
 	
 	public abstract IUserDAO getUserDAO ();

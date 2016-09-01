@@ -11,6 +11,10 @@
 		<th> <fmt:message key="cliPerArea.jsp.myOrdCreationDate" /> </th>
 		<th> <fmt:message key="cliPerArea.jsp.myOrdStatus" /> </th>
 		<th> <fmt:message key="cliPerArea.jsp.myOrdRejectionReason" /> </th>
+		
+		<th> <fmt:message key="showSpecifiedOrder.jsp.accountRentPaid_lbl" /> </th>
+		<th> <fmt:message key="showSpecifiedOrder.jsp.accountRepairPaid_lbl" /> </th>
+		
 		<th> <fmt:message key="cliPerArea.jsp.myOrdOpen" /> </th>
 	</tr>
 
@@ -42,6 +46,17 @@
 				</c:choose>
 			</td>
 			<td> <c:out value="${ order.getOrderRejectionReason().toString() }"></c:out> </td>
+			
+			<td>
+				<c:if test="${order.getOrderAccount().isAccountRentPaid()}"><fmt:message key="managerPersonalArea.jsp.orderPaymentYes" /></c:if>
+				<c:if test="${not order.getOrderAccount().isAccountRentPaid()}"> <fmt:message key="managerPersonalArea.jsp.orderPaymentNo" /></c:if>
+			</td>
+			
+			<td>
+				<c:if test="${order.getOrderAccount().isAccountRepairPaid()}"><fmt:message key="managerPersonalArea.jsp.orderPaymentYes" /></c:if>
+				<c:if test="${not order.getOrderAccount().isAccountRepairPaid()}"> <fmt:message key="managerPersonalArea.jsp.orderPaymentNo" /></c:if>
+			</td>
+			
 			<td> <button onclick ="openOrder(${ order.getId() });"> <fmt:message key="cliPerArea.jsp.myOrdOpen" /> </button> </td>
 		</tr>
 	</c:forEach>

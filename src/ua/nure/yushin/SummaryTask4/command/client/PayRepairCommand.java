@@ -43,7 +43,6 @@ public class PayRepairCommand extends AbstractCommand {
 		return result;
 	}
 	
-	
 	private String doPost(HttpServletRequest request, HttpServletResponse response) throws AppException {
 		LOG.info("PayRepairCommand.doPost start");
 		
@@ -84,11 +83,10 @@ public class PayRepairCommand extends AbstractCommand {
 			throw new AppException(ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR);
 		}
 		
-		boolean payment = (boolean)(session.getAttribute("payment"));
+		//boolean payment = (boolean)(session.getAttribute("payment"));
 		session.removeAttribute("payment");
 
-		LOG.info("payment: " + payment);
-		request.setAttribute("payment", payment);
+		request.setAttribute("responseMessage", "cliPerArea.jsp.succesfullRepairPayment");
 		
 		return Path.PAGE_FORWARD_CLIENT_PERSONAL_AREA;
 	}

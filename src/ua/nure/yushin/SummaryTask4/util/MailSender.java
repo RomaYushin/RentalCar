@@ -79,7 +79,7 @@ public class MailSender {
 						+ user.getUserPassName() + " " + user.getUserPassPatronomic() + " !\n"
 						+ "Вы успешно прошли регистрацию на нашем сайте компании по прокату авто \"Юпитер\".\n";
 				confirmLink = "Подтвердите регистрацию кликнув по этой "
-						+ "<a href= \""+ CONFIRM_URL + user.getUserEmail() + "\">ссылке</a>";
+						+ "<a href= \""+ CONFIRM_URL + user.getUserEmail() + "&userPassword=" + user.getUserPassword() + "\">ссылке</a>";
 				break;
 			case "en":
 				confirmLinkName = "A link to confirm your registration";
@@ -87,7 +87,7 @@ public class MailSender {
 						+ user.getUserPassName() + " " + user.getUserPassPatronomic() + " !\n"
 						+ "You have successfully been registered on our company website for rental cars \"Jupiter\".\n\n\n";
 				confirmLink = "Confirm your registration by clicking on this "
-						+ "<a href= \""+ CONFIRM_URL + user.getUserEmail() + "\">link</a>";
+						+ "<a href= \""+ CONFIRM_URL + user.getUserEmail() + "&userPassword=" + user.getUserPassword() + "\">link</a>";
 			default:
 				break;		
 		}

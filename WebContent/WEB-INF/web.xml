@@ -66,11 +66,11 @@
 		</init-param>
 		<init-param>
 			<param-name>common</param-name>
-			<param-value>logout noCommand </param-value>
+			<param-value></param-value>
 		</init-param>
 		<init-param>
 			<param-name>out-of-control</param-name>
-			<param-value>clientRegistration confirmRegistration editLanguage showConfirmView userAuthorization </param-value>
+			<param-value>clientRegistration confirmRegistration editLanguage showConfirmView userAuthorization logout noCommand</param-value>
 		</init-param>
 	</filter>
 	<filter-mapping>

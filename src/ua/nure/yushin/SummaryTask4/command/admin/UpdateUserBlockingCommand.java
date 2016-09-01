@@ -64,7 +64,7 @@ public class UpdateUserBlockingCommand extends AbstractCommand {
 	}
 	
 	private static String doPost (HttpServletRequest request, HttpServletResponse response) 
-			throws AsyncResponseException {	
+			throws AsyncResponseException, ValidationException, DBException {	
 		
 		LOG.info ("Start executing UpdateUserBlockingCommand.doPost");
 		String result = null;
@@ -82,30 +82,23 @@ public class UpdateUserBlockingCommand extends AbstractCommand {
 			throw new AsyncResponseException (ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR, e);
 		}
 		
-		try {
-			ValidatorOfInputParameters.validateId(userId);
-		} catch (ValidationException vExcep) {
-			throw new AsyncResponseException(vExcep.getMessage());
-		}
+		ValidatorOfInputParameters.validateId(userId);
 		
-		try {
-			DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
-			IUserDAO iUserDAO = daoFactory.getUserDAO();	
+
+		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
+		IUserDAO iUserDAO = daoFactory.getUserDAO();	
+		
+		if (isUserBlocking) {
+			isUserBlocking = false;
+		} else {
+			isUserBlocking = true;
+		}
 			
-			if (isUserBlocking) {
-				isUserBlocking = false;
-			} else {
-				isUserBlocking = true;
-			}
-			
-			// Получение user по id
-			User user = iUserDAO.getUserById(userId);
-			user.setUserBlocking(isUserBlocking);
-			
-			iUserDAO.updateUserById(user);
-		} catch (DBException dbExcep) {
-			throw new AsyncResponseException(ExceptionMessages.EXCEPTION_CAN_NOT_UPDATE_USER_BLOCKING, dbExcep);
-		}	
+		// Получение user по id
+		User user = iUserDAO.getUserById(userId);
+		user.setUserBlocking(isUserBlocking);
+		
+		iUserDAO.updateUserById(user);	
 		
 		return Path.COMMAND_REDIRECT_ADMIN_UPDATE_USER_BLOCKING;
 	}

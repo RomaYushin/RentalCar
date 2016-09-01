@@ -86,7 +86,7 @@ public class PrintOrders extends TagSupport {
 			jspOut.println("<th>" + orderIdVal + "</th>");
 			jspOut.println("<th>" + surnameVal + "</th>");
 			jspOut.println("<th>" + nameVal + "</th>");
-			jspOut.println("<th>" + patronomicVal + "</th>");
+			//jspOut.println("<th>" + patronomicVal + "</th>");
 			jspOut.println("<th>" + emailVal + "</th>");
 			jspOut.println("<th>" + accountIdVal + "</th>");
 			jspOut.println("<th>" + orderCreationDateVal + "</th>");
@@ -103,7 +103,7 @@ public class PrintOrders extends TagSupport {
 				jspOut.println("<td>" + order.getId() + "</td>");
 				jspOut.println("<td>" + order.getOrderClient().getUserPassSurname() + "</td>");
 				jspOut.println("<td>" + order.getOrderClient().getUserPassName() + "</td>");
-				jspOut.println("<td>" + order.getOrderClient().getUserPassPatronomic() + "</td>");
+				//jspOut.println("<td>" + order.getOrderClient().getUserPassPatronomic() + "</td>");
 				jspOut.println("<td>" + order.getOrderClient().getUserEmail() + "</td>");
 				jspOut.println("<td>" + order.getOrderAccount().getId() + "</td>");
 				jspOut.println("<td>" + order.getCreateOrderDate() + "</td>");

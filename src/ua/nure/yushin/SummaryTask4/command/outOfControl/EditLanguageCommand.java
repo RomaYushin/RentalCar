@@ -47,5 +47,4 @@ public class EditLanguageCommand extends AbstractCommand {
 			return Path.COMMAND_REDIRECT_TO_COMMAND + currentCommand;
 		}		
 	}
-
 }

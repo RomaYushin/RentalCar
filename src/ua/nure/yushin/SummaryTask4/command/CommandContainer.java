@@ -9,8 +9,6 @@ import ua.nure.yushin.SummaryTask4.command.admin.ShowAddNewCarFormCommand;
 import ua.nure.yushin.SummaryTask4.command.admin.ShowAllCarsFormCommand;
 import ua.nure.yushin.SummaryTask4.command.admin.ShowBlockUserFormCommand;
 import ua.nure.yushin.SummaryTask4.command.admin.ShowEditCarFormCommand;
-//import ua.nure.yushin.SummaryTask4.command.admin.ShowCarParamFormCommand;
-//import ua.nure.yushin.SummaryTask4.command.admin.ShowEditCarFormCommand;
 import ua.nure.yushin.SummaryTask4.command.admin.ShowRegisterManagerFormCommand;
 import ua.nure.yushin.SummaryTask4.command.admin.UpdateUserBlockingCommand;
 import ua.nure.yushin.SummaryTask4.command.client.AvailableCarsAsyncCommand;
@@ -26,11 +24,8 @@ import ua.nure.yushin.SummaryTask4.command.client.OrderCarAsyncCommand;
 import ua.nure.yushin.SummaryTask4.command.client.PayOrderCommand;
 import ua.nure.yushin.SummaryTask4.command.client.PayRepairCommand;
 import ua.nure.yushin.SummaryTask4.command.client.SelectCarsByRentalDatesCommand;
-import ua.nure.yushin.SummaryTask4.command.common.LogoutCommand;
-import ua.nure.yushin.SummaryTask4.command.common.NoCommand;
 import ua.nure.yushin.SummaryTask4.command.admin.AdminPersonalAreaCommand;
 import ua.nure.yushin.SummaryTask4.command.admin.EditCarCommand;
-//import ua.nure.yushin.SummaryTask4.command.admin.ShowAllCarsFormCommand;
 import ua.nure.yushin.SummaryTask4.command.admin.RegisterNewCarCommand;
 import ua.nure.yushin.SummaryTask4.command.admin.RegisterNewManagerCommand;
 import ua.nure.yushin.SummaryTask4.command.admin.RemoveCarCommand;
@@ -44,13 +39,28 @@ import ua.nure.yushin.SummaryTask4.command.manager.ShowSpecifiedOrderCommand;
 import ua.nure.yushin.SummaryTask4.command.outOfControl.ClientRegistrationCommand;
 import ua.nure.yushin.SummaryTask4.command.outOfControl.ConfirmRegistrationCommand;
 import ua.nure.yushin.SummaryTask4.command.outOfControl.EditLanguageCommand;
+import ua.nure.yushin.SummaryTask4.command.outOfControl.LogoutCommand;
+import ua.nure.yushin.SummaryTask4.command.outOfControl.NoCommand;
 import ua.nure.yushin.SummaryTask4.command.outOfControl.ShowConfirmViewCommand;
 import ua.nure.yushin.SummaryTask4.command.outOfControl.UserAuthorizationCommand;
 
+/**
+ * Stored all available commands in map and return specified command if 
+ * it exist
+ * 
+ * @version 	01.09.2016
+ * @author 		Yushin Roman
+ * @see			ua.nure.yushin.SummaryTask4.command.CommandContainer
+ * @see			ua.nure.yushin.SummaryTask4.command.ICommand
+ * @see			ua.nure.yushin.SummaryTask4.controller.ActionTypes;
+ */
 public class CommandContainer {
 
 	private static final Logger LOG = Logger.getLogger(CommandContainer.class);
 
+	/**
+	 * Storage for commands
+	 */
 	private static Map<String, ICommand> commands = new TreeMap<String, ICommand>();
 
 	static {
@@ -80,8 +90,7 @@ public class CommandContainer {
 		commands.put("payRepair", new PayRepairCommand());		
 		commands.put("payOrder", new PayOrderCommand());
 		commands.put("selectCarsByRentalDates", new SelectCarsByRentalDatesCommand());	
-		commands.put("openClientOrder", new OpenClientOrderCommand());
-			
+		commands.put("openClientOrder", new OpenClientOrderCommand());			
 
 		// manager command
 		commands.put("approveOrder", new ApproveOrderCommand());
@@ -92,9 +101,7 @@ public class CommandContainer {
 		commands.put("showOrders", new ShowOrdersCommand());
 		commands.put("showSpecifiedOrder", new ShowSpecifiedOrderCommand());
 		
-		// common commands
-		commands.put("logout", new LogoutCommand());
-		commands.put("noCommand", new NoCommand());
+		// common commands		
 		
 		// out of control
 		commands.put("clientRegistration", new ClientRegistrationCommand());
@@ -102,18 +109,25 @@ public class CommandContainer {
 		commands.put("editLanguage", new EditLanguageCommand());
 		commands.put("showConfirmView", new ShowConfirmViewCommand());
 		commands.put("userAuthorization", new UserAuthorizationCommand());		
+		commands.put("logout", new LogoutCommand());
+		commands.put("noCommand", new NoCommand());
 
 		LOG.info("Command container was successfully initialized");
 		LOG.info("Total number of commands equals to " + commands.size());
 	}
 
+	/**
+	 * return specified command 
+	 * 
+	 * @param commandName	name of the command
+	 * @return				specified command
+	 */
 	public static ICommand getCommand(String commandName) {
 
 		if (commandName == null || !commands.containsKey(commandName)) {
 			LOG.trace("Command with name " + commandName + " don't exist");
 			return commands.get("noCommand");
 		}
-
 		return commands.get(commandName);
 	}
 }

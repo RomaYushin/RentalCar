@@ -79,7 +79,7 @@ public class CreateBillForRepairCommand extends AbstractCommand {
 		HttpSession session = request.getSession(false);
 		String sortingType = (String) session.getAttribute("sortingType");
 		
-		request.setAttribute("respMessage", "Bill was succesfully created!");
+		request.setAttribute("respMessage", "showSpecifiedOrder.jsp.succesfullBill");
 		//request.setAttribute("type", "close");
 		request.setAttribute("sortingType", sortingType);
 		

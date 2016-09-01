@@ -66,7 +66,7 @@ public class RegisterNewCarCommand extends AbstractCommand {
 		String carBrend = null;
 		String carModel = null;
 		Date carYearOfIssue = null;
-		String carQualityClass = null;
+		CarQualityClass carQualityClass = null;
 		int carRentalCost = 0;
 		HttpSession session = request.getSession(false);
 		String responseMessage = LocaleUtil.getValueByKey("adminPerArea.jsp.editCarRespMessage", session);
@@ -76,7 +76,7 @@ public class RegisterNewCarCommand extends AbstractCommand {
 			carModel = request.getParameter("carModel");
 			//String carYearOfIssue_s = request.getParameter("carYearOfIssue");
 			carYearOfIssue = Date.valueOf(request.getParameter("carYearOfIssue"));
-			carQualityClass = request.getParameter("carQualityClass");
+			carQualityClass = CarQualityClass.getByName(request.getParameter("carQualityClass"));
 			carRentalCost = Integer.valueOf(request.getParameter("carRentalCost"));
 			//String carRentalCost_s = request.getParameter("carRentalCost");
 			
@@ -97,16 +97,13 @@ public class RegisterNewCarCommand extends AbstractCommand {
 		ValidatorOfInputParameters.validateCarRentalCost(carRentalCost);
 
 		
-		Car newCar = new Car (carBrend, carModel, CarQualityClass.valueOf(carQualityClass),
+		Car newCar = new Car (carBrend, carModel, carQualityClass,
 				carRentalCost, CarStatus.FREE, carYearOfIssue);
 		
 		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
 		ICarDAO iCarDAO = daoFactory.getCarDAO();
-		try {
-			iCarDAO.insertNewCar(newCar);
-		} catch (DBException e) {
-			throw new AsyncResponseException(ExceptionMessages.EXCEPTION_CAN_NOT_INSERT_NEW_CAR, e);
-		}		
+		iCarDAO.insertNewCar(newCar);
+			
 		
 		session.setAttribute("responseMessage", responseMessage);
 		return Path.COMMAND_REDIRECT_ADMIN_REGISTER_NEW_CAR;

@@ -25,6 +25,13 @@
 				</div>
 				<input id = "submitConfirmationForm" type="submit" value = "<fmt:message key="confirmRegistrationView.jsp.submit" />">				
 			</form>
+			
+			<div class = "exitForm">
+				<form action="Controller" method="POST">
+					<input type = "hidden" name = "command" value = "logout" />
+					<input id = "exit" type="submit" value="<fmt:message key="clientRegistration.jsp.Exit" />">
+				</form>
+			</div>
 		</div>
 		<%@ include file="/WEB-INF/view/jspf/footer.jspf"%>
 	</div>

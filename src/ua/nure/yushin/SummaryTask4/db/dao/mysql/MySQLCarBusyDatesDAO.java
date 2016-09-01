@@ -6,12 +6,16 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.log4j.Logger;
 
 import ua.nure.yushin.SummaryTask4.db.dao.DAOFactory;
+import ua.nure.yushin.SummaryTask4.db.dao.DatabaseTypes;
 import ua.nure.yushin.SummaryTask4.db.dao.ICarBusyDates;
+import ua.nure.yushin.SummaryTask4.db.dao.ICarDAO;
 import ua.nure.yushin.SummaryTask4.entity.Car;
 import ua.nure.yushin.SummaryTask4.exception.DBException;
 import ua.nure.yushin.SummaryTask4.exception.ExceptionMessages;
@@ -25,6 +29,37 @@ public class MySQLCarBusyDatesDAO implements ICarBusyDates {
 		
 		String query = "INSERT INTO `car_busy_dates` (car_id, busyDate) VALUES (?, ?);";
 		
+		Connection connection = null;
+		PreparedStatement ps = null;
+		
+		try {
+			connection = DAOFactory.getConnection();
+			ps = connection.prepareStatement(query);
+			
+			connection.setAutoCommit(false);
+			
+			for (Date currentBusyDate: busyDates) {
+				ps.setInt(1, specifiedCar.getId());
+				ps.setDate(2, currentBusyDate);
+				ps.addBatch();
+			}
+			ps.executeBatch();
+			
+			connection.commit();
+		} catch (SQLException e) {
+			try {
+				connection.rollback();
+			} catch (Exception ee) {
+				LOG.error(ee);
+			}
+			LOG.error("Exception in MySQLCarBusyDatesDAO.insertNewBusyDates: " + e);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_INSERT_NEW_BYSY_DATE);
+		} finally {
+			try {connection.close();} catch (Exception e) {	LOG.error(e);}
+			try {ps.close();} catch (Exception e) {	LOG.error(e);}
+		}
+		
+		/*
 		for (Date currentBusyDate: busyDates) {		
 			
 			try (Connection connection = DAOFactory.getConnection();
@@ -40,11 +75,7 @@ public class MySQLCarBusyDatesDAO implements ICarBusyDates {
 				throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_INSERT_NEW_BYSY_DATE);
 			}
 		}
-	}
-
-	@Override
-	public void removeParticularBusyDate (Car specifiedCar, Date busyDates) {		
-		throw new UnsupportedOperationException();
+		*/
 	}
 	
 	@Override
@@ -68,33 +99,68 @@ public class MySQLCarBusyDatesDAO implements ICarBusyDates {
 	}
 
 	@Override
-	public List<Car> findAllFreeCarsByBusyDates (List<Date> busyDates) {
+	public List<Car> findAllFreeCarsByBusyDates (List<Date> busyDates) throws DBException {
 
 		// найти все авто по каждой дате
 		String query = "SELECT car_id FROM carBusyDates WHERE busyDate = ?";
-		//String query = "SELECT id FROM Car JOIN carbusydates  carBusyDates WHERE busyDate = ?";
 
-		List<Car> allAvailableCars = new ArrayList<>();
+		List<Integer> notAvailableCarsId = new ArrayList<>();
+		List <Car> allCars = null;
+		List <Car> freeCars = new ArrayList<>();
 		
-		for (Date d : busyDates) {
-			// поиск авто, занятого по этой дате
-			Car c = new Car();
-			// исключение его из списка авто
-			allAvailableCars.remove(c);
+		Connection connection = null;
+		PreparedStatement ps = null;
+		
+		try {
+			connection = DAOFactory.getConnection();
+			ps = connection.prepareStatement(query);
+			connection.setAutoCommit(false);
+			
+			for (Date d : busyDates) {
+				ps.setDate(1, d);
+				ps.addBatch();
+			}			
+			notAvailableCarsId = Arrays.asList(ArrayUtils.toObject( ps.executeBatch()));
+			
+			DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);
+			ICarDAO iCarDAO = daoFactory.getCarDAO();
+			allCars = iCarDAO.getAllCarsFromDB(); 
+			
+			for (Car c : allCars) {
+				if (!notAvailableCarsId.contains(c.getId())) {
+					freeCars.add(c);
+				}
+			}
+			
+			connection.commit();
+		} catch (SQLException e) {
+			/*
+			try {
+				connection.rollback();
+			} catch (Exception ee) {
+				LOG.error(ee);
+			}
+			*/
+			LOG.error(ExceptionMessages.EXCEPTION_CAN_NOT_FIND_ALL_FREE_CARS_BY_BUSY_DATES);
+			throw new DBException(ExceptionMessages.EXCEPTION_CAN_NOT_FIND_ALL_FREE_CARS_BY_BUSY_DATES);
+		} finally {
+			try {connection.close();} catch (Exception e) {	LOG.error(e);}
+			try {ps.close();} catch (Exception e) {	LOG.error(e);}
 		}
-		return allAvailableCars;
+		return freeCars;
 	}
 
 	@Override
 	public List<Date> getAllBusyDatesBySpecifiedCar(Car specifiedCar) throws DBException {
 		
-		String query = "SELECT busyDate FROM car_busy_dates WHERE car_id =" + specifiedCar.getId() + ";";
+		LOG.info("getAllBusyDatesBySpecifiedCar start");
+		String query = "SELECT busyDate FROM car_busy_dates WHERE car_id = ?;";
 		List <Date> busyDates = new ArrayList<>();
 		
 		try (Connection connection = DAOFactory.getConnection();
 				PreparedStatement ps = connection.prepareStatement(query)) {
 			
-			LOG.info("getAllBusyDatesBySpecifiedCar start");	
+			ps.setInt(1, specifiedCar.getId());	
 			ps.execute();
 			
 			ResultSet rs = ps.getResultSet();

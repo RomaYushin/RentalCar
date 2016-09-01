@@ -22,6 +22,7 @@ import ua.nure.yushin.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.yushin.SummaryTask4.db.dao.DatabaseTypes;
 import ua.nure.yushin.SummaryTask4.db.dao.ICarDAO;
 import ua.nure.yushin.SummaryTask4.entity.Car;
+import ua.nure.yushin.SummaryTask4.entity.CarStatus;
 import ua.nure.yushin.SummaryTask4.exception.DBException;
 import ua.nure.yushin.SummaryTask4.exception.ValidationException;
 import ua.nure.yushin.SummaryTask4.validators.ValidatorOfInputParameters;
@@ -203,13 +204,15 @@ public class SelectCarsByRentalDatesCommand extends AbstractCommand {
 		allCarsFromDB = carDaO.getAllCarsFromDB();
 		
 		for (Car c: allCarsFromDB) {
-			availableCars.add(c);
+			if (!c.getCarStatus().equals(CarStatus.ON_REPAIR)) {
+				availableCars.add(c);	
+			}			
 		}
 		
 		for (Car c : allCarsFromDB) {
 			List<Date> carBusyDates = c.getCarBusyDates();
 			for (Date d : carBusyDates) {
-				if (busyDates.contains(d)) {
+				if (busyDates.contains(d) ) {
 					availableCars.remove(c);
 				}
 			}

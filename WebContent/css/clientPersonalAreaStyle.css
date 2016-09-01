@@ -1,0 +1,161 @@
+@import url(reset.css);
+
+@font-face {
+    font-family: "MyriadProRegular";
+    src: url("../fonts/MyriadProRegular/MyriadProRegular.eot");
+    src: url("../fonts/MyriadProRegular/MyriadProRegular.eot?#iefix")format("embedded-opentype"),
+    url("../fonts/MyriadProRegular/MyriadProRegular.woff") format("woff"),
+    url("../fonts/MyriadProRegular/MyriadProRegular.ttf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+
+body {
+	font:25px "MyriadProRegular", "Arial Black", Gadget, sans-serif;
+	color:  #1B1D23;
+	background: url(../images/8_1593_1186.jpg) 0px 0px no-repeat;
+	background-size: cover;
+	opacity: 0.8;	
+	position: relative;
+}
+
+.wrapper {
+	width: 1000px;
+	margin: 0 auto;
+	padding-top: 20px;
+}
+.loggedAs {
+	position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 16px;
+}
+
+.header {
+	border: solid #443F31 4px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	background: #A4C0C6;
+	
+	
+	margin-top: 30px;
+	text-align: center;
+	height: 120px;
+	color:  #000000;
+	font-weight: 900;
+}
+.headerNameCompany {
+	text-align: center;
+	font-size: 40px;
+}
+
+button {
+	padding: 4px 15px;
+    border-radius: 6px;
+    border: 1px solid #000;
+    font-size: 16px;
+    cursor: pointer;
+}
+.selectDate {
+	 text-align: left;
+	 font-size: 18px;
+	 border: solid #443F31 2px;
+    margin: 10px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+}
+.selectDate label {
+	margin-left: 20px;
+	margin-bottom: 10px;
+    display: inline-block;
+    margin-right: 8px;
+}
+.selectOrderDate {
+	margin-top: 10px;
+	text-align: center;
+}
+.headerLoggedAs, .headerChooseLanguage  {
+	text-align: center;
+	height: 30px;
+	font-size: 20px;
+}
+.availableCarsInner {
+	border: solid #443F31 2px;
+    margin: 10px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    padding-bottom: 20px;
+}
+.selectOrderCarBlockName {
+	margin: 10px 0;
+}
+.sortButtons {
+	display: inline-block;
+    width: 250px;
+    margin-top: 50px;
+    vertical-align: top;
+}
+.sortButtons button,
+.sortButtons select {
+	margin-bottom: 8px;
+	width: 200px;
+}
+.cars {
+	display: inline-block;
+    width: 700px;
+}
+.car {
+	margin-top: 10px;
+	font-size: 16px;
+	margin-left: 20px;
+	text-align: left;
+}
+.driver {
+	margin-top: 40px;
+}
+
+select{
+	font:18px "MyriadProRegular", "Arial Black", Gadget, sans-serif;
+	opacity: 0.8;
+	width: 145px;
+}
+
+.logoutBtn {
+	float: right;
+    margin-top: -30px;
+    margin-right: 20px;
+}
+.logoutBtn input {
+	padding: 4px 15px;
+}
+.mainContent {
+	border: solid #443F31 4px;
+	-webkit-border-radius: 8px;
+	-moz-border-radius: 8px;
+	border-radius: 8px;
+	padding-bottom: 20px;
+	margin-top: 50px;
+	text-align: center;
+	background: #A4C0C6;
+}
+.mainBlockName {
+	font-size: 30px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+.createOrderSuccess {
+	font-size: 18px;
+    text-align: left;
+    margin-left: 20px;
+    margin-top: 20px;
+}
+.createOrderSuccess input[type="submit"] {
+	margin-top: 10px;
+}
+.mainWindow table {
+	margin-left: 20px;
+	font-size: 18px;
+}

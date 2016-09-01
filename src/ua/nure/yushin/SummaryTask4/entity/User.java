@@ -30,7 +30,7 @@ public class User extends AbstractEntity {
 	
 	public User(String userPassSeries, int userPassNumber, String userPassSurname, String userPassName,
 			String userPassPatronomic, Date userPassDateOfBirth, Sex userSex, String userEmail, String userPassword,
-			boolean userBlocking, UserRole userRole, String userLanguage) {
+			boolean userBlocking, UserRole userRole, String userLanguage, boolean userConfirmation) {
 		super();
 		this.userPassSeries = userPassSeries;
 		this.userPassNumber = userPassNumber;
@@ -44,7 +44,7 @@ public class User extends AbstractEntity {
 		this.userBlocking = userBlocking;
 		this.userRole = userRole;
 		this.userLanguage = userLanguage;
-		this.userConfirmation = false;
+		this.userConfirmation = userConfirmation;
 	}
 
 	public String getUserPassSeries() {

@@ -25,6 +25,7 @@ import ua.nure.yushin.SummaryTask4.exception.DBException;
 import ua.nure.yushin.SummaryTask4.exception.ExceptionMessages;
 import ua.nure.yushin.SummaryTask4.exception.ValidationException;
 import ua.nure.yushin.SummaryTask4.util.LocaleUtil;
+import ua.nure.yushin.SummaryTask4.util.MailSender;
 import ua.nure.yushin.SummaryTask4.validators.ValidatorOfInputParameters;
 
 public class RegisterNewManagerCommand extends AbstractCommand {
@@ -56,15 +57,16 @@ public class RegisterNewManagerCommand extends AbstractCommand {
 			throws DBException {
 		
 		HttpSession session = request.getSession(false);
-		String responseMessage = (String) session.getAttribute("responseMessage");
-		session.removeAttribute("responseMessage");
-		
-		request.setAttribute("responseMessage", responseMessage);		
+		if ( session.getAttribute("responseMessage") != null) {
+			request.setAttribute("responseMessage", (String) session.getAttribute("responseMessage"));
+			session.removeAttribute("responseMessage");
+			//return Path.PAGE_WELCOME_AUTHORIZATION;
+		}		
 		return Path.PAGE_FORWARD_ADMIN_PERSONAL_AREA;
 	}
 	
 	private static String doPost (HttpServletRequest request, HttpServletResponse response) 
-			throws DBException, AsyncResponseException, ValidationException {
+			throws AppException {
 		
 		LOG.info ("Start executing RegisterNewManagerCommand.doPost");
 		HttpSession session = request.getSession(false);
@@ -83,7 +85,7 @@ public class RegisterNewManagerCommand extends AbstractCommand {
 		boolean userBlocking = false;
 		UserRole userRole = UserRole.MANAGER;
 		String userLanguage = null;
-		boolean userConfirmation = false;
+		boolean userConfirmation = true;
 		
 		try {
 			
@@ -95,7 +97,7 @@ public class RegisterNewManagerCommand extends AbstractCommand {
 			userPassDateOfBirth =  Date.valueOf(request.getParameter(FieldsInJSPPages.USER_PASS_DATE_OF_BIRTH));
 			userSex = Sex.getByName(request.getParameter(FieldsInJSPPages.USER_PASS_SEX));
 			userEmail = request.getParameter(FieldsInJSPPages.USER_EMAIL);			
-			userPassword = DigestUtils.md5Hex(request.getParameter(FieldsInJSPPages.USER_PASSWORD));
+			userPassword = request.getParameter(FieldsInJSPPages.USER_PASSWORD);
 			userLanguage = request.getParameter(FieldsInJSPPages.USER_LANGUAGE);
 			
 			LOG.info("userPassSeries: " + userPassSeries);		
@@ -106,13 +108,13 @@ public class RegisterNewManagerCommand extends AbstractCommand {
 			LOG.info("userPassDateOfBirth: " + userPassDateOfBirth);
 			LOG.info("userSex_s: " + userSex);
 			LOG.info("userEmail: " + userEmail);
-			LOG.info("userPassword: " + userPassword);
+			//LOG.info("userPassword: " + userPassword);
 			LOG.info("userLanguage: " + userLanguage);
 			
 		} catch (Exception e) {
 			throw new AsyncResponseException (ExceptionMessages.EXCEPTION_NULL_IN_REQUEST_PARAMETR, e);
 		}
-			
+		
 		ValidatorOfInputParameters.validateUserPassSeries(userPassSeries);
 		ValidatorOfInputParameters.validateUserPassNumber(userPassNumber);
 		ValidatorOfInputParameters.validateUserFIO(userPassName);
@@ -123,8 +125,11 @@ public class RegisterNewManagerCommand extends AbstractCommand {
 		ValidatorOfInputParameters.validateUserEmail(userEmail);
 		ValidatorOfInputParameters.validateUserPassword(userPassword);			
 		
+		// шифрация пароля
+		userPassword = DigestUtils.md5Hex(userPassword);
+		
 		User newUser = new User(userPassSeries, userPassNumber, userPassSurname, userPassName, userPassPatronomic,
-				userPassDateOfBirth, userSex, userEmail, userPassword, userBlocking, userRole, userLanguage);
+				userPassDateOfBirth, userSex, userEmail, userPassword, userBlocking, userRole, userLanguage, userConfirmation);
 		
 		DAOFactory daoFactory = DAOFactory.getFactoryByType(DatabaseTypes.MYSQL);		
 		IUserDAO iUserDAO = daoFactory.getUserDAO();

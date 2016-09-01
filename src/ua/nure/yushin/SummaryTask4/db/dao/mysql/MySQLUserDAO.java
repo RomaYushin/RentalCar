@@ -45,7 +45,7 @@ public class MySQLUserDAO implements IUserDAO {
 			ps.setString(10, newUser.getUserEmail());
 			ps.setString(11, newUser.getUserRole().toString());
 			ps.setString(12, newUser.getUserLanguage());
-			ps.setString(13, String.valueOf(false));
+			ps.setString(13, String.valueOf(newUser.isUserConfirmation()));
 			ps.executeUpdate();
 
 		} catch (SQLException e) {
@@ -246,8 +246,8 @@ public class MySQLUserDAO implements IUserDAO {
 			
 			ps.setString(1, user.getUserPassSeries());
 			ps.setInt(2, user.getUserPassNumber());
-			ps.setString(3, user.getUserPassName());
-			ps.setString(4, user.getUserPassSurname());
+			ps.setString(3, user.getUserPassSurname());
+			ps.setString(4, user.getUserPassName());
 			ps.setString(5, user.getUserPassPatronomic());
 			ps.setDate(6, user.getUserPassDateOfBirth());
 			ps.setString(7, user.getUserSex().toString());

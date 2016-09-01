@@ -11,8 +11,7 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 		<title><fmt:message key="cliPerArea.jsp.title" /></title>	
-		<!-- <link href = "css/welcomeAuthorizationStyle.css" type = "text/css" rel = "stylesheet" /> -->
-		
+		<!-- <link href = "css/clientPersonalAreaStyle.css" type = "text/css" rel = "stylesheet" /> -->
 		<script src = "js/jquery-3.1.0.js" type = "text/javascript"></script>
 		<!-- <script src = "js/jquery-3.1.0.min.js" type = "text/javascript"></script>  -->
 		<script src = "js/clientPersonalAreaScript.js" type = "text/javascript"></script>	
@@ -22,14 +21,16 @@
 			<%@ include file = "/WEB-INF/view/jspf/header.jspf" %>
 			<div class = "mainContent" >
 				<!--<fmt:message key="welcomeAuthorization.jsp.mainBlockName" /> -->
-				<h1> <fmt:message key="cliPerArea.jsp.mainContent" /> </h1>
+				<div class="mainBlockName"> <fmt:message key="cliPerArea.jsp.mainContent" /> </div>
 				<div class = "mainButtons">
 					<input id = "clientId" type = "hidden" value="${ user.getId() }" >
 					<!-- ajax submin in js file --> 
 					<button id = "orderCarButton" onclick ="sendOrderCar()"> <fmt:message key="cliPerArea.jsp.orderCar_btn" /> </button>
 					<button id = "myOrders" onclick ="sendMyOrders()" > <fmt:message key="cliPerArea.jsp.myOrders_btn" /> </button>
+					<!--
 					<button id = "carsReview" onclick ="sendCarsReview()" > <fmt:message key="cliPerArea.jsp.carsReview_btn" /> </button>
 					<button id = "ordersArchive" onclick ="sendOrdersArchive()" > <fmt:message key="cliPerArea.jsp.ordersArchive_btn" /> </button>
+					-->
 				</div>
 				
 				<div class = "mainWindow">
@@ -81,6 +82,7 @@
 					</c:if>
 				</c:if>
 				
+				<!--  
 				<c:if test="${not empty payment}">
 					<c:if test="${payment}">
 						<p> <fmt:message key="cliPerArea.jsp.succesfullPayment" />! </p>
@@ -89,6 +91,11 @@
 						<p> <fmt:message key="cliPerArea.jsp.failPayment" />! </p>
 					</c:if>
 				</c:if>	
+				-->
+				
+				<c:if test="${not empty responseMessage }">
+					<fmt:message key="${ responseMessage }" />
+				</c:if>
 				
 				</div>								
 			</div>

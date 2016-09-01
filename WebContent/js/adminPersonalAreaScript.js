@@ -100,7 +100,7 @@ function saveNewCarParametrs() {
 }
 */
 function updateBlocking (userId, isUserBlocking) {
-	alert ("userId: " + userId + ", isUserBlocking: " + isUserBlocking);
+	//alert ("userId: " + userId + ", isUserBlocking: " + isUserBlocking);
 	
 	$.ajax({
 		type : "POST",
